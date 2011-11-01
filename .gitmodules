@@ -1,0 +1,7 @@
+[submodule "dependencies/Nancy"]
+	path = dependencies/Nancy
+	url = https://github.com/NancyFx/Nancy.git
+[submodule "dependencies/Cassette"]
+	path = dependencies/Cassette
+	url = https://github.com/andrewdavey/cassette.git
+  
