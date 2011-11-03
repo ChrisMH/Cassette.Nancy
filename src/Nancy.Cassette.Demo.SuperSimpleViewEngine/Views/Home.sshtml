@@ -1,0 +1,10 @@
+﻿@using Cassette.UI
+
+<!DOCTYPE html>
+<head>
+    <title>Nancy.Cassette Super Simple View Engine</title>
+</head>
+<body>
+<h1>Nancy.Cassette Super Simple View Engine</h1>
+</body>
+</html>
