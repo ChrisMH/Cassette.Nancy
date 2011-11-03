@@ -1,4 +1,4 @@
-﻿namespace Nancy.Cassette.Demo.SuperSimpleViewEngine
+﻿namespace Nancy.Cassette.Demo.RazorViewEngine
 {
   public class MainModule : NancyModule
   {

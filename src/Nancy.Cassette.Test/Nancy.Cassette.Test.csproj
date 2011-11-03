@@ -54,9 +54,16 @@
     </Compile>
     <Compile Include="CassetteModuleTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RazorViewTest.cs" />
+    <Compile Include="HooksTest.cs" />
+    <Compile Include="TestBootstrapper.cs" />
+    <Compile Include="TestCassetteConfiguration.cs" />
+    <Compile Include="TestModule.cs" />
+    <Compile Include="TestRazorConfiguration.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="Views\RazorHome.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\dependencies\cassette\src\Cassette\Cassette.csproj">
@@ -67,6 +74,10 @@
       <Project>{D79203C0-B672-4751-9C95-C3AB7D3FEFBE}</Project>
       <Name>Nancy.Testing</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\dependencies\Nancy\src\Nancy.ViewEngines.Razor\Nancy.ViewEngines.Razor.csproj">
+      <Project>{2C6F51DF-015C-4DB6-B44C-0E5E4F25E2A9}</Project>
+      <Name>Nancy.ViewEngines.Razor</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\dependencies\Nancy\src\Nancy\Nancy.csproj">
       <Project>{34576216-0DCA-4B0F-A0DC-9075E75A676F}</Project>
       <Name>Nancy</Name>
@@ -76,7 +87,22 @@
       <Name>Nancy.Cassette</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Scripts\lib\" />
+    <Folder Include="Styles\app\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Scripts\app\layout.coffee" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>Call "$(ProjectDir)setup_test_environment.bat" Scripts "$(ProjectDir)" "$(TargetDir)"
+Call "$(ProjectDir)setup_test_environment.bat" Styles "$(ProjectDir)" "$(TargetDir)"
+Call "$(ProjectDir)setup_test_environment.bat" Views "$(ProjectDir)" "$(TargetDir)"
+
+
+</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

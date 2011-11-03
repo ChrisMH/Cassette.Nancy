@@ -45,6 +45,7 @@
     </Compile>
     <Compile Include="CassetteApplication.cs" />
     <Compile Include="CassetteModule.cs" />
+    <Compile Include="Hooks.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,0 +1,17 @@
+﻿@{
+  Cassette.UI.Assets.Scripts.Reference("Scripts/lib");
+  Cassette.UI.Assets.Scripts.Reference("Scripts/app");
+  Cassette.UI.Assets.Stylesheets.Reference("Styles/app");
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Nancy.Cassette</title>
+  @Cassette.UI.Assets.Stylesheets.Render()
+</head>
+<body>
+  <h1>Nancy.Cassette</h1>
+  @Cassette.UI.Assets.Scripts.Render()
+</body>
+</html>
