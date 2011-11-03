@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using Cassette;
 using Cassette.IO;
 using Cassette.UI;
@@ -19,10 +20,6 @@ namespace Nancy.Cassette
 
     public Response OnBeforeRequest(NancyContext context)
     {
-      Console.WriteLine("CassetteApplication.OnBeforeRequest : {0}", context.Request.Url.Path);
-
-      this.context = context;
-
       IPlaceholderTracker tracker;
       if (HtmlRewritingEnabled)
       {
@@ -32,36 +29,50 @@ namespace Nancy.Cassette
       {
           tracker = new NullPlaceholderTracker();
       }
-      this.context.Items[PlaceholderTrackerKey] = tracker;
+      context.Items[PlaceholderTrackerKey] = tracker;
 
       return null;
     }
     
     public void OnAfterRequest(NancyContext context)
     {
-      Console.WriteLine("CassetteApplication.OnAfterRequest : {0}", context.Request.Url.Path);
-      
+      var currentContents = context.Response.Contents;
+      context.Response.Contents =
+        stream =>
+        {
+          var currentContentsStream = new MemoryStream();
+          currentContents(currentContentsStream);
+          currentContentsStream.Position = 0;
+          
+          var reader = new StreamReader(currentContentsStream);
+
+          var html = reader.ReadToEnd();
+
+          html = GetPlaceholderTracker().ReplacePlaceholders(html);
+
+          var writer = new StreamWriter(stream);
+          writer.Write(html);
+
+          writer.Flush();
+        };
     }
-
-
+    
     protected override IReferenceBuilder<T> GetOrCreateReferenceBuilder<T>(Func<IReferenceBuilder<T>> create)
     {
       var key = "ReferenceBuilder:" + typeof (T).FullName;
-      if (context.Items.ContainsKey(key))
+      if (Hooks.Context.Items.ContainsKey(key))
       {
-        return (IReferenceBuilder<T>) context.Items[key];
+        return (IReferenceBuilder<T>) Hooks.Context.Items[key];
       }
 
       var builder = create();
-      context.Items[key] = builder;
+      Hooks.Context.Items[key] = builder;
       return builder;
     }
 
     protected override IPlaceholderTracker GetPlaceholderTracker()
     {
-      return (IPlaceholderTracker)context.Items[PlaceholderTrackerKey];
+      return (IPlaceholderTracker)Hooks.Context.Items[PlaceholderTrackerKey];
     }
-
-    private NancyContext context;
   }
 }

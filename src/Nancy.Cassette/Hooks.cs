@@ -1,53 +1,75 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using Cassette;
 using Cassette.IO;
 using Cassette.UI;
 using Nancy.Bootstrapper;
+using Nancy.Conventions;
 using TinyIoC;
-using System.Linq;
 
 namespace Nancy.Cassette
 {
   public static class Hooks
   {
-    public static void Install(TinyIoCContainer container, IPipelines pipelines)
+    // TODO: Optimized output
+
+    public static void Install(NancyConventions conventions, TinyIoCContainer container, IPipelines pipelines)
     {
+      // Cassette is used to serve all static content.  Probably.
+      conventions.StaticContentsConventions.Clear();
+
+
       //storage = IsolatedStorageFile.GetMachineStoreForAssembly();
+
 
       configurations = container.ResolveAll<ICassetteConfiguration>();
       rootDirectory = container.Resolve<IRootPathProvider>().GetRootPath();
 
       //applicationContainer = ShouldOptimizeOutput() ? new CassetteApplicationContainer<CassetteApplication>(CreateCassetteApplication) 
       //                                              : new CassetteApplicationContainer<CassetteApplication>(CreateCassetteApplication, HttpRuntime.AppDomainAppPath);
+      pipelines.BeforeRequest.AddItemToStartOfPipeline(OnBeforeRequest);
+      pipelines.AfterRequest.AddItemToEndOfPipeline(OnAfterRequest);
+    }
+
+    private static Response OnBeforeRequest(NancyContext context)
+    {
+      Context = context;
 
       application = new CassetteApplication(
         configurations,
         new FileSystemDirectory(rootDirectory),
         null,
-        null,
+        new UrlGenerator(),
         false,
-        GetConfigurationVersion());
-        
+        GetConfigurationVersion(context.Request.Url.BasePath));
+
       Assets.GetApplication = () => CassetteApplication;
 
-      pipelines.BeforeRequest.AddItemToStartOfPipeline(application.OnBeforeRequest);
-      pipelines.AfterRequest.AddItemToEndOfPipeline(application.OnAfterRequest);
+      return application.OnBeforeRequest(context);
     }
-    
-    private static string GetConfigurationVersion()
+
+    private static void OnAfterRequest(NancyContext context)
+    {
+      application.OnAfterRequest(context);
+    }
+
+    private static string GetConfigurationVersion(string virtualDirectory)
     {
       var assemblyVersion = configurations.Select(
         configuration => new AssemblyName(configuration.GetType().Assembly.FullName).Version.ToString()
         ).Distinct();
 
-      return string.Join("|", assemblyVersion);
+      var parts = assemblyVersion.Concat(new[] {virtualDirectory});
+      return string.Join("|", parts);
     }
-    
+
     public static CassetteApplication CassetteApplication
     {
-      get { return application;  }
+      get { return application; }
     }
+
+    internal static NancyContext Context { get; private set; }
 
     internal static IEnumerable<ICassetteConfiguration> Configurations
     {

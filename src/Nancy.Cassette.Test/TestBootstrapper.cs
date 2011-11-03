@@ -6,7 +6,7 @@
     {
       base.ApplicationStartup(container, pipelines);
 
-      Nancy.Cassette.Hooks.Install(container, pipelines);
+      Nancy.Cassette.Hooks.Install(Conventions, container, pipelines);
     }
   }
 }

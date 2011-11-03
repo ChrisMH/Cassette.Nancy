@@ -9,13 +9,13 @@ namespace Nancy.Cassette.Demo.RazorViewEngine
     public void Configure(ModuleConfiguration moduleConfiguration, ICassetteApplication application)
     {
       moduleConfiguration.Add(
-        new DirectorySource<ScriptModule>("Scripts")
+        new PerSubDirectorySource<ScriptModule>("Scripts")
         {
           FilePattern = "*.js;*.coffee"
         });
 
       moduleConfiguration.Add(
-        new DirectorySource<StylesheetModule>("Styles")
+        new PerSubDirectorySource<StylesheetModule>("Styles")
         {
           FilePattern = "*.css;*.less"
         });

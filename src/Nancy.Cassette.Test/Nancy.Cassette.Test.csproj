@@ -87,12 +87,12 @@
       <Name>Nancy.Cassette</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Scripts\lib\" />
-    <Folder Include="Styles\app\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="Scripts\app\layout.coffee" />
+    <Content Include="Scripts\lib\jquery-1.6.4.js" />
+    <Content Include="Scripts\lib\underscore.js" />
+    <Content Include="Styles\app\Main.css" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

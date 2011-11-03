@@ -8,9 +8,8 @@ namespace Nancy.Cassette
   public class CassetteModule : NancyModule
   {
     public CassetteModule()
-    : base("/_assets")
     {
-      
+      Get[UrlGenerator.AssetUrlPrefix] = p => "";
     }
   }
 }

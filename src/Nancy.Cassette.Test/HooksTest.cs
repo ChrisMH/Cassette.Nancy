@@ -16,7 +16,7 @@ namespace Nancy.Cassette.Test
     [Test]
     public void IdentifiesCassetteConfigurations()
     {
-      browser.Get("/", with => with.HttpRequest());
+      var body = browser.Get("/", with => with.HttpRequest()).Body;
 
       var configurations = Hooks.Configurations.ToList();
 
@@ -27,7 +27,7 @@ namespace Nancy.Cassette.Test
     [Test]
     public void ResolvesRootDirectory()
     {
-      browser.Get("/", with => with.HttpRequest());
+      var body = browser.Get("/", with => with.HttpRequest()).Body;
 
       Assert.AreEqual(AppDomain.CurrentDomain.BaseDirectory, Hooks.RootDirectory);
     }
@@ -36,14 +36,12 @@ namespace Nancy.Cassette.Test
     [Test]
     public void CreatesCassetteApplication()
     {
-      browser.Get("/", with => with.HttpRequest());
+      var body = browser.Get("/", with => with.HttpRequest()).Body;
 
-      var cassetteApplication = Hooks.CassetteApplication;
-      Assert.NotNull(cassetteApplication);
+      Assert.NotNull(Hooks.CassetteApplication);
     }
 
     private Browser browser;
-
   }
 
 }
