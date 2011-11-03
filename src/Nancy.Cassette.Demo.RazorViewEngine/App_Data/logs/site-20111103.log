@@ -1,0 +1,47 @@
+2011-11-03 16:17:13.8647|INFO|Nancy.Cassette.Hooks|OnBeforeRequest : /  
+2011-11-03 16:17:14.7157|INFO|Nancy.Cassette.Hooks|OnAfterRequest : /  
+2011-11-03 16:17:15.0157|INFO|Nancy.Cassette.Hooks|OnBeforeRequest : /_assets/get/Styles/app/Main.css  
+2011-11-03 16:17:15.0157|INFO|Nancy.Cassette.Hooks|OnBeforeRequest : /Scripts/lib/jquery-1.6.4.js  
+2011-11-03 16:17:15.0157|INFO|Nancy.Cassette.Hooks|OnBeforeRequest : /Scripts/lib/underscore.js  
+2011-11-03 16:17:15.0157|INFO|Nancy.Cassette.Hooks|OnBeforeRequest : /_assets/get/Scripts/app/layout.coffee  
+2011-11-03 16:17:15.4657|INFO|Nancy.Cassette.Hooks|OnAfterRequest : /Scripts/lib/underscore.js  
+2011-11-03 16:17:15.4887|INFO|Nancy.Cassette.Hooks|OnAfterRequest : /Scripts/lib/jquery-1.6.4.js  
+2011-11-03 16:17:15.4977|INFO|Nancy.Cassette.Hooks|OnAfterRequest : /_assets/get/Scripts/app/layout.coffee  
+2011-11-03 16:17:15.5157|INFO|Nancy.Cassette.Hooks|OnAfterRequest : /_assets/get/Styles/app/Main.css  
+2011-11-03 16:18:52.4967|INFO|Nancy.Cassette.Hooks|OnBeforeRequest : / : application=NULL  
+2011-11-03 16:18:53.1397|INFO|Nancy.Cassette.Hooks|OnAfterRequest : /  
+2011-11-03 16:18:53.4267|INFO|Nancy.Cassette.Hooks|OnBeforeRequest : /_assets/get/Styles/app/Main.css : application=Valid  
+2011-11-03 16:18:53.4267|INFO|Nancy.Cassette.Hooks|OnBeforeRequest : /Scripts/lib/jquery-1.6.4.js : application=Valid  
+2011-11-03 16:18:53.4267|INFO|Nancy.Cassette.Hooks|OnBeforeRequest : /_assets/get/Scripts/app/layout.coffee : application=Valid  
+2011-11-03 16:18:53.4547|INFO|Nancy.Cassette.Hooks|OnBeforeRequest : /Scripts/lib/underscore.js : application=Valid  
+2011-11-03 16:18:53.9087|INFO|Nancy.Cassette.Hooks|OnAfterRequest : /Scripts/lib/jquery-1.6.4.js  
+2011-11-03 16:18:53.9227|INFO|Nancy.Cassette.Hooks|OnAfterRequest : /_assets/get/Styles/app/Main.css  
+2011-11-03 16:18:53.9507|INFO|Nancy.Cassette.Hooks|OnAfterRequest : /_assets/get/Scripts/app/layout.coffee  
+2011-11-03 16:18:53.9807|INFO|Nancy.Cassette.Hooks|OnAfterRequest : /Scripts/lib/underscore.js  
+2011-11-03 16:34:30.3727|INFO|Nancy.Cassette.Hooks|OnBeforeRequest : / : application=Valid  
+2011-11-03 16:34:30.5397|INFO|Nancy.Cassette.Hooks|OnAfterRequest : /  
+2011-11-03 16:46:23.0176|INFO|Nancy.Cassette.CassetteApplication|OnBeforeRequest : /  
+2011-11-03 16:46:23.1736|INFO|Nancy.Cassette.CassetteApplication|OnAfterRequest : /  
+2011-11-03 16:46:23.4337|INFO|Nancy.Cassette.CassetteApplication|OnBeforeRequest : /_assets/get/Styles/app/Main.css  
+2011-11-03 16:46:23.4337|INFO|Nancy.Cassette.CassetteApplication|OnBeforeRequest : /Scripts/lib/underscore.js  
+2011-11-03 16:46:23.4337|INFO|Nancy.Cassette.CassetteApplication|OnBeforeRequest : /Scripts/lib/jquery-1.6.4.js  
+2011-11-03 16:46:23.4337|INFO|Nancy.Cassette.CassetteApplication|OnAfterRequest : /_assets/get/Styles/app/Main.css  
+2011-11-03 16:46:23.4337|INFO|Nancy.Cassette.CassetteApplication|OnAfterRequest : /Scripts/lib/jquery-1.6.4.js  
+2011-11-03 16:46:23.4337|INFO|Nancy.Cassette.CassetteApplication|OnAfterRequest : /Scripts/lib/underscore.js  
+2011-11-03 16:46:23.4467|INFO|Nancy.Cassette.CassetteApplication|OnBeforeRequest : /_assets/get/Scripts/app/layout.coffee  
+2011-11-03 16:46:23.4467|INFO|Nancy.Cassette.CassetteApplication|OnAfterRequest : /_assets/get/Scripts/app/layout.coffee  
+2011-11-03 17:03:29.6325|INFO|Nancy.Cassette.CassetteApplication|InstallModuleRoute : _assets/scripts/{path}  
+2011-11-03 17:03:29.6575|INFO|Nancy.Cassette.CassetteApplication|InstallModuleRoute : _assets/stylesheets/{path}  
+2011-11-03 17:03:29.6575|INFO|Nancy.Cassette.CassetteApplication|InstallModuleRoute : _assets/htmltemplates/{path}  
+2011-11-03 17:03:29.6585|INFO|Nancy.Cassette.CassetteApplication|InstallRawFileRoute : _assets/files/{path}  
+2011-11-03 17:03:29.6585|INFO|Nancy.Cassette.CassetteApplication|InstallAssetRoute : _assets/get/{path}  
+2011-11-03 17:03:30.0896|INFO|Nancy.Cassette.CassetteApplication|InstallModuleRoute : _assets/scripts/{path}  
+2011-11-03 17:03:30.0896|INFO|Nancy.Cassette.CassetteApplication|InstallModuleRoute : _assets/stylesheets/{path}  
+2011-11-03 17:03:30.0896|INFO|Nancy.Cassette.CassetteApplication|InstallModuleRoute : _assets/htmltemplates/{path}  
+2011-11-03 17:03:30.0896|INFO|Nancy.Cassette.CassetteApplication|InstallRawFileRoute : _assets/files/{path}  
+2011-11-03 17:03:30.0896|INFO|Nancy.Cassette.CassetteApplication|InstallAssetRoute : _assets/get/{path}  
+2011-11-03 17:03:30.1026|INFO|Nancy.Cassette.CassetteApplication|InstallModuleRoute : _assets/scripts/{path}  
+2011-11-03 17:03:30.1026|INFO|Nancy.Cassette.CassetteApplication|InstallModuleRoute : _assets/stylesheets/{path}  
+2011-11-03 17:03:30.1026|INFO|Nancy.Cassette.CassetteApplication|InstallModuleRoute : _assets/htmltemplates/{path}  
+2011-11-03 17:03:30.1026|INFO|Nancy.Cassette.CassetteApplication|InstallRawFileRoute : _assets/files/{path}  
+2011-11-03 17:03:30.1026|INFO|Nancy.Cassette.CassetteApplication|InstallAssetRoute : _assets/get/{path}  

@@ -7,9 +7,11 @@ namespace Nancy.Cassette
 {
   public class CassetteModule : NancyModule
   {
-    public CassetteModule()
+    public CassetteModule(CassetteApplication application)
     {
-      Get[UrlGenerator.AssetUrlPrefix] = p => "";
+      application.InstallRoutes(this);
     }
+
+    
   }
 }

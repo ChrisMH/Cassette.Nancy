@@ -7,6 +7,7 @@ using Cassette.UI;
 using Nancy.Bootstrapper;
 using Nancy.Conventions;
 using TinyIoC;
+using Utility.Logging;
 
 namespace Nancy.Cassette
 {
@@ -14,11 +15,11 @@ namespace Nancy.Cassette
   {
     // TODO: Optimized output
 
-    public static void Install(NancyConventions conventions, TinyIoCContainer container, IPipelines pipelines)
+    public static void Install(TinyIoCContainer container, IPipelines pipelines)
     {
-      // Cassette is used to serve all static content.  Probably.
-      conventions.StaticContentsConventions.Clear();
+      logger = container.Resolve<ILogger>().GetCurrentClassLogger();
 
+      Container = container;
 
       //storage = IsolatedStorageFile.GetMachineStoreForAssembly();
 
@@ -28,49 +29,39 @@ namespace Nancy.Cassette
 
       //applicationContainer = ShouldOptimizeOutput() ? new CassetteApplicationContainer<CassetteApplication>(CreateCassetteApplication) 
       //                                              : new CassetteApplicationContainer<CassetteApplication>(CreateCassetteApplication, HttpRuntime.AppDomainAppPath);
-      pipelines.BeforeRequest.AddItemToStartOfPipeline(OnBeforeRequest);
-      pipelines.AfterRequest.AddItemToEndOfPipeline(OnAfterRequest);
-    }
+      
 
-    private static Response OnBeforeRequest(NancyContext context)
-    {
-      Context = context;
-
-      application = new CassetteApplication(
-        configurations,
-        new FileSystemDirectory(rootDirectory),
-        null,
-        new UrlGenerator(),
-        false,
-        GetConfigurationVersion(context.Request.Url.BasePath));
-
+      Container.Register(CassetteApplication);
       Assets.GetApplication = () => CassetteApplication;
 
-      return application.OnBeforeRequest(context);
+      pipelines.BeforeRequest.AddItemToStartOfPipeline(CassetteApplication.OnBeforeRequest);
+      pipelines.AfterRequest.AddItemToEndOfPipeline(CassetteApplication.OnAfterRequest);
     }
-
-    private static void OnAfterRequest(NancyContext context)
-    {
-      application.OnAfterRequest(context);
-    }
-
-    private static string GetConfigurationVersion(string virtualDirectory)
+    
+    private static string GetConfigurationVersion()
     {
       var assemblyVersion = configurations.Select(
         configuration => new AssemblyName(configuration.GetType().Assembly.FullName).Version.ToString()
         ).Distinct();
 
-      var parts = assemblyVersion.Concat(new[] {virtualDirectory});
-      return string.Join("|", parts);
+      return string.Join("|", assemblyVersion);
     }
 
     public static CassetteApplication CassetteApplication
     {
-      get { return application; }
+      get
+      {
+        return application ?? (application = new CassetteApplication(
+                                               configurations,
+                                               new FileSystemDirectory(rootDirectory),
+                                               null,
+                                               new UrlGenerator(),
+                                               false,
+                                               GetConfigurationVersion(),
+                                               logger));
+      }
     }
-
-    internal static NancyContext Context { get; private set; }
-
+    
     internal static IEnumerable<ICassetteConfiguration> Configurations
     {
       get { return configurations; }
@@ -81,8 +72,11 @@ namespace Nancy.Cassette
       get { return rootDirectory; }
     }
 
+    internal static TinyIoC.TinyIoCContainer Container { get; private set; }
+
     private static IEnumerable<ICassetteConfiguration> configurations;
     private static string rootDirectory;
     private static CassetteApplication application;
+    private static ILogger logger;
   }
 }

@@ -1,4 +1,7 @@
-﻿namespace Nancy.Cassette.Test
+﻿using Utility.Logging;
+using Utility.Logging.NLog;
+
+namespace Nancy.Cassette.Test
 {
   public class TestBootstrapper : DefaultNancyBootstrapper
   {
@@ -6,7 +9,9 @@
     {
       base.ApplicationStartup(container, pipelines);
 
-      Nancy.Cassette.Hooks.Install(Conventions, container, pipelines);
+      container.Register<ILogger>((c, p) => new NLogLoggerFactory().GetLogger("Root"));
+
+      Nancy.Cassette.Hooks.Install(container, pipelines);
     }
   }
 }

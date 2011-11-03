@@ -1,4 +1,5 @@
-﻿using Cassette;
+﻿using System;
+using Cassette;
 using Cassette.Utilities;
 
 namespace Nancy.Cassette
@@ -9,14 +10,20 @@ namespace Nancy.Cassette
 
     public string CreateModuleUrl(Module module)
     {
-      throw new System.NotImplementedException();
+      return string.Format("{0}/{1}/{2}/{3}_{4}",
+                           Hooks.CassetteApplication.Context.Request.Url.BasePath,
+                           AssetUrlPrefix,
+                           ConventionalModulePathName(module.GetType()),
+                           module.Path.Substring(2),
+                           module.Assets[0].Hash.ToHexString()
+        );
     }
 
     public string CreateAssetUrl(IAsset asset)
     {
       return string.Format(
         "{0}/{1}?{2}",
-        Hooks.Context.Request.Url.BasePath,
+        Hooks.CassetteApplication.Context.Request.Url.BasePath,
         asset.SourceFilename.Substring(2),
         asset.Hash.ToHexString()
         );
@@ -26,7 +33,7 @@ namespace Nancy.Cassette
     {
       return string.Format(
         "{0}/{1}/get/{2}?{3}",
-        Hooks.Context.Request.Url.BasePath,
+        Hooks.CassetteApplication.Context.Request.Url.BasePath,
         AssetUrlPrefix,
         asset.SourceFilename.Substring(2),
         asset.Hash.ToHexString()
@@ -35,7 +42,61 @@ namespace Nancy.Cassette
 
     public string CreateRawFileUrl(string filename, string hash)
     {
-      throw new System.NotImplementedException();
+      if (filename.StartsWith("~") == false)
+      {
+        throw new ArgumentException("Filename must be application relative (starting with '~').");
+      }
+
+      filename = filename.Substring(2); // Remove the "~/"
+      var dotIndex = filename.LastIndexOf('.');
+      var name = filename.Substring(0, dotIndex);
+      var extension = filename.Substring(dotIndex + 1);
+
+      return string.Format("{0}/{1}/files/{2}_{3}_{4}",
+                           Hooks.CassetteApplication.Context.Request.Url.BasePath,
+                           AssetUrlPrefix,
+                           ConvertToForwardSlashes(name),
+                           hash,
+                           extension
+        );
+    }
+
+    public static string GetModuleRouteUrl<T>()
+    {
+      return string.Format(
+        "{0}/{1}/{{path}}",
+        AssetUrlPrefix,
+        ConventionalModulePathName(typeof (T))
+        );
+    }
+
+    public static string GetAssetRouteUrl()
+    {
+      return AssetUrlPrefix + "/get/{path}";
+    }
+
+    public static string GetRawFileRouteUrl()
+    {
+      return AssetUrlPrefix + "/files/{path}";
+    }
+
+    private static string ConventionalModulePathName(Type moduleType)
+    {
+      // ExternalScriptModule subclasses ScriptModule, but we want the name to still be "scripts"
+      // So walk up the inheritance chain until we get to something that directly inherits from Module.
+      while (moduleType.BaseType != typeof (Module))
+      {
+        moduleType = moduleType.BaseType;
+      }
+
+      var name = moduleType.Name;
+      name = name.Substring(0, name.Length - "Module".Length);
+      return name.ToLowerInvariant() + "s";
+    }
+
+    private static string ConvertToForwardSlashes(string path)
+    {
+      return path.Replace('\\', '/');
     }
   }
 }
