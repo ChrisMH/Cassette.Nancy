@@ -15,7 +15,7 @@ namespace Nancy.Cassette
   {
     // TODO: Optimized output
 
-    public static void Install(TinyIoCContainer container, IPipelines pipelines)
+    public static void Install(TinyIoCContainer container, IPipelines pipelines, NancyConventions conventions)
     {
       logger = container.Resolve<ILogger>().GetCurrentClassLogger();
 
@@ -32,6 +32,8 @@ namespace Nancy.Cassette
       
 
       Container.Register(CassetteApplication);
+      CassetteApplication.InstallStaticPaths(conventions);
+
       Assets.GetApplication = () => CassetteApplication;
 
       pipelines.BeforeRequest.AddItemToStartOfPipeline(CassetteApplication.OnBeforeRequest);

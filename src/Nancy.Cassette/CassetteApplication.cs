@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Cassette;
 using Cassette.HtmlTemplates;
 using Cassette.IO;
 using Cassette.Scripts;
 using Cassette.Stylesheets;
 using Cassette.UI;
+using Cassette.Utilities;
+using Nancy.Conventions;
 using Utility.Logging;
 
 namespace Nancy.Cassette
@@ -86,18 +89,56 @@ namespace Nancy.Cassette
       return (IPlaceholderTracker) Context.Items[PlaceholderTrackerKey];
     }
 
-    public void InstallRoutes(CassetteModule cassetteModule)
+    public void InstallStaticPaths(NancyConventions conventions)
     {
-      InstallModuleRoute<ScriptModule>(cassetteModule);
-      InstallModuleRoute<StylesheetModule>(cassetteModule);
-      InstallModuleRoute<HtmlTemplateModule>(cassetteModule);
+      var staticPaths = new List<string>();
+      staticPaths.AddRange(GetBaseDirectories<ScriptModule>());
+      staticPaths.AddRange(GetBaseDirectories<StylesheetModule>());
+      staticPaths.AddRange(GetBaseDirectories<HtmlTemplateModule>());
 
-      InstallRawFileRoute(cassetteModule);
-
-      InstallAssetRoute(cassetteModule);
+      foreach (var staticPath in staticPaths.Distinct())
+      {
+        if (!string.IsNullOrEmpty(staticPath))
+        {
+          conventions.StaticContentsConventions.Add(StaticContentConventionBuilder.AddDirectory(staticPath));
+          Logger.Info("InstallStaticPaths : {0}", staticPath);
+        }
+      }
     }
 
-    private void InstallModuleRoute<T>(CassetteModule cassetteModule)
+
+    public void InstallRoutes(CassetteModule cassetteModule)
+    {
+      //InstallModuleRoute<ScriptModule>(cassetteModule);
+      //InstallModuleRoute<StylesheetModule>(cassetteModule);
+      //InstallModuleRoute<HtmlTemplateModule>(cassetteModule);
+
+      //InstallRawFileRoute(cassetteModule);
+
+      //InstallAssetRoute(cassetteModule);
+    }
+
+    private IEnumerable<string> GetBaseDirectories<T>()
+      where T : Module
+    {
+      return GetModuleContainer<T>()
+        .Modules
+        .Where(module => !module.Path.IsUrl())
+        .Select(module => module.Path.Split(new[] {'/'})[1]);
+    }
+
+    private void InstallStaticPath<T>(NancyConventions conventions)
+      where T : Module
+    {
+      var container = this.GetModuleContainer<T>();
+      foreach (var module in container.Modules)
+      {
+        var staticPath = Nancy.Cassette.UrlGenerator.GetModuleStaticPath(module);
+      }
+    }
+
+
+    private void InstallModuleStaticPath<T>(CassetteModule cassetteModule)
       where T : Module
     {
       var url = Nancy.Cassette.UrlGenerator.GetModuleRouteUrl<T>();
@@ -105,7 +146,6 @@ namespace Nancy.Cassette
 
       Logger.Info("InstallModuleRoute : {0}", url);
     }
-
 
     private void InstallRawFileRoute(CassetteModule cassetteModule)
     {
@@ -120,7 +160,7 @@ namespace Nancy.Cassette
     {
       // Used to return compiled coffeescript, less, etc.
       var url = Nancy.Cassette.UrlGenerator.GetAssetRouteUrl();
-      
+
       cassetteModule.Get[url] = p => url;
 
       Logger.Info("InstallAssetRoute : {0}", url);

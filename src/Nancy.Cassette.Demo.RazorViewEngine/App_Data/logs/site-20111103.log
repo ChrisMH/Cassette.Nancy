@@ -45,3 +45,6 @@
 2011-11-03 17:03:30.1026|INFO|Nancy.Cassette.CassetteApplication|InstallModuleRoute : _assets/htmltemplates/{path}  
 2011-11-03 17:03:30.1026|INFO|Nancy.Cassette.CassetteApplication|InstallRawFileRoute : _assets/files/{path}  
 2011-11-03 17:03:30.1026|INFO|Nancy.Cassette.CassetteApplication|InstallAssetRoute : _assets/get/{path}  
+2011-11-03 23:39:06.9887|INFO|Nancy.Cassette.CassetteApplication|InstallStaticRoutes<RuntimeType> : /Scripts/app  
+2011-11-03 23:39:07.0177|INFO|Nancy.Cassette.CassetteApplication|InstallStaticRoutes<RuntimeType> : /Scripts/lib  
+2011-11-03 23:39:07.0177|INFO|Nancy.Cassette.CassetteApplication|InstallStaticRoutes<RuntimeType> : /Styles/app  

@@ -61,6 +61,15 @@ namespace Nancy.Cassette
         );
     }
 
+    public static string GetModuleStaticPath(Module module)
+    {
+      if(module.Path.IsUrl())
+      {
+        return null;
+      }
+      return ConvertToBackSlashes(module.Path.TrimStart(new[] { '~', '/' }));
+    }
+
     public static string GetModuleRouteUrl<T>()
     {
       return string.Format(
@@ -97,6 +106,11 @@ namespace Nancy.Cassette
     private static string ConvertToForwardSlashes(string path)
     {
       return path.Replace('\\', '/');
+    }
+
+    private static string ConvertToBackSlashes(string path)
+    {
+      return path.Replace('/', '\\');
     }
   }
 }

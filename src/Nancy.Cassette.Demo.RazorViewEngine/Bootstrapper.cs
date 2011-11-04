@@ -11,7 +11,7 @@ namespace Nancy.Cassette.Demo.RazorViewEngine
       
       container.Register<ILogger>((c, p) => new NLogLoggerFactory().GetLogger("Root"));
 
-      Nancy.Cassette.Hooks.Install(container, pipelines);
+      Nancy.Cassette.Hooks.Install(container, pipelines, Conventions);
     }
 
   }
