@@ -18,6 +18,7 @@ namespace Nancy.Cassette.Test
       var result = browser.Get("/RazorHome", with => with.HttpRequest());
 
       Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
+      Console.Write(result.Body.AsString());
       result.Body["head link[href^='/_assets/get/Styles/app/Main.css?']"].ShouldExistOnce();
     }
 
@@ -27,6 +28,7 @@ namespace Nancy.Cassette.Test
       var result = browser.Get("/RazorHome", with => with.HttpRequest());
 
       Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
+      Console.Write(result.Body.AsString());
       result.Body["body script[src^='/Scripts/lib/jquery-1.6.4.js?']"].ShouldExistOnce();
       result.Body["body script[src^='/Scripts/lib/underscore.js?']"].ShouldExistOnce();
       result.Body["body script[src^='/_assets/get/Scripts/app/layout.coffee?']"].ShouldExistOnce();

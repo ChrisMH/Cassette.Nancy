@@ -47,11 +47,8 @@
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="CassetteApplication.cs" />
-    <Compile Include="CassetteModule.cs" />
-    <Compile Include="CassetteResponseFormatter.cs" />
     <Compile Include="Hooks.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StaticFileHandler.cs" />
     <Compile Include="UrlGenerator.cs" />
   </ItemGroup>
   <ItemGroup>

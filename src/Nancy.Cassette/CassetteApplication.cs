@@ -9,6 +9,7 @@ using Cassette.Scripts;
 using Cassette.Stylesheets;
 using Cassette.UI;
 using Cassette.Utilities;
+using Nancy.Bootstrapper;
 using Nancy.Conventions;
 using Utility.Logging;
 
@@ -16,37 +17,54 @@ namespace Nancy.Cassette
 {
   public class CassetteApplication : CassetteApplicationBase
   {
-    private static readonly string PlaceholderTrackerKey = typeof (IPlaceholderTracker).FullName;
+    private readonly ILogger logger;
+    private readonly SortedDictionary<string,object> referenceBuilders = new SortedDictionary<string, object>();
+    private IPlaceholderTracker placeholderTracker;
 
     public CassetteApplication(IEnumerable<ICassetteConfiguration> configurations,
                                IDirectory rootDirectory, IDirectory cacheDirectory, IUrlGenerator urlGenerator,
-                               bool isOutputOptimized, string version, ILogger logger)
+                               bool isOutputOptimized, string version,
+                               ILogger logger)
       : base(configurations, rootDirectory, cacheDirectory, urlGenerator, isOutputOptimized, version)
     {
-      Logger = logger.GetCurrentClassLogger();
+      this.logger = logger.GetCurrentClassLogger();
     }
 
-    public Response OnBeforeRequest(NancyContext context)
+
+    protected override IReferenceBuilder<T> GetOrCreateReferenceBuilder<T>(Func<IReferenceBuilder<T>> create)
     {
-      //Logger.Info("OnBeforeRequest : {0}", context.Request.Url.Path);
+      var key = "ReferenceBuilder:" + typeof (T).FullName;
+      if (referenceBuilders.ContainsKey(key))
+      {
+        return (IReferenceBuilder<T>)referenceBuilders[key];
+      }
 
-      Context = context;
+      var builder = create();
+      referenceBuilders[key] = builder;
+      return builder;
+    }
 
-      IPlaceholderTracker tracker;
+    protected override IPlaceholderTracker GetPlaceholderTracker()
+    {
+      return placeholderTracker;
+    }
+
+
+    public Response InitializePlaceholderTracker(NancyContext context)
+    {
       if (HtmlRewritingEnabled)
       {
-        tracker = new PlaceholderTracker();
+        placeholderTracker = new PlaceholderTracker();
       }
       else
       {
-        tracker = new NullPlaceholderTracker();
+        placeholderTracker = new NullPlaceholderTracker();
       }
-      Context.Items[PlaceholderTrackerKey] = tracker;
 
       return null;
     }
 
-    public void OnAfterRequest(NancyContext context)
+    public void RewriteResponseContents(NancyContext context)
     {
       //Logger.Info("OnAfterRequest : {0}", context.Request.Url.Path);
 
@@ -71,24 +89,6 @@ namespace Nancy.Cassette
         };
     }
 
-    protected override IReferenceBuilder<T> GetOrCreateReferenceBuilder<T>(Func<IReferenceBuilder<T>> create)
-    {
-      var key = "ReferenceBuilder:" + typeof (T).FullName;
-      if (Context.Items.ContainsKey(key))
-      {
-        return (IReferenceBuilder<T>) Context.Items[key];
-      }
-
-      var builder = create();
-      Context.Items[key] = builder;
-      return builder;
-    }
-
-    protected override IPlaceholderTracker GetPlaceholderTracker()
-    {
-      return (IPlaceholderTracker) Context.Items[PlaceholderTrackerKey];
-    }
-
     public void InstallStaticPaths(NancyConventions conventions)
     {
       var staticPaths = new List<string>();
@@ -101,12 +101,34 @@ namespace Nancy.Cassette
         if (!string.IsNullOrEmpty(staticPath))
         {
           conventions.StaticContentsConventions.Add(StaticContentConventionBuilder.AddDirectory(staticPath));
-          Logger.Info("InstallStaticPaths : {0}", staticPath);
+          logger.Info("InstallStaticPaths : {0}", staticPath);
         }
       }
     }
 
+    public void InstallAssetPaths()
+    {
+      InstallModuleAssetPath<ScriptModule>();
+      InstallModuleAssetPath<StylesheetModule>();
+      InstallModuleAssetPath<HtmlTemplateModule>();
+    }
 
+    private void InstallModuleAssetPath<T>()
+      where T : Module
+    {
+      foreach (var path in GetModuleContainer<T>().Modules.Where(module => !module.Path.IsUrl()).Select(module => module.Path.TrimStart(new[] {'~', '/'})))
+      {
+        var handlerPath = string.Format("{0}/{1}",
+                                        Nancy.Cassette.UrlGenerator.AssetUrlPrefix,
+                                        path
+          );
+
+        Func<NancyContext, Response> handler =
+          (context) => { return ""; };
+      }
+    }
+
+    /*
     public void InstallRoutes(CassetteModule cassetteModule)
     {
       //InstallModuleRoute<ScriptModule>(cassetteModule);
@@ -117,6 +139,7 @@ namespace Nancy.Cassette
 
       //InstallAssetRoute(cassetteModule);
     }
+    */
 
     private IEnumerable<string> GetBaseDirectories<T>()
       where T : Module
@@ -127,46 +150,7 @@ namespace Nancy.Cassette
         .Select(module => module.Path.Split(new[] {'/'})[1]);
     }
 
-    private void InstallStaticPath<T>(NancyConventions conventions)
-      where T : Module
-    {
-      var container = this.GetModuleContainer<T>();
-      foreach (var module in container.Modules)
-      {
-        var staticPath = Nancy.Cassette.UrlGenerator.GetModuleStaticPath(module);
-      }
-    }
 
 
-    private void InstallModuleStaticPath<T>(CassetteModule cassetteModule)
-      where T : Module
-    {
-      var url = Nancy.Cassette.UrlGenerator.GetModuleRouteUrl<T>();
-      cassetteModule.Get[url] = p => url;
-
-      Logger.Info("InstallModuleRoute : {0}", url);
-    }
-
-    private void InstallRawFileRoute(CassetteModule cassetteModule)
-    {
-      var url = Nancy.Cassette.UrlGenerator.GetRawFileRouteUrl();
-
-      cassetteModule.Get[url] = p => url;
-
-      Logger.Info("InstallRawFileRoute : {0}", url);
-    }
-
-    private void InstallAssetRoute(CassetteModule cassetteModule)
-    {
-      // Used to return compiled coffeescript, less, etc.
-      var url = Nancy.Cassette.UrlGenerator.GetAssetRouteUrl();
-
-      cassetteModule.Get[url] = p => url;
-
-      Logger.Info("InstallAssetRoute : {0}", url);
-    }
-
-    public NancyContext Context { get; private set; }
-    public ILogger Logger { get; private set; }
   }
 }

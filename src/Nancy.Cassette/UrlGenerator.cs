@@ -8,22 +8,25 @@ namespace Nancy.Cassette
   {
     public static string AssetUrlPrefix = "_assets";
 
+    public UrlGenerator()
+    {
+    }
+
     public string CreateModuleUrl(Module module)
     {
-      return string.Format("{0}/{1}/{2}/{3}_{4}",
-                           Hooks.CassetteApplication.Context.Request.Url.BasePath,
-                           AssetUrlPrefix,
-                           ConventionalModulePathName(module.GetType()),
-                           module.Path.Substring(2),
-                           module.Assets[0].Hash.ToHexString()
+      return string.Format(
+        "/{0}/{1}/{2}_{3}",
+        AssetUrlPrefix,
+        ConventionalModulePathName(module.GetType()),
+        module.Path.Substring(2),
+        module.Assets[0].Hash.ToHexString()
         );
     }
 
     public string CreateAssetUrl(IAsset asset)
     {
       return string.Format(
-        "{0}/{1}?{2}",
-        Hooks.CassetteApplication.Context.Request.Url.BasePath,
+        "/{0}?{1}",
         asset.SourceFilename.Substring(2),
         asset.Hash.ToHexString()
         );
@@ -32,8 +35,7 @@ namespace Nancy.Cassette
     public string CreateAssetCompileUrl(Module module, IAsset asset)
     {
       return string.Format(
-        "{0}/{1}/get/{2}?{3}",
-        Hooks.CassetteApplication.Context.Request.Url.BasePath,
+        "/{0}/get/{1}?{2}",
         AssetUrlPrefix,
         asset.SourceFilename.Substring(2),
         asset.Hash.ToHexString()
@@ -52,43 +54,14 @@ namespace Nancy.Cassette
       var name = filename.Substring(0, dotIndex);
       var extension = filename.Substring(dotIndex + 1);
 
-      return string.Format("{0}/{1}/files/{2}_{3}_{4}",
-                           Hooks.CassetteApplication.Context.Request.Url.BasePath,
+      return string.Format("/{0}/files/{1}_{2}_{3}",
                            AssetUrlPrefix,
                            ConvertToForwardSlashes(name),
                            hash,
                            extension
         );
     }
-
-    public static string GetModuleStaticPath(Module module)
-    {
-      if(module.Path.IsUrl())
-      {
-        return null;
-      }
-      return ConvertToBackSlashes(module.Path.TrimStart(new[] { '~', '/' }));
-    }
-
-    public static string GetModuleRouteUrl<T>()
-    {
-      return string.Format(
-        "{0}/{1}/{{path}}",
-        AssetUrlPrefix,
-        ConventionalModulePathName(typeof (T))
-        );
-    }
-
-    public static string GetAssetRouteUrl()
-    {
-      return AssetUrlPrefix + "/get/{path}";
-    }
-
-    public static string GetRawFileRouteUrl()
-    {
-      return AssetUrlPrefix + "/files/{path}";
-    }
-
+    
     private static string ConventionalModulePathName(Type moduleType)
     {
       // ExternalScriptModule subclasses ScriptModule, but we want the name to still be "scripts"
@@ -106,11 +79,6 @@ namespace Nancy.Cassette
     private static string ConvertToForwardSlashes(string path)
     {
       return path.Replace('\\', '/');
-    }
-
-    private static string ConvertToBackSlashes(string path)
-    {
-      return path.Replace('/', '\\');
     }
   }
 }

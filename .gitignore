@@ -1,6 +1,8 @@
 obj/
 bin/
+logs/
 *.csproj.user
 *.suo
 *.ReSharper.user
 *.dotCover
+*.DotSettings.user
