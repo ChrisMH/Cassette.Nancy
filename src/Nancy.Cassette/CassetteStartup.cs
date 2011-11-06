@@ -31,7 +31,7 @@ namespace Nancy.Cassette
 
     public IEnumerable<InstanceRegistration> InstanceRegistrations
     {
-      get { return new List<InstanceRegistration> { new InstanceRegistration(typeof (CassetteApplication), application) }; }
+      get { yield return new InstanceRegistration(typeof (CassetteApplication), application); }
     }
 
     public void Initialize(IPipelines pipelines)
