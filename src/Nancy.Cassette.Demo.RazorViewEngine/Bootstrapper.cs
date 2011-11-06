@@ -9,10 +9,15 @@ namespace Nancy.Cassette.Demo.RazorViewEngine
     {
       base.ApplicationStartup(container, pipelines);
       
-      container.Register<ILogger>((c, p) => new NLogLoggerFactory().GetLogger("Root"));
+      //container.Register<ILogger>((c, p) => new NLogLoggerFactory().GetLogger("Root"));
 
-      Nancy.Cassette.Hooks.Install(container, pipelines, Conventions);
+      //Nancy.Cassette.Hooks.Install(container, pipelines, Conventions);
     }
 
+
+    protected override System.Collections.Generic.IEnumerable<Nancy.Bootstrapper.IStartup> GetStartupTasks()
+    {
+      return base.GetStartupTasks();
+    }
   }
 }

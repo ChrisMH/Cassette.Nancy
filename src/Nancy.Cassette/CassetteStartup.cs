@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.IO.IsolatedStorage;
 using System.Linq;
 using System.Reflection;
@@ -9,21 +8,34 @@ using Cassette;
 using Cassette.IO;
 using Cassette.UI;
 using Nancy.Bootstrapper;
-using Nancy.Conventions;
 using TinyIoC;
-using Utility.Logging;
 
 namespace Nancy.Cassette
 {
-  public static class Hooks
+  public class CassetteStartup : IStartup
   {
-    // TODO: Optimized output
-    // TODO: Caching
-
-    public static void Install(TinyIoCContainer container, IPipelines pipelines, NancyConventions conventions)
+    public CassetteStartup(TinyIoCContainer container)
     {
-      logger = container.Resolve<ILogger>().GetCurrentClassLogger();
+      this.container = container;
+    }
 
+    public IEnumerable<TypeRegistration> TypeRegistrations
+    {
+      get { return null; }
+    }
+
+    public IEnumerable<CollectionTypeRegistration> CollectionTypeRegistrations
+    {
+      get { return null; }
+    }
+
+    public IEnumerable<InstanceRegistration> InstanceRegistrations
+    {
+      get { return new List<InstanceRegistration> { new InstanceRegistration(typeof (CassetteApplication), application) }; }
+    }
+
+    public void Initialize(IPipelines pipelines)
+    {
       var configurations = container.ResolveAll<ICassetteConfiguration>().ToList();
       var rootDirectory = container.Resolve<IRootPathProvider>().GetRootPath();
 
@@ -36,32 +48,23 @@ namespace Nancy.Cassette
         Directory.CreateDirectory(cassetteDirectory);
       }
       var cache = new FileSystemDirectory(cassetteDirectory);
-      */
 
       //applicationContainer = ShouldOptimizeOutput() ? new CassetteApplicationContainer<CassetteApplication>(CreateCassetteApplication) 
       //                                              : new CassetteApplicationContainer<CassetteApplication>(CreateCassetteApplication, HttpRuntime.AppDomainAppPath);
 
-
-
-      CassetteApplication = new CassetteApplication(
+      */
+      application = new CassetteApplication(
         configurations,
         new FileSystemDirectory(rootDirectory),
-        cache, 
-        new UrlGenerator(),
+        cache,
+        new UrlAndPathGenerator(),
         ShouldOptimizeOutput,
-        GetConfigurationVersion(configurations),
-        conventions, pipelines,
-        logger);
+        GetConfigurationVersion(configurations));
 
-      Assets.GetApplication = () => CassetteApplication;
-    }
-    
-    public static bool ShouldOptimizeOutput
-    {
-      get { return shouldOptimizeOutput ?? (bool)(shouldOptimizeOutput = !GetDebugMode()); }
-      set { shouldOptimizeOutput = value; }
-    }
+      Assets.GetApplication = () => application;
 
+      Trace.Source.TraceInformation("CassetteStartup.Initialize");
+    }
 
     private static string GetConfigurationVersion(IEnumerable<ICassetteConfiguration> configurations)
     {
@@ -73,17 +76,24 @@ namespace Nancy.Cassette
       return string.Join("|", assemblyVersion);
     }
 
+
+    public static bool ShouldOptimizeOutput
+    {
+      get { return shouldOptimizeOutput ?? (bool) (shouldOptimizeOutput = !GetDebugMode()); }
+      set { shouldOptimizeOutput = value; }
+    }
+
     private static bool GetDebugMode()
     {
       try
       {
-        var attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(DebuggableAttribute), true);
+        var attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof (DebuggableAttribute), true);
         if (attributes.Length == 0)
         {
           return false;
         }
 
-        var debuggable = (DebuggableAttribute)attributes[0];
+        var debuggable = (DebuggableAttribute) attributes[0];
         return debuggable.IsJITTrackingEnabled;
       }
       catch (Exception)
@@ -92,10 +102,9 @@ namespace Nancy.Cassette
       }
     }
 
+    private readonly TinyIoCContainer container;
+    private CassetteApplication application;
 
-    public static CassetteApplication CassetteApplication { get; private set; }
-    
     private static bool? shouldOptimizeOutput;
-    private static ILogger logger;
   }
 }

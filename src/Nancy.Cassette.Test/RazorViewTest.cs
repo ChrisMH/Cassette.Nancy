@@ -6,15 +6,11 @@ namespace Nancy.Cassette.Test
 {
   public class RazorViewTest
   {
-    [SetUp]
-    public void SetUp()
-    {
-      browser = new Browser(new TestBootstrapper());
-    }
-
     [Test]
-    public void RazorViewContainsExpectedStylesheetReferences()
+    public void RazorViewContainsExpectedStylesheetReferencesWhenOutputIsNotOptimized()
     {
+      CassetteStartup.ShouldOptimizeOutput = false;
+      var browser = new Browser(new DefaultNancyBootstrapper());
       var result = browser.Get("/RazorHome", with => with.HttpRequest());
 
       Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
@@ -23,8 +19,10 @@ namespace Nancy.Cassette.Test
     }
 
     [Test]
-    public void RazorViewContainsExpectedScriptReferences()
+    public void RazorViewContainsExpectedScriptReferencesWhenOutputIsNotOptimized()
     {
+      CassetteStartup.ShouldOptimizeOutput = false;
+      var browser = new Browser(new DefaultNancyBootstrapper());
       var result = browser.Get("/RazorHome", with => with.HttpRequest());
 
       Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
@@ -34,6 +32,30 @@ namespace Nancy.Cassette.Test
       result.Body["body script[src^='/_assets/get/Scripts/app/layout.coffee?']"].ShouldExistOnce();
     }
 
-    private Browser browser;
+    [Test]
+    public void RazorViewContainsExpectedStylesheetReferencesWhenOutputIsOptimized()
+    {
+      CassetteStartup.ShouldOptimizeOutput = true;
+      var browser = new Browser(new DefaultNancyBootstrapper());
+      var result = browser.Get("/RazorHome", with => with.HttpRequest());
+
+      Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
+      Console.Write(result.Body.AsString());
+      result.Body["head link[href^='/_assets/stylesheets/Styles/app_']"].ShouldExistOnce();
+    }
+
+    [Test]
+    public void RazorViewContainsExpectedScriptReferencesWhenOutputIsOptimized()
+    {
+      CassetteStartup.ShouldOptimizeOutput = true;
+      var browser = new Browser(new DefaultNancyBootstrapper());
+      var result = browser.Get("/RazorHome", with => with.HttpRequest());
+
+      Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
+      Console.Write(result.Body.AsString());
+      result.Body["body script[src^='/_assets/scripts/Scripts/lib_']"].ShouldExistOnce();
+      result.Body["body script[src^='/_assets/scripts/Scripts/app_']"].ShouldExistOnce();
+    }
+
   }
 }
