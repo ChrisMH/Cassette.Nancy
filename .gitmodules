@@ -1,3 +1,6 @@
 [submodule "dependencies/cassette"]
 	path = dependencies/cassette
 	url = git@github.com:ChrisMH/cassette.git
+[submodule "dependencies/Nancy"]
+	path = dependencies/Nancy
+	url = git@github.com:ChrisMH/Nancy.git
