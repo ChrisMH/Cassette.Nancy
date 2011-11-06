@@ -62,7 +62,7 @@ namespace Nancy.Cassette
     public static string GetModuleHandlerRoot<T>()
     {
       return string.Format(
-        "/{0}/{1}/",
+        "/{0}/{1}",
         AssetUrlPrefix,
         ConventionalModulePathName(typeof (T)));
     }
@@ -71,14 +71,14 @@ namespace Nancy.Cassette
     public static string GetRawFileHandlerRoot()
     {
       return string.Format(
-        "/{0}/files/",
+        "/{0}/files",
         AssetUrlPrefix);
     }
 
     public static string GetCompiledAssetHandlerRoot()
     {
       return string.Format(
-        "/{0}/get/",
+        "/{0}/get",
         AssetUrlPrefix);
     }
 

@@ -9,7 +9,6 @@
         this.handlerRoot = handlerRoot;
       }
 
-
       public Response ProcessRequest(NancyContext context)
       {
         Trace.Source.TraceInformation("StaticContentHandler.ProcessRequest : {0}", handlerRoot);

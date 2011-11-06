@@ -9,6 +9,7 @@ using Cassette.Scripts;
 using Cassette.Stylesheets;
 using Cassette.UI;
 using Cassette.Utilities;
+using Nancy.Bootstrapper;
 using Nancy.Conventions;
 
 namespace Nancy.Cassette
@@ -17,9 +18,16 @@ namespace Nancy.Cassette
   {
     public CassetteApplication(IEnumerable<ICassetteConfiguration> configurations,
                                IDirectory rootDirectory, IDirectory cacheDirectory, IUrlGenerator urlGenerator,
-                               bool isOutputOptimized, string version)
+                               bool isOutputOptimized, string version,
+                               NancyConventions conventions, IPipelines pipelines)
       : base(configurations, rootDirectory, cacheDirectory, urlGenerator, isOutputOptimized, version)
     {
+      InstallStaticPaths(conventions);
+      InstallCassetteHandlers();
+
+      pipelines.BeforeRequest.AddItemToStartOfPipeline(RunCassetteHandlers);
+      pipelines.BeforeRequest.AddItemToStartOfPipeline(InitializePlaceholderTracker);
+      pipelines.AfterRequest.AddItemToEndOfPipeline(RewriteResponseContents);
     }
 
 
@@ -42,7 +50,7 @@ namespace Nancy.Cassette
     }
 
 
-    public Response InitializePlaceholderTracker(NancyContext context)
+    protected Response InitializePlaceholderTracker(NancyContext context)
     {
       Trace.Source.TraceInformation("InitializePlaceholderTracker");
 
@@ -58,7 +66,7 @@ namespace Nancy.Cassette
       return null;
     }
 
-    public void RewriteResponseContents(NancyContext context)
+    protected void RewriteResponseContents(NancyContext context)
     {
       Trace.Source.TraceInformation("RewriteResponseContents");
       var currentContents = context.Response.Contents;
@@ -82,7 +90,7 @@ namespace Nancy.Cassette
         };
     }
 
-    public Response RunCassetteHandlers(NancyContext context)
+    protected Response RunCassetteHandlers(NancyContext context)
     {
       return cassetteHandlers
         .Select(cassetteHandler => cassetteHandler.Invoke(context))
@@ -140,7 +148,7 @@ namespace Nancy.Cassette
     {
       var handlerRoot = UrlAndPathGenerator.GetCompiledAssetHandlerRoot();
 
-      cassetteHandlers.Add(context => new CompiledAssetHandler(handlerRoot).ProcessRequest(context));
+      cassetteHandlers.Add(context => new CompiledAssetHandler(handlerRoot, FindModuleContainingPath).ProcessRequest(context));
 
       Trace.Source.TraceInformation("Installed Cassette handler for '{0}'", handlerRoot);
     }

@@ -10,7 +10,7 @@
 
     public Response ProcessRequest(NancyContext context)
     {
-      Trace.Source.TraceInformation("RawFileHandler.ProcessRequest : {0}", handlerRoot);
+      //Trace.Source.TraceInformation("RawFileHandler.ProcessRequest : {0}", handlerRoot);
       return null;
     }
 

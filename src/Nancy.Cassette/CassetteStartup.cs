@@ -8,6 +8,7 @@ using Cassette;
 using Cassette.IO;
 using Cassette.UI;
 using Nancy.Bootstrapper;
+using Nancy.Conventions;
 using TinyIoC;
 
 namespace Nancy.Cassette
@@ -38,6 +39,7 @@ namespace Nancy.Cassette
     {
       var configurations = container.ResolveAll<ICassetteConfiguration>().ToList();
       var rootDirectory = container.Resolve<IRootPathProvider>().GetRootPath();
+      var conventions = container.Resolve<NancyConventions>();
 
       var cache = new IsolatedStorageDirectory(IsolatedStorageFile.GetMachineStoreForAssembly());
 
@@ -59,11 +61,10 @@ namespace Nancy.Cassette
         cache,
         new UrlAndPathGenerator(),
         ShouldOptimizeOutput,
-        GetConfigurationVersion(configurations));
+        GetConfigurationVersion(configurations),
+        conventions, pipelines);
 
       Assets.GetApplication = () => application;
-
-      Trace.Source.TraceInformation("CassetteStartup.Initialize");
     }
 
     private static string GetConfigurationVersion(IEnumerable<ICassetteConfiguration> configurations)
@@ -75,7 +76,6 @@ namespace Nancy.Cassette
       //var parts = assemblyVersion.Concat(new[] { basePath });
       return string.Join("|", assemblyVersion);
     }
-
 
     public static bool ShouldOptimizeOutput
     {

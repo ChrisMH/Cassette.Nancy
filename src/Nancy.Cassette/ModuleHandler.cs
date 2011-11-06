@@ -10,7 +10,7 @@
 
     public Response ProcessRequest(NancyContext context)
     {
-      Trace.Source.TraceInformation("ModuleHandler.ProcessRequest : {0}", handlerRoot);
+      //Trace.Source.TraceInformation("ModuleHandler.ProcessRequest : {0}", handlerRoot);
       return null;
     }
 
