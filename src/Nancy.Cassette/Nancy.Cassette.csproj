@@ -62,6 +62,7 @@
     <Compile Include="RawFileHandler.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="StaticContentHandler.cs" />
     <Compile Include="Trace.cs" />
     <Compile Include="UrlAndPathGenerator.cs">
       <SubType>Code</SubType>

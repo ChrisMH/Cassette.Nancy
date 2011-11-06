@@ -63,6 +63,7 @@
     <Compile Include="CompiledAssetHandlerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RazorViewTest.cs" />
+    <Compile Include="StaticContentHandlerTest.cs" />
     <Compile Include="TestCassetteConfiguration.cs" />
     <Compile Include="TestModule.cs" />
     <Compile Include="TestRazorConfiguration.cs" />
@@ -99,6 +100,7 @@
     <Content Include="Scripts\app\layout.coffee" />
     <Content Include="Scripts\lib\jquery-1.6.4.js" />
     <Content Include="Scripts\lib\underscore.js" />
+    <Content Include="Styles\app\images\lorry.png" />
     <Content Include="Styles\app\Main.css" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

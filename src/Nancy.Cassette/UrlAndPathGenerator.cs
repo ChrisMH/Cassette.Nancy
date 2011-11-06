@@ -82,6 +82,21 @@ namespace Nancy.Cassette
         AssetUrlPrefix);
     }
 
+    public static bool RemoveUrlQuery(string url, out string urlWithoutQuery, out string query)
+    {
+      var queryPosition = url.IndexOf('?');
+      if (queryPosition >= 0)
+      {
+        urlWithoutQuery = url.Remove(queryPosition);
+        query = url.Substring(queryPosition + 1);
+        return true;
+      }
+
+      urlWithoutQuery = url;
+      query = null;
+      return false;
+    }
+
     private static string ConventionalModulePathName(Type moduleType)
     {
       // ExternalScriptModule subclasses ScriptModule, but we want the name to still be "scripts"

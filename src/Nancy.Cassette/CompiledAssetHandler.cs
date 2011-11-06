@@ -15,35 +15,30 @@ namespace Nancy.Cassette
 
     public Response ProcessRequest(NancyContext context)
     {
-      if(!context.Request.Path.StartsWith(handlerRoot, StringComparison.InvariantCultureIgnoreCase))
+      if (!context.Request.Url.Path.StartsWith(handlerRoot, StringComparison.InvariantCultureIgnoreCase))
       {
         return null;
       }
 
-      
-      var path = "~" + context.Request.Path.Remove(0, handlerRoot.Length);
-      var query = path.IndexOf('?');
-      if(query >= 0 )
-      {
-        path = path.Remove(query);
-      }
+      string path, query;
+      UrlAndPathGenerator.RemoveUrlQuery(string.Concat("~", context.Request.Url.Path.Remove(0, handlerRoot.Length)), out path, out query);
 
       var module = findModuleForPath(path);
       if (module == null)
       {
-        Trace.Source.TraceInformation("CompiledAssetHandler.ProcessRequest : Module not found for path '{0}'", path);
+        Trace.Source.TraceInformation("CompiledAssetHandler.ProcessRequest : Module not found for path '{0}'", context.Request.Url.Path);
         return null;
       }
 
       var asset = module.FindAssetByPath(path);
       if (asset == null)
       {
-        Trace.Source.TraceInformation("CompiledAssetHandler.ProcessRequest : Asset not found '{0}'", path);
+        Trace.Source.TraceInformation("CompiledAssetHandler.ProcessRequest : Asset not found '{0}'", context.Request.Url.Path);
         return null;
       }
 
       var response = new StreamResponse(asset.OpenStream, module.ContentType);
-      Trace.Source.TraceInformation("CompiledAssetHandler.ProcessRequest : Returned response for '{0}'", path);
+      Trace.Source.TraceInformation("CompiledAssetHandler.ProcessRequest : Returned response for '{0}'", context.Request.Url.Path);
       return response;
     }
 

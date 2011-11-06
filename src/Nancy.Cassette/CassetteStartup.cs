@@ -8,7 +8,6 @@ using Cassette;
 using Cassette.IO;
 using Cassette.UI;
 using Nancy.Bootstrapper;
-using Nancy.Conventions;
 using TinyIoC;
 
 namespace Nancy.Cassette
@@ -32,39 +31,33 @@ namespace Nancy.Cassette
 
     public IEnumerable<InstanceRegistration> InstanceRegistrations
     {
-      get { yield return new InstanceRegistration(typeof (CassetteApplication), application); }
+      get { return null; }
     }
 
     public void Initialize(IPipelines pipelines)
     {
       var configurations = container.ResolveAll<ICassetteConfiguration>().ToList();
       var rootDirectory = container.Resolve<IRootPathProvider>().GetRootPath();
-      var conventions = container.Resolve<NancyConventions>();
-
       var cache = new IsolatedStorageDirectory(IsolatedStorageFile.GetMachineStoreForAssembly());
 
-      /*
-      var cassetteDirectory = Path.Combine(rootDirectory, "_cassette");
-      if(!Directory.Exists(cassetteDirectory))
-      {
-        Directory.CreateDirectory(cassetteDirectory);
-      }
-      var cache = new FileSystemDirectory(cassetteDirectory);
+      Func<CassetteApplication> createApplication =
+        () => new CassetteApplication(
+                configurations,
+                new FileSystemDirectory(rootDirectory),
+                cache,
+                new UrlAndPathGenerator(),
+                ShouldOptimizeOutput,
+                GetConfigurationVersion(configurations),
+                rootDirectory);
 
-      //applicationContainer = ShouldOptimizeOutput() ? new CassetteApplicationContainer<CassetteApplication>(CreateCassetteApplication) 
-      //                                              : new CassetteApplicationContainer<CassetteApplication>(CreateCassetteApplication, HttpRuntime.AppDomainAppPath);
+      applicationContainer = ShouldOptimizeOutput ? new CassetteApplicationContainer<CassetteApplication>(createApplication)
+                                                    : new CassetteApplicationContainer<CassetteApplication>(createApplication, rootDirectory);
 
-      */
-      application = new CassetteApplication(
-        configurations,
-        new FileSystemDirectory(rootDirectory),
-        cache,
-        new UrlAndPathGenerator(),
-        ShouldOptimizeOutput,
-        GetConfigurationVersion(configurations),
-        conventions, pipelines);
+      Assets.GetApplication = () => applicationContainer.Application;
 
-      Assets.GetApplication = () => application;
+      pipelines.BeforeRequest.AddItemToStartOfPipeline(RunCassetteHandlers);
+      pipelines.BeforeRequest.AddItemToStartOfPipeline(InitializePlaceholderTracker);
+      pipelines.AfterRequest.AddItemToEndOfPipeline(RewriteResponseContents);
     }
 
     private static string GetConfigurationVersion(IEnumerable<ICassetteConfiguration> configurations)
@@ -75,6 +68,21 @@ namespace Nancy.Cassette
 
       //var parts = assemblyVersion.Concat(new[] { basePath });
       return string.Join("|", assemblyVersion);
+    }
+
+    private Response InitializePlaceholderTracker(NancyContext context)
+    {
+      return applicationContainer.Application.InitializePlaceholderTracker(context);
+    }
+
+    private void RewriteResponseContents(NancyContext context)
+    {
+      applicationContainer.Application.RewriteResponseContents(context);
+    }
+
+    private Response RunCassetteHandlers(NancyContext context)
+    {
+      return applicationContainer.Application.RunCassetteHandlers(context);
     }
 
     public static bool ShouldOptimizeOutput
@@ -103,8 +111,10 @@ namespace Nancy.Cassette
     }
 
     private readonly TinyIoCContainer container;
-    private CassetteApplication application;
+    private CassetteApplicationContainer<CassetteApplication> applicationContainer;
 
     private static bool? shouldOptimizeOutput;
+
+    private readonly List<Func<NancyContext, Response>> cassetteHandlers = new List<Func<NancyContext, Response>>();
   }
 }

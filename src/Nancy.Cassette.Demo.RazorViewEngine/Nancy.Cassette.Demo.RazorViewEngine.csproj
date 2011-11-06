@@ -63,6 +63,7 @@
     <Content Include="Scripts\app\layout.coffee" />
     <Content Include="Scripts\lib\jquery-1.6.4.js" />
     <Content Include="Scripts\lib\underscore.js" />
+    <Content Include="Styles\app\images\lorry.png" />
     <Content Include="Styles\app\Main.css" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">

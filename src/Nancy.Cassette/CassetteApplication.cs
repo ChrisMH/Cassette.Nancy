@@ -10,6 +10,7 @@ using Cassette.Stylesheets;
 using Cassette.UI;
 using Cassette.Utilities;
 using Nancy.Bootstrapper;
+using Nancy.Cassette.Nancy.Cassette;
 using Nancy.Conventions;
 
 namespace Nancy.Cassette
@@ -18,18 +19,12 @@ namespace Nancy.Cassette
   {
     public CassetteApplication(IEnumerable<ICassetteConfiguration> configurations,
                                IDirectory rootDirectory, IDirectory cacheDirectory, IUrlGenerator urlGenerator,
-                               bool isOutputOptimized, string version,
-                               NancyConventions conventions, IPipelines pipelines)
+                               bool isOutputOptimized, string version, string applicationRoot)
       : base(configurations, rootDirectory, cacheDirectory, urlGenerator, isOutputOptimized, version)
     {
-      InstallStaticPaths(conventions);
+      this.applicationRoot = applicationRoot;
       InstallCassetteHandlers();
-
-      pipelines.BeforeRequest.AddItemToStartOfPipeline(RunCassetteHandlers);
-      pipelines.BeforeRequest.AddItemToStartOfPipeline(InitializePlaceholderTracker);
-      pipelines.AfterRequest.AddItemToEndOfPipeline(RewriteResponseContents);
     }
-
 
     protected override IReferenceBuilder<T> GetOrCreateReferenceBuilder<T>(Func<IReferenceBuilder<T>> create)
     {
@@ -49,8 +44,7 @@ namespace Nancy.Cassette
       return placeholderTracker;
     }
 
-
-    protected Response InitializePlaceholderTracker(NancyContext context)
+    public Response InitializePlaceholderTracker(NancyContext context)
     {
       Trace.Source.TraceInformation("InitializePlaceholderTracker");
 
@@ -66,7 +60,7 @@ namespace Nancy.Cassette
       return null;
     }
 
-    protected void RewriteResponseContents(NancyContext context)
+    public void RewriteResponseContents(NancyContext context)
     {
       Trace.Source.TraceInformation("RewriteResponseContents");
       var currentContents = context.Response.Contents;
@@ -90,28 +84,11 @@ namespace Nancy.Cassette
         };
     }
 
-    protected Response RunCassetteHandlers(NancyContext context)
+    public Response RunCassetteHandlers(NancyContext context)
     {
       return cassetteHandlers
         .Select(cassetteHandler => cassetteHandler.Invoke(context))
         .FirstOrDefault(response => response != null);
-    }
-
-    protected void InstallStaticPaths(NancyConventions conventions)
-    {
-      var staticPaths = new List<string>();
-      staticPaths.AddRange(GetBaseDirectories<ScriptModule>());
-      staticPaths.AddRange(GetBaseDirectories<StylesheetModule>());
-      staticPaths.AddRange(GetBaseDirectories<HtmlTemplateModule>());
-
-      foreach (var staticPath in staticPaths.Distinct())
-      {
-        if (!string.IsNullOrEmpty(staticPath))
-        {
-          conventions.StaticContentsConventions.Add(StaticContentConventionBuilder.AddDirectory(staticPath));
-          Trace.Source.TraceInformation("Installed Cassette static path '{0}'", staticPath);
-        }
-      }
     }
 
     protected void InstallCassetteHandlers()
@@ -123,14 +100,15 @@ namespace Nancy.Cassette
       InstallRawFileAssetHandler();
 
       InstallCompiledAssetHandler();
+
+      InstallStaticPaths();
     }
 
     private void InstallModuleHandler<T>()
       where T : Module
     {
       var handlerRoot = UrlAndPathGenerator.GetModuleHandlerRoot<T>();
-
-      cassetteHandlers.Add(context => new ModuleHandler(handlerRoot).ProcessRequest(context));
+      cassetteHandlers.Add(context => new ModuleHandler<T>(handlerRoot, GetModuleContainer<T>()).ProcessRequest(context));
 
       Trace.Source.TraceInformation("Installed Cassette handler for '{0}'", handlerRoot);
     }
@@ -139,7 +117,7 @@ namespace Nancy.Cassette
     {
       var handlerRoot = UrlAndPathGenerator.GetRawFileHandlerRoot();
 
-      cassetteHandlers.Add(context => new RawFileHandler(handlerRoot).ProcessRequest(context));
+      cassetteHandlers.Add(context => new RawFileHandler(handlerRoot, applicationRoot).ProcessRequest(context));
 
       Trace.Source.TraceInformation("Installed Cassette handler for '{0}'", handlerRoot);
     }
@@ -153,6 +131,23 @@ namespace Nancy.Cassette
       Trace.Source.TraceInformation("Installed Cassette handler for '{0}'", handlerRoot);
     }
 
+    protected void InstallStaticPaths()
+    {
+      var staticPaths = new List<string>();
+      staticPaths.AddRange(GetBaseDirectories<ScriptModule>());
+      staticPaths.AddRange(GetBaseDirectories<StylesheetModule>());
+      staticPaths.AddRange(GetBaseDirectories<HtmlTemplateModule>());
+
+      foreach (var staticPath in staticPaths.Distinct())
+      {
+        var handlerRoot = string.Concat("/", staticPath);
+        cassetteHandlers.Add(context => new StaticContentHandler(handlerRoot, FindModuleContainingPath).ProcessRequest(context));
+
+        Trace.Source.TraceInformation("Installed Cassette handler for '{0}'", handlerRoot);
+      }
+    }
+
+
     private IEnumerable<string> GetBaseDirectories<T>()
       where T : Module
     {
@@ -163,6 +158,7 @@ namespace Nancy.Cassette
     }
 
 
+    private readonly string applicationRoot;
     private readonly List<Func<NancyContext, Response>> cassetteHandlers = new List<Func<NancyContext, Response>>();
     private readonly SortedDictionary<string, object> referenceBuilders = new SortedDictionary<string, object>();
     private IPlaceholderTracker placeholderTracker;
