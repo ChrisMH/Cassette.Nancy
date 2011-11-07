@@ -6,7 +6,7 @@ namespace Nancy.Cassette.Demo.RazorViewEngine
   {
     public Bootstrapper()
     {
-      //CassetteStartup.ShouldOptimizeOutput = false;
+      //CassetteStartup.ShouldOptimizeOutput = true;
       CassetteStartup.Logger = new NLogLoggerFactory().GetCurrentClassLogger();
     }
   }

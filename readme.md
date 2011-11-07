@@ -27,3 +27,17 @@ Cassette currently works with the Razor View Engine.
 
 #Customization
 
+By default, the output from Cassette is not optimized.  When output is optimized, Cassette modules are combined based on the configuration and sent to the client as a single lump per module instead of lots of individual files.
+
+To turn optimized output on, set the CassetteStartup.ShouldOptimizeOutput attribute to true.  I'd suggest doing this in the constructor of a custom Nancy bootstrapper to ensure that it is set before it is used:
+
+  <pre>public class Bootstrapper : DefaultNancyBootstrapper
+  {
+    public Bootstrapper()
+    {
+      CassetteStartup.ShouldOptimizeOutput = true;
+    }
+  } 
+  </pre>
+
+TODO: This should be a configuration setting, but I'm not sure how I want to do that yet.
