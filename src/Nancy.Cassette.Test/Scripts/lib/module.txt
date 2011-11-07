@@ -1,0 +1,6 @@
+﻿[references]
+/jQuery
+
+[assets]
+underscore.js
+*

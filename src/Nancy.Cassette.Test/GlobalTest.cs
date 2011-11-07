@@ -13,7 +13,6 @@ namespace Nancy.Cassette.Test
     public static void SetUp()
     {
       Logger = new NLogLoggerFactory().GetCurrentClassLogger();
-      CassetteStartup.Logger = Logger;
     }
   }
 }

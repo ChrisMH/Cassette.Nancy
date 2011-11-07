@@ -53,7 +53,7 @@ namespace Nancy.Cassette
     
     public Response InitializePlaceholderTracker(NancyContext context)
     {
-      if (logger != null) logger.Info("InitializePlaceholderTracker : {0}", Thread.CurrentThread.ManagedThreadId);
+      if(logger != null) logger.Trace("InitializePlaceholderTracker : {0} : {1}", Thread.CurrentThread.ManagedThreadId, context.Request.Url.Path);
 
       currentContext.Value = context;
 
@@ -69,11 +69,25 @@ namespace Nancy.Cassette
 
       return null;
     }
+    
+    public Response RunCassetteHandler(NancyContext context)
+    {
+      return cassetteHandlers
+        .Where(kvp => context.Request.Url.Path.StartsWith(kvp.Key, StringComparison.InvariantCultureIgnoreCase))
+        .Select(kvp => kvp.Value.Invoke(context))
+        .SingleOrDefault();
+    } 
 
     public void RewriteResponseContents(NancyContext context)
     {
-      if (logger != null) logger.Info("RewriteResponseContents : {0}", Thread.CurrentThread.ManagedThreadId);
-
+      if(currentContext.Value == null)
+      {
+        // InitializePlaceholderTracker was not called for this request.  Do not attempt to rewrite.
+        return;
+      }
+      
+      if(logger != null) logger.Trace("RewriteResponseContents : {0} : {1}", Thread.CurrentThread.ManagedThreadId, context.Request.Url.Path);
+      
       var currentContents = context.Response.Contents;
       context.Response.Contents =
         stream =>
@@ -84,22 +98,10 @@ namespace Nancy.Cassette
 
           var reader = new StreamReader(currentContentsStream);
 
-          var html = reader.ReadToEnd();
-
-          html = GetPlaceholderTracker().ReplacePlaceholders(html);
-
           var writer = new StreamWriter(stream);
-          writer.Write(html);
-
+          writer.Write(GetPlaceholderTracker().ReplacePlaceholders(reader.ReadToEnd()));
           writer.Flush();
         };
-    }
-
-    public Response RunCassetteHandlers(NancyContext context)
-    {
-      return cassetteHandlers
-        .Select(cassetteHandler => cassetteHandler.Invoke(context))
-        .FirstOrDefault(response => response != null);
     }
 
     protected void InstallCassetteHandlers()
@@ -119,27 +121,27 @@ namespace Nancy.Cassette
       where T : Module
     {
       var handlerRoot = UrlAndPathGenerator.GetModuleHandlerRoot<T>();
-      cassetteHandlers.Add(context => new ModuleHandler<T>(handlerRoot, GetModuleContainer<T>(), logger).ProcessRequest(context));
+      cassetteHandlers.Add(handlerRoot, context => new ModuleHandler<T>(handlerRoot, GetModuleContainer<T>(), logger).ProcessRequest(context));
 
-      if (logger != null) logger.Info("Installed Cassette handler for '{0}'", handlerRoot);
+      if (logger != null) logger.Trace("Installed Cassette handler for '{0}'", handlerRoot);
     }
 
     private void InstallRawFileAssetHandler()
     {
       var handlerRoot = UrlAndPathGenerator.GetRawFileHandlerRoot();
 
-      cassetteHandlers.Add(context => new RawFileHandler(handlerRoot, applicationRoot, logger).ProcessRequest(context));
+      cassetteHandlers.Add(handlerRoot, context => new RawFileHandler(handlerRoot, applicationRoot, logger).ProcessRequest(context));
 
-      if (logger != null) logger.Info("Installed Cassette handler for '{0}'", handlerRoot);
+      if (logger != null) logger.Trace("Installed Cassette handler for '{0}'", handlerRoot);
     }
 
     private void InstallCompiledAssetHandler()
     {
       var handlerRoot = UrlAndPathGenerator.GetCompiledAssetHandlerRoot();
 
-      cassetteHandlers.Add(context => new CompiledAssetHandler(handlerRoot, FindModuleContainingPath, logger).ProcessRequest(context));
+      cassetteHandlers.Add(handlerRoot, context => new CompiledAssetHandler(handlerRoot, FindModuleContainingPath, logger).ProcessRequest(context));
 
-      if (logger != null) logger.Info("Installed Cassette handler for '{0}'", handlerRoot);
+      if (logger != null) logger.Trace("Installed Cassette handler for '{0}'", handlerRoot);
     }
 
     protected void InstallStaticPaths()
@@ -152,26 +154,25 @@ namespace Nancy.Cassette
       foreach (var staticPath in staticPaths.Distinct())
       {
         var handlerRoot = string.Concat("/", staticPath);
-        cassetteHandlers.Add(context => new StaticContentHandler(handlerRoot, FindModuleContainingPath, logger).ProcessRequest(context));
+        cassetteHandlers.Add(handlerRoot, context => new StaticContentHandler(handlerRoot, FindModuleContainingPath, logger).ProcessRequest(context));
 
-        if (logger != null) logger.Info("Installed Cassette handler for '{0}'", handlerRoot);
+        if (logger != null) logger.Trace("Installed Cassette handler for '{0}'", handlerRoot);
       }
     }
-
 
     private IEnumerable<string> GetBaseDirectories<T>()
       where T : Module
     {
       return GetModuleContainer<T>()
         .Modules
-        .Where(module => !module.Path.IsUrl())
+        .Where(module => !module.Path.IsUrl() && !(module is ExternalScriptModule))
         .Select(module => module.Path.Split(new[] {'/'})[1]);
     }
 
     private static readonly string PlaceholderTrackerKey = typeof (IPlaceholderTracker).FullName;
 
     private readonly string applicationRoot;
-    private readonly List<Func<NancyContext, Response>> cassetteHandlers = new List<Func<NancyContext, Response>>();
+    private readonly SortedDictionary<string,Func<NancyContext, Response>> cassetteHandlers = new SortedDictionary<string,Func<NancyContext, Response>>();
     private readonly ILogger logger;
 
     private readonly ThreadLocal<NancyContext> currentContext = new ThreadLocal<NancyContext>(() => null);

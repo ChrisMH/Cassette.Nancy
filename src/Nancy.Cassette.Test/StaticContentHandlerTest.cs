@@ -8,19 +8,28 @@ namespace Nancy.Cassette.Test
   public class StaticContentHandlerTest
   {
     [TestCase("/Styles/app/Main.css")]
-    [TestCase("/Styles/app/Main.css?QueryContentsDoesntMatter")]
+    [TestCase("/Styles/app/Main.css?HashDoesntMatter")]
     [TestCase("/Scripts/lib/underscore.js")]
-    [TestCase("/Scripts/lib/underscore.js?QueryContentsDoesntMatter")]
-    public void StaticContentIsReturned(string path)
+    [TestCase("/Scripts/lib/underscore.js?HashDoesntMatter")]
+    public void CassetteStaticContentIsReturned(string path)
     {
-      CassetteStartup.ShouldOptimizeOutput = false;
-      var browser = new Browser(new DefaultNancyBootstrapper());
+      var browser = new Browser(new TestBootstrapper());
 
-      var result = browser.Get(path, with => with.HttpRequest());
+      var response = browser.Get(path, with => with.HttpRequest());
+      Console.Write(response.Body.AsString());
 
-      Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
-      Console.Write(result.Body.AsString());
+      Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
     }
-    
+
+    [TestCase("/Images/tag.png")]
+    public void NancyStaticContentIsReturned(string path)
+    {
+      var browser = new Browser(new TestBootstrapper());
+      
+      var response = browser.Get(path, with => with.HttpRequest());
+      Console.Write(response.Body.AsString());
+      
+      Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+    }
   }
 }

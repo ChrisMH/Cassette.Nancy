@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO.IsolatedStorage;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using Cassette;
 using Cassette.IO;
 using Cassette.UI;
@@ -56,7 +57,7 @@ namespace Nancy.Cassette
 
       Assets.GetApplication = () => applicationContainer.Application;
 
-      pipelines.BeforeRequest.AddItemToStartOfPipeline(RunCassetteHandlers);
+      pipelines.BeforeRequest.AddItemToStartOfPipeline(RunCassetteHandler);
       pipelines.BeforeRequest.AddItemToStartOfPipeline(InitializePlaceholderTracker);
       pipelines.AfterRequest.AddItemToEndOfPipeline(RewriteResponseContents);
     }
@@ -76,10 +77,9 @@ namespace Nancy.Cassette
       return applicationContainer.Application.InitializePlaceholderTracker(context);
     }
 
-
-    private Response RunCassetteHandlers(NancyContext context)
+    private Response RunCassetteHandler(NancyContext context)
     {
-      return applicationContainer.Application.RunCassetteHandlers(context);
+      return applicationContainer.Application.RunCassetteHandler(context);
     }
 
     private void RewriteResponseContents(NancyContext context)

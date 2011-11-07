@@ -10,7 +10,7 @@ namespace Nancy.Cassette.Test
     public void RazorViewContainsExpectedStylesheetReferencesWhenOutputIsNotOptimized()
     {
       CassetteStartup.ShouldOptimizeOutput = false;
-      var browser = new Browser(new DefaultNancyBootstrapper());
+      var browser = new Browser(new TestBootstrapper());
       var result = browser.Get("/RazorHome", with => with.HttpRequest());
 
       Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
@@ -22,12 +22,12 @@ namespace Nancy.Cassette.Test
     public void RazorViewContainsExpectedScriptReferencesWhenOutputIsNotOptimized()
     {
       CassetteStartup.ShouldOptimizeOutput = false;
-      var browser = new Browser(new DefaultNancyBootstrapper());
+      var browser = new Browser(new TestBootstrapper());
       var result = browser.Get("/RazorHome", with => with.HttpRequest());
 
       Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
       Console.Write(result.Body.AsString());
-      result.Body["body script[src^='/Scripts/lib/jquery-1.6.4.js?']"].ShouldExistOnce();
+      result.Body["body script[src^='/Scripts/fallback/jquery-1.6.4.js?']"].ShouldExistOnce();
       result.Body["body script[src^='/Scripts/lib/underscore.js?']"].ShouldExistOnce();
       result.Body["body script[src^='/_assets/get/Scripts/app/layout.coffee?']"].ShouldExistOnce();
     }
@@ -36,7 +36,7 @@ namespace Nancy.Cassette.Test
     public void RazorViewContainsExpectedStylesheetReferencesWhenOutputIsOptimized()
     {
       CassetteStartup.ShouldOptimizeOutput = true;
-      var browser = new Browser(new DefaultNancyBootstrapper());
+      var browser = new Browser(new TestBootstrapper());
       var result = browser.Get("/RazorHome", with => with.HttpRequest());
 
       Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
@@ -48,7 +48,7 @@ namespace Nancy.Cassette.Test
     public void RazorViewContainsExpectedScriptReferencesWhenOutputIsOptimized()
     {
       CassetteStartup.ShouldOptimizeOutput = true;
-      var browser = new Browser(new DefaultNancyBootstrapper());
+      var browser = new Browser(new TestBootstrapper());
       var result = browser.Get("/RazorHome", with => with.HttpRequest());
 
       Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);

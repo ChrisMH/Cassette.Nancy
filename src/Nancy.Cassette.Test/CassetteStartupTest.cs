@@ -31,7 +31,7 @@ namespace Nancy.Cassette.Test
     [Test]
     public void CassetteApplicationCreatedAndRegistered()
     {
-      var browser = new Browser(new DefaultNancyBootstrapper());
+      var browser = new Browser(new TestBootstrapper());
 
       var result = browser.Get("/", with => with.HttpRequest());
 

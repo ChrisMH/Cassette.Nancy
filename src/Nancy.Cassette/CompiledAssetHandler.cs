@@ -40,7 +40,7 @@ namespace Nancy.Cassette
       }
 
       var response = new StreamResponse(asset.OpenStream, module.ContentType);
-      if (logger != null) logger.Info("CompiledAssetHandler.ProcessRequest : Returned response for '{0}'", context.Request.Url.Path);
+      if (logger != null) logger.Trace("CompiledAssetHandler.ProcessRequest : Returned response for '{0}'", context.Request.Url.Path);
       return response;
     }
 

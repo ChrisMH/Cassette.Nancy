@@ -12,8 +12,13 @@ namespace Nancy.Cassette.Test
         new PerSubDirectorySource<ScriptModule>("Scripts")
         {
           FilePattern = "*.js;*.coffee"
-        });
-
+        },
+        new ExternalScriptModule("jQuery",
+                                 "http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.js",
+                                 "!window.jQuery",
+                                 "~/Scripts/fallback/jquery-1.6.4.js")
+        );
+        
       moduleConfiguration.Add(
         new PerSubDirectorySource<StylesheetModule>("Styles")
         {

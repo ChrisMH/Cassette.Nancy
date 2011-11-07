@@ -41,7 +41,7 @@ namespace Nancy.Cassette
         }
 
         var response = new StreamResponse(asset.OpenStream, module.ContentType);
-        if (logger != null) logger.Info("StaticContentHandler.ProcessRequest : Returned response for '{0}'", context.Request.Url.Path);
+        if (logger != null) logger.Trace("StaticContentHandler.ProcessRequest : Returned response for '{0}'", context.Request.Url.Path);
         return response;
       }
 

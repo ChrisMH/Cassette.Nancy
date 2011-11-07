@@ -1,4 +1,5 @@
-﻿using Utility.Logging.NLog;
+﻿using Nancy.Conventions;
+using Utility.Logging.NLog;
 
 namespace Nancy.Cassette.Demo.RazorViewEngine
 {
@@ -6,8 +7,17 @@ namespace Nancy.Cassette.Demo.RazorViewEngine
   {
     public Bootstrapper()
     {
-      //CassetteStartup.ShouldOptimizeOutput = true;
+      #if !DEBUG
+      CassetteStartup.ShouldOptimizeOutput = true;
+      #endif
       CassetteStartup.Logger = new NLogLoggerFactory().GetCurrentClassLogger();
+    }
+
+    protected override void ApplicationStartup(TinyIoC.TinyIoCContainer container, global::Nancy.Bootstrapper.IPipelines pipelines)
+    {
+      base.ApplicationStartup(container, pipelines);
+      
+      Conventions.StaticContentsConventions.Add(StaticContentConventionBuilder.AddDirectory("Images"));
     }
   }
 }

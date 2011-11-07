@@ -40,9 +40,10 @@ namespace Nancy.Cassette
         if (logger != null) logger.Error("RawFileHandler.ProcessRequest : Raw file does not exist '{0}'", filePath);
         return null;
       }
+      if (logger != null) logger.Debug("RawFileHandler.ProcessRequest : Loading File: '{0}', MIME Type: {1}", filePath, MimeTypes.GetMimeType(filePath));
 
       var response = new StreamResponse(() => File.OpenRead(filePath), MimeTypes.GetMimeType(filePath));
-      if (logger != null) logger.Info("RawFileHandler.ProcessRequest : Returned response for '{0}'", context.Request.Url.Path);
+      if (logger != null) logger.Trace("RawFileHandler.ProcessRequest : Returned response for '{0}'", context.Request.Url.Path);
       return response;
     }
 
