@@ -58,6 +58,7 @@ namespace Nancy.Cassette
       Assets.GetApplication = () => applicationContainer.Application;
 
       pipelines.BeforeRequest.AddItemToStartOfPipeline(RunCassetteHandlers);
+      pipelines.BeforeRequest.AddItemToStartOfPipeline(InitializePlaceholderTracker);
       pipelines.AfterRequest.AddItemToEndOfPipeline(RewriteResponseContents);
     }
 
@@ -71,14 +72,20 @@ namespace Nancy.Cassette
       return string.Join("|", assemblyVersion);
     }
     
-    private void RewriteResponseContents(NancyContext context)
+    private Response InitializePlaceholderTracker(NancyContext context)
     {
-      applicationContainer.Application.RewriteResponseContents(context);
+      return applicationContainer.Application.InitializePlaceholderTracker(context);
     }
+
 
     private Response RunCassetteHandlers(NancyContext context)
     {
       return applicationContainer.Application.RunCassetteHandlers(context);
+    }
+    
+    private void RewriteResponseContents(NancyContext context)
+    {
+      applicationContainer.Application.RewriteResponseContents(context);
     }
 
     public static bool ShouldOptimizeOutput
