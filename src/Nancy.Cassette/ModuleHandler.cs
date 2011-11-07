@@ -2,16 +2,18 @@
 using Cassette;
 using Cassette.Utilities;
 using Nancy.Responses;
+using Utility.Logging;
 
 namespace Nancy.Cassette
 {
   public class ModuleHandler<T> : ICassetteHandler
     where T : Module
   {
-    public ModuleHandler(string handlerRoot, IModuleContainer<T> moduleContainer)
+    public ModuleHandler(string handlerRoot, IModuleContainer<T> moduleContainer, ILogger logger)
     {
       this.handlerRoot = handlerRoot;
       this.moduleContainer = moduleContainer;
+      if (logger != null) this.logger = logger.GetCurrentClassLogger();
     }
 
 
@@ -27,7 +29,7 @@ namespace Nancy.Cassette
       var module = moduleContainer.FindModuleContainingPath(path);
       if (module == null)
       {
-        Trace.Source.TraceInformation("ModuleHandler.ProcessRequest : Module not found for path '{0}'", context.Request.Url.Path);
+        if (logger != null) logger.Error("ModuleHandler.ProcessRequest : Module not found for path '{0}'", context.Request.Url.Path);
         return null;
       }
 
@@ -46,7 +48,7 @@ namespace Nancy.Cassette
       */
 
       var response = new StreamResponse(() => module.Assets[0].OpenStream(), module.ContentType);
-      Trace.Source.TraceInformation("ModuleHandler.ProcessRequest : Returned response for '{0}'", context.Request.Url.Path);
+      if (logger != null) logger.Info("ModuleHandler.ProcessRequest : Returned response for '{0}'", context.Request.Url.Path);
       return response;
     }
 
@@ -66,5 +68,6 @@ namespace Nancy.Cassette
 
     private readonly string handlerRoot;
     private readonly IModuleContainer<T> moduleContainer;
+    private readonly ILogger logger;
   }
 }

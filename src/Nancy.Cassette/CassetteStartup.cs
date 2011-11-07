@@ -9,6 +9,7 @@ using Cassette.IO;
 using Cassette.UI;
 using Nancy.Bootstrapper;
 using TinyIoC;
+using Utility.Logging;
 
 namespace Nancy.Cassette
 {
@@ -48,7 +49,8 @@ namespace Nancy.Cassette
                 new UrlAndPathGenerator(),
                 ShouldOptimizeOutput,
                 GetConfigurationVersion(configurations),
-                rootDirectory);
+                rootDirectory,
+                logger);
 
       applicationContainer = ShouldOptimizeOutput ? new CassetteApplicationContainer<CassetteApplication>(createApplication)
                                                     : new CassetteApplicationContainer<CassetteApplication>(createApplication, rootDirectory);
@@ -56,7 +58,6 @@ namespace Nancy.Cassette
       Assets.GetApplication = () => applicationContainer.Application;
 
       pipelines.BeforeRequest.AddItemToStartOfPipeline(RunCassetteHandlers);
-      pipelines.BeforeRequest.AddItemToStartOfPipeline(InitializePlaceholderTracker);
       pipelines.AfterRequest.AddItemToEndOfPipeline(RewriteResponseContents);
     }
 
@@ -69,12 +70,7 @@ namespace Nancy.Cassette
       //var parts = assemblyVersion.Concat(new[] { basePath });
       return string.Join("|", assemblyVersion);
     }
-
-    private Response InitializePlaceholderTracker(NancyContext context)
-    {
-      return applicationContainer.Application.InitializePlaceholderTracker(context);
-    }
-
+    
     private void RewriteResponseContents(NancyContext context)
     {
       applicationContainer.Application.RewriteResponseContents(context);
@@ -89,6 +85,11 @@ namespace Nancy.Cassette
     {
       get { return shouldOptimizeOutput ?? (bool) (shouldOptimizeOutput = !GetDebugMode()); }
       set { shouldOptimizeOutput = value; }
+    }
+
+    public static ILogger Logger
+    {
+      set { logger = value.GetCurrentClassLogger(); }
     }
 
     private static bool GetDebugMode()
@@ -114,6 +115,7 @@ namespace Nancy.Cassette
     private CassetteApplicationContainer<CassetteApplication> applicationContainer;
 
     private static bool? shouldOptimizeOutput;
+    private static ILogger logger;
 
     private readonly List<Func<NancyContext, Response>> cassetteHandlers = new List<Func<NancyContext, Response>>();
   }
