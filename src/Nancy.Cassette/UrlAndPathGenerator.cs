@@ -1,41 +1,48 @@
 ﻿using System;
 using Cassette;
 using Cassette.Utilities;
+using Nancy.Extensions;
 
 namespace Nancy.Cassette
 {
   public class UrlAndPathGenerator : IUrlGenerator
   {
     public static string AssetUrlPrefix = "_assets";
-    
+
+    public UrlAndPathGenerator(Func<NancyContext> getCurrentContext)
+    {
+      if (getCurrentContext == null) throw new ArgumentNullException("getCurrentContext");
+      this.getCurrentContext = getCurrentContext;
+    }
+
     public string CreateModuleUrl(Module module)
     {
-      return string.Format(
-        "/{0}/{1}/{2}_{3}",
-        AssetUrlPrefix,
-        ConventionalModulePathName(module.GetType()),
-        module.Path.Substring(2),
-        module.Assets[0].Hash.ToHexString()
-        );
+      return getCurrentContext().ToFullPath(
+        string.Format("~/{0}/{1}/{2}_{3}",
+                      AssetUrlPrefix,
+                      ConventionalModulePathName(module.GetType()),
+                      module.Path.Substring(2),
+                      module.Assets[0].Hash.ToHexString()
+          ));
     }
 
     public string CreateAssetUrl(IAsset asset)
     {
-      return string.Format(
-        "/{0}?{1}",
-        asset.SourceFilename.Substring(2),
-        asset.Hash.ToHexString()
-        );
+      return getCurrentContext().ToFullPath(
+        string.Format("~/{0}?{1}",
+                      asset.SourceFilename.Substring(2),
+                      asset.Hash.ToHexString()
+          ));
     }
 
     public string CreateAssetCompileUrl(Module module, IAsset asset)
     {
-      return string.Format(
-        "/{0}/get/{1}?{2}",
-        AssetUrlPrefix,
-        asset.SourceFilename.Substring(2),
-        asset.Hash.ToHexString()
-        );
+      return getCurrentContext().ToFullPath(
+        string.Format("~/{0}/get/{1}?{2}",
+                      AssetUrlPrefix,
+                      asset.SourceFilename.Substring(2),
+                      asset.Hash.ToHexString()
+          ));
     }
 
     public string CreateRawFileUrl(string filename, string hash)
@@ -50,12 +57,13 @@ namespace Nancy.Cassette
       var name = filename.Substring(0, dotIndex);
       var extension = filename.Substring(dotIndex + 1);
 
-      return string.Format("/{0}/files/{1}_{2}_{3}",
-                           AssetUrlPrefix,
-                           ConvertToForwardSlashes(name),
-                           hash,
-                           extension
-        );
+      return getCurrentContext().ToFullPath(
+        string.Format("~/{0}/files/{1}_{2}_{3}",
+                      AssetUrlPrefix,
+                      ConvertToForwardSlashes(name),
+                      hash,
+                      extension
+          ));
     }
 
 
@@ -115,5 +123,7 @@ namespace Nancy.Cassette
     {
       return path.Replace('\\', '/');
     }
+
+    private readonly Func<NancyContext> getCurrentContext;
   }
 }

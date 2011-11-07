@@ -1,18 +1,19 @@
-﻿@{
-  Cassette.UI.Assets.Scripts.Reference("Scripts/lib");
-  Cassette.UI.Assets.Scripts.Reference("Scripts/app");
-  Cassette.UI.Assets.Stylesheets.Reference("Styles/app");
+﻿@using Cassette.UI
+@using Nancy
+@{
+  Assets.Stylesheets.Reference("Styles/app");
+  Assets.Scripts.Reference("Scripts/app");
 }
 
 <!DOCTYPE html>
 <html>
 <head>
   <title>Nancy.Cassette</title>
-  <img id="banner" src="/Images/tag.png" alt="Banner image not found"><img/>
-  @Cassette.UI.Assets.Stylesheets.Render()
+  @Assets.Stylesheets.Render()
 </head>
 <body>
   <h1>Nancy.Cassette</h1>
-  @Cassette.UI.Assets.Scripts.Render()
+  <img src="@Url.Content("~/Images/kitten.jpg")" />
+  @Assets.Scripts.Render()
 </body>
 </html>

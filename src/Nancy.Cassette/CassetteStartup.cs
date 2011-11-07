@@ -46,7 +46,7 @@ namespace Nancy.Cassette
                 configurations,
                 new FileSystemDirectory(rootDirectory),
                 cache,
-                new UrlAndPathGenerator(),
+                new UrlAndPathGenerator(() => applicationContainer.Application.GetCurrentContext()),
                 ShouldOptimizeOutput,
                 GetConfigurationVersion(configurations),
                 rootDirectory,
@@ -96,7 +96,7 @@ namespace Nancy.Cassette
 
     private readonly TinyIoCContainer container;
     private CassetteApplicationContainer<CassetteApplication> applicationContainer;
-
+ 
     private static ILogger logger;
   }
 }

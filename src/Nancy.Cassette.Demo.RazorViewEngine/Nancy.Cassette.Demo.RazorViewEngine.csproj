@@ -60,7 +60,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Images\tag.png" />
+    <Content Include="Images\kitten.jpg" />
     <Content Include="Scripts\app\layout.coffee" />
     <Content Include="Scripts\fallback\jquery-1.6.4.js" />
     <Content Include="Scripts\lib\module.txt" />

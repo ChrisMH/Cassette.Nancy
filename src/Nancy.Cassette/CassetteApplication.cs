@@ -25,20 +25,21 @@ namespace Nancy.Cassette
     {
       this.applicationRoot = applicationRoot;
       if (logger != null) this.logger = logger.GetCurrentClassLogger();
+      
       InstallCassetteHandlers();
     }
 
     protected override IReferenceBuilder<T> GetOrCreateReferenceBuilder<T>(Func<IReferenceBuilder<T>> create)
     {
-      if(currentContext.Value == null) throw new NullReferenceException("CassetteApplication.GetOrCreateReferenceBuilder : NancyContext has not been set");
+      if (currentContext.Value == null) throw new NullReferenceException("CassetteApplication.GetOrCreateReferenceBuilder : NancyContext has not been set");
 
       var key = "ReferenceBuilder:" + typeof (T).FullName;
 
-      if(currentContext.Value.Items.ContainsKey(key))
+      if (currentContext.Value.Items.ContainsKey(key))
       {
-        return (IReferenceBuilder<T>)currentContext.Value.Items[key];
+        return (IReferenceBuilder<T>) currentContext.Value.Items[key];
       }
-      
+
       var referenceBuilder = create();
       currentContext.Value.Items[key] = referenceBuilder;
       return referenceBuilder;
@@ -46,20 +47,24 @@ namespace Nancy.Cassette
 
     protected override IPlaceholderTracker GetPlaceholderTracker()
     {
-      if(currentContext.Value == null) throw new ApplicationException("CassetteApplication.GetPlaceholderTracker : NancyContext has not been set");
-      if(!currentContext.Value.Items.ContainsKey(PlaceholderTrackerKey)) throw new ApplicationException("CassetteApplication.GetPlaceholderTracker : IPlaceholderTracker has not been created in the NancyContext");
-      return (IPlaceholderTracker)currentContext.Value.Items[PlaceholderTrackerKey];
+      if (currentContext.Value == null) throw new ApplicationException("CassetteApplication.GetPlaceholderTracker : NancyContext has not been set");
+      if (!currentContext.Value.Items.ContainsKey(PlaceholderTrackerKey)) throw new ApplicationException("CassetteApplication.GetPlaceholderTracker : IPlaceholderTracker has not been created in the NancyContext");
+      return (IPlaceholderTracker) currentContext.Value.Items[PlaceholderTrackerKey];
     }
-    
+
+    public NancyContext GetCurrentContext()
+    {
+      return currentContext.Value;
+    }
+
     public Response InitializePlaceholderTracker(NancyContext context)
     {
-      if(logger != null) logger.Trace("InitializePlaceholderTracker : {0} : {1}", Thread.CurrentThread.ManagedThreadId, context.Request.Url.Path);
+      if (logger != null) logger.Trace("InitializePlaceholderTracker : {0} : {1}", Thread.CurrentThread.ManagedThreadId, context.Request.Url.Path);
 
       currentContext.Value = context;
 
       if (HtmlRewritingEnabled)
       {
-        
         currentContext.Value.Items[PlaceholderTrackerKey] = new PlaceholderTracker();
       }
       else
@@ -69,25 +74,25 @@ namespace Nancy.Cassette
 
       return null;
     }
-    
+
     public Response RunCassetteHandler(NancyContext context)
     {
       return cassetteHandlers
         .Where(kvp => context.Request.Url.Path.StartsWith(kvp.Key, StringComparison.InvariantCultureIgnoreCase))
         .Select(kvp => kvp.Value.Invoke(context))
         .SingleOrDefault();
-    } 
+    }
 
     public void RewriteResponseContents(NancyContext context)
     {
-      if(currentContext.Value == null)
+      if (currentContext.Value == null)
       {
         // InitializePlaceholderTracker was not called for this request.  Do not attempt to rewrite.
         return;
       }
-      
-      if(logger != null) logger.Trace("RewriteResponseContents : {0} : {1}", Thread.CurrentThread.ManagedThreadId, context.Request.Url.Path);
-      
+
+      if (logger != null) logger.Trace("RewriteResponseContents : {0} : {1}", Thread.CurrentThread.ManagedThreadId, context.Request.Url.Path);
+
       var currentContents = context.Response.Contents;
       context.Response.Contents =
         stream =>
@@ -101,8 +106,11 @@ namespace Nancy.Cassette
           var writer = new StreamWriter(stream);
           writer.Write(GetPlaceholderTracker().ReplacePlaceholders(reader.ReadToEnd()));
           writer.Flush();
+
+          currentContext.Value = null;
         };
     }
+
 
     protected void InstallCassetteHandlers()
     {
@@ -168,13 +176,13 @@ namespace Nancy.Cassette
         .Where(module => !module.Path.IsUrl() && !(module is ExternalScriptModule))
         .Select(module => module.Path.Split(new[] {'/'})[1]);
     }
-
+    
     private static readonly string PlaceholderTrackerKey = typeof (IPlaceholderTracker).FullName;
 
     private readonly string applicationRoot;
-    private readonly SortedDictionary<string,Func<NancyContext, Response>> cassetteHandlers = new SortedDictionary<string,Func<NancyContext, Response>>();
+    private readonly SortedDictionary<string, Func<NancyContext, Response>> cassetteHandlers = new SortedDictionary<string, Func<NancyContext, Response>>();
     private readonly ILogger logger;
 
-    private readonly ThreadLocal<NancyContext> currentContext = new ThreadLocal<NancyContext>(() => null);
+    private ThreadLocal<NancyContext> currentContext = new ThreadLocal<NancyContext>(() => null);
   }
 }
