@@ -46,10 +46,11 @@ namespace Nancy.Cassette
                 configurations,
                 new FileSystemDirectory(rootDirectory),
                 cache,
-                new UrlAndPathGenerator(() => applicationContainer.Application.GetCurrentContext()),
+                new UrlAndPathGenerator(GetCurrentContext),
                 ShouldOptimizeOutput,
                 GetConfigurationVersion(configurations),
-                rootDirectory,
+                rootDirectory, 
+                GetCurrentContext,
                 logger);
 
       applicationContainer = ShouldOptimizeOutput ? new CassetteApplicationContainer<CassetteApplication>(createApplication)
@@ -60,6 +61,11 @@ namespace Nancy.Cassette
       pipelines.BeforeRequest.AddItemToStartOfPipeline(RunCassetteHandler);
       pipelines.BeforeRequest.AddItemToStartOfPipeline(InitializePlaceholderTracker);
       pipelines.AfterRequest.AddItemToEndOfPipeline(RewriteResponseContents);
+    }
+
+    public NancyContext GetCurrentContext()
+    {
+      return currentContext.Value;
     }
 
     private static string GetConfigurationVersion(IEnumerable<ICassetteConfiguration> configurations)
@@ -74,6 +80,7 @@ namespace Nancy.Cassette
 
     private Response InitializePlaceholderTracker(NancyContext context)
     {
+      currentContext.Value = context;
       return applicationContainer.Application.InitializePlaceholderTracker(context);
     }
 
@@ -96,7 +103,8 @@ namespace Nancy.Cassette
 
     private readonly TinyIoCContainer container;
     private CassetteApplicationContainer<CassetteApplication> applicationContainer;
- 
+    private readonly ThreadLocal<NancyContext> currentContext = new ThreadLocal<NancyContext>(() => null);
+    
     private static ILogger logger;
   }
 }
