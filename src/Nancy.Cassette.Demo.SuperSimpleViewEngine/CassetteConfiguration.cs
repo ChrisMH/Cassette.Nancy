@@ -1,4 +1,5 @@
 ﻿using Cassette;
+using Cassette.Configuration;
 using Cassette.Scripts;
 using Cassette.Stylesheets;
 
@@ -6,19 +7,13 @@ namespace Nancy.Cassette.Demo.SuperSimpleViewEngine
 {
   public class CassetteConfiguration : ICassetteConfiguration
   {
-    public void Configure(ModuleConfiguration moduleConfiguration, ICassetteApplication application)
+    public void Configure(BundleCollection bundles, CassetteSettings settings)
     {
-      moduleConfiguration.Add(
-        new DirectorySource<ScriptModule>("Scripts")
-        {
-          FilePattern = "*.js;*.coffee"
-        });
-
-      moduleConfiguration.Add(
-        new DirectorySource<StylesheetModule>("Styles")
-        {
-          FilePattern = "*.css;*.less"
-        });
+      bundles.Add<StylesheetBundle>("Styles");
+            
+      bundles.AddPerSubDirectory<ScriptBundle>("Scripts");
+      bundles.AddUrl("http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.js", b => b.PageLocation = "body").WithAlias("jQuery");
+            
     }
   }
 }

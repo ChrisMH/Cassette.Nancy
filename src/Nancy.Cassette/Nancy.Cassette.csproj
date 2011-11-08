@@ -49,24 +49,24 @@
     <Compile Include="CassetteApplication.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="CassetteRouteHandlerBase.cs" />
     <Compile Include="CassetteStartup.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="CompiledAssetHandler.cs">
+    <Compile Include="AssetRouteHandler.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ICassetteHandler.cs">
+    <Compile Include="ICassetteRouteHandler.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ModuleHandler.cs">
+    <Compile Include="BundleRouteHandler.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RawFileHandler.cs">
+    <Compile Include="CassetteRouteHandling.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="StaticContentHandler.cs" />
-    <Compile Include="UrlAndPathGenerator.cs">
+    <Compile Include="RawFileRouteHandler.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>

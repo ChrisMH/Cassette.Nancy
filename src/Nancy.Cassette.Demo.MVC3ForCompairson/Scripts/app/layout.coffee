@@ -1,4 +1,6 @@
-﻿window.app = window.app ? {}
+﻿# reference "~/Scripts/lib"
+
+window.app = window.app ? {}
 window.app.layout = window.app.layout ? {}
 
 $header = null

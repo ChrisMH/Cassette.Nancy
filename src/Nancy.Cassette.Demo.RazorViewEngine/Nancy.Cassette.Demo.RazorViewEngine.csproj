@@ -62,8 +62,8 @@
   <ItemGroup>
     <Content Include="Images\kitten.jpg" />
     <Content Include="Scripts\app\layout.coffee" />
-    <Content Include="Scripts\fallback\jquery-1.6.4.js" />
-    <Content Include="Scripts\lib\module.txt" />
+    <Content Include="Scripts\lib\bundle.txt" />
+    <Content Include="Scripts\lib\jquery-1.7.js" />
     <Content Include="Scripts\lib\underscore.js" />
     <Content Include="Styles\app\images\lorry.png" />
     <Content Include="Styles\app\Main.css" />
@@ -82,6 +82,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\dependencies\cassette\src\Cassette.Views\Cassette.Views.csproj">
+      <Project>{3A021487-A395-4FE6-9B41-336D0F1E6AD0}</Project>
+      <Name>Cassette.Views</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\dependencies\cassette\src\Cassette\Cassette.csproj">
       <Project>{A5CCF9D3-5D49-4BFC-B9A6-9EC9E0E29C50}</Project>
       <Name>Cassette</Name>

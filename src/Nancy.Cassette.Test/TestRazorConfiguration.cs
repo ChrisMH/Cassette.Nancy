@@ -12,12 +12,12 @@ namespace Nancy.Cassette.Test
 
     public IEnumerable<string> GetAssemblyNames()
     {
-      return new List<string> {"Cassette"};
+      return new List<string> {"Cassette.Views"};
     }
 
     public IEnumerable<string> GetDefaultNamespaces()
     {
-      return new List<string> {"Cassette.UI"};
+      return new List<string> {"Cassette.Views"};
     }
   }
 }

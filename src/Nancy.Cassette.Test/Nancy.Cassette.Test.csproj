@@ -60,6 +60,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Web.Razor, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\Nancy.Viewengines.Razor.0.9.0\lib\net40\System.Web.Razor.dll</HintPath>
@@ -80,9 +81,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CassetteStartupTest.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="CompiledAssetHandlerTest.cs" />
     <Compile Include="GlobalTest.cs" />
     <Compile Include="ModuleHandlerTest.cs" />
@@ -104,6 +102,10 @@
     <None Include="Views\RazorHome.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\dependencies\cassette\src\Cassette.Views\Cassette.Views.csproj">
+      <Project>{3A021487-A395-4FE6-9B41-336D0F1E6AD0}</Project>
+      <Name>Cassette.Views</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\dependencies\cassette\src\Cassette\Cassette.csproj">
       <Project>{A5CCF9D3-5D49-4BFC-B9A6-9EC9E0E29C50}</Project>
       <Name>Cassette</Name>
@@ -118,11 +120,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Scripts\app\layout.coffee" />
-    <Content Include="Scripts\fallback\jquery-1.6.4.js" />
-    <Content Include="Scripts\lib\module.txt" />
+    <Content Include="Scripts\lib\bundle.txt" />
+    <Content Include="Scripts\lib\jquery-1.7.js" />
     <Content Include="Scripts\lib\underscore.js" />
-    <Content Include="Styles\app\images\lorry.png" />
-    <Content Include="Styles\app\Main.css" />
+    <Content Include="Styles\images\lorry.png" />
+    <Content Include="Styles\Main.css" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

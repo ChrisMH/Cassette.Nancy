@@ -12,7 +12,7 @@ namespace Nancy.Cassette.Test
     [TestCase("/_assets/stylesheets/Styles/app")]
     public void ModuleIsReturned()
     {
-      CassetteStartup.ShouldOptimizeOutput = true;
+      CassetteStartup.IsDebuggingEnabled = false;
       var browser = new Browser(new TestBootstrapper());
       var response = browser.Get("/RazorHome", with => with.HttpRequest());
       Console.Write(response.Body.AsString());

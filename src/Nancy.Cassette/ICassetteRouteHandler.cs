@@ -1,6 +1,6 @@
 ﻿namespace Nancy.Cassette
 {
-  public interface ICassetteHandler
+  internal interface ICassetteRouteHandler
   {
     Response ProcessRequest(NancyContext context);
   }

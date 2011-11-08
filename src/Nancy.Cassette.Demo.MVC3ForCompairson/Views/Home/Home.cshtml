@@ -1,17 +1,19 @@
-﻿@{
-  Cassette.UI.Assets.Scripts.Reference("Scripts/lib");
-  Cassette.UI.Assets.Scripts.Reference("Scripts/app");
-  Cassette.UI.Assets.Stylesheets.Reference("Styles/app");
+﻿@using Cassette.Views
+@using Nancy
+@{
+  Bundles.Reference("Scripts/app");
+  Bundles.Reference("Styles");
 }
 
 <!DOCTYPE html>
 <html>
 <head>
   <title>Nancy.Cassette</title>
-  @Cassette.UI.Assets.Stylesheets.Render()
+  @Bundles.RenderStylesheets()
 </head>
 <body>
   <h1>Nancy.Cassette</h1>
-  @Cassette.UI.Assets.Scripts.Render()
+  <img src="@Url.Content("~/Images/kitten.jpg")" />  
+  @Bundles.RenderScripts()
 </body>
 </html>
