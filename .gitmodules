@@ -1,6 +1,10 @@
 [submodule "dependencies/cassette"]
 	path = dependencies/cassette
-	url = git@github.com:ChrisMH/cassette.git
+	url = https://github.com/andrewdavey/cassette.git
 [submodule "dependencies/Nancy"]
 	path = dependencies/Nancy
-	url = git@github.com:ChrisMH/Nancy.git
+	url = https://github.com/NancyFx/Nancy.git
+  
+[submodule "dependencies/Nancy.Bootstrappers.Autofac"]
+	path = dependencies/Nancy.Bootstrappers.Autofac
+	url = https://github.com/NancyFx/Nancy.Bootstrappers.Autofac.git
