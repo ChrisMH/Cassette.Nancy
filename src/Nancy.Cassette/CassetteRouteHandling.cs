@@ -119,73 +119,7 @@ namespace Nancy.Cassette
 
       if (logger != null) logger.Trace("Installed Cassette route handler for '{0}'", handlerRoot);
     }
-
-    /*
-    protected void InstallStaticPaths()
-    {
-      var staticPaths = new List<string>();
-      staticPaths.AddRange(GetBaseDirectories<ScriptModule>());
-      staticPaths.AddRange(GetBaseDirectories<StylesheetModule>());
-      staticPaths.AddRange(GetBaseDirectories<HtmlTemplateModule>());
-
-      foreach (var staticPath in staticPaths.Distinct())
-      {
-        var handlerRoot = string.Concat("/", staticPath);
-        cassetteHandlers.Add(handlerRoot, context => new StaticContentHandler(handlerRoot, FindModuleContainingPath, logger).ProcessRequest(context));
-
-        if (logger != null) logger.Trace("Installed Cassette handler for '{0}'", handlerRoot);
-      }
-    }
-
-    private IEnumerable<string> GetBaseDirectories<T>()
-      where T : Module
-    {
-      return GetModuleContainer<T>()
-        .Modules
-        .Where(module => !module.Path.IsUrl() && !(module is ExternalScriptModule))
-        .Select(module => module.Path.Split(new[] {'/'})[1]);
-    }
-    */
     
-    private readonly SortedDictionary<string, Func<NancyContext, Response>> cassetteHandlers = new SortedDictionary<string, Func<NancyContext, Response>>();
-
-
-
-
-    /*
-
-
-
-
-    public static string GetRawFileHandlerRoot()
-    {
-      return string.Format(
-        "/{0}/files",
-        AssetUrlPrefix);
-    }
-
-    public static string GetCompiledAssetHandlerRoot()
-    {
-      return string.Format(
-        "/{0}/get",
-        AssetUrlPrefix);
-    }
-
-    public static bool RemoveUrlQuery(string url, out string urlWithoutQuery, out string query)
-    {
-      var queryPosition = url.IndexOf('?');
-      if (queryPosition >= 0)
-      {
-        urlWithoutQuery = url.Remove(queryPosition);
-        query = url.Substring(queryPosition + 1);
-        return true;
-      }
-
-      urlWithoutQuery = url;
-      query = null;
-      return false;
-    }
-    */
 
     private static string ConventionalBundlePathName(Type bundleType)
     {
@@ -209,6 +143,7 @@ namespace Nancy.Cassette
 
     private readonly Func<NancyContext> getCurrentContext;
     private readonly string applicationRoot;
+    private readonly SortedDictionary<string, Func<NancyContext, Response>> cassetteHandlers = new SortedDictionary<string, Func<NancyContext, Response>>();
     private readonly ILogger logger;
   }
 }

@@ -40,7 +40,7 @@ namespace Nancy.Cassette
     {
       var applicationRoot = container.Resolve<IRootPathProvider>().GetRootPath();
 
-      applicationContainer = IsDebuggingEnabled ? new CassetteApplicationContainer<CassetteApplication>(CreateCassetteApplication)
+      applicationContainer = ShouldOptimizeOutput ? new CassetteApplicationContainer<CassetteApplication>(CreateCassetteApplication)
                                : new CassetteApplicationContainer<CassetteApplication>(CreateCassetteApplication, applicationRoot);
 
       CassetteApplicationContainer.SetAccessor(() => applicationContainer.Application);
@@ -66,7 +66,7 @@ namespace Nancy.Cassette
 
       var settings = new CassetteSettings
                      {
-                       IsDebuggingEnabled = IsDebuggingEnabled,
+                       IsDebuggingEnabled = !ShouldOptimizeOutput,
                        IsHtmlRewritingEnabled = true,
                        SourceDirectory = new FileSystemDirectory(applicationRoot),
                        CacheDirectory = new IsolatedStorageDirectory(cacheFile)
@@ -139,7 +139,7 @@ namespace Nancy.Cassette
         };
     }
 
-    public static bool IsDebuggingEnabled { get; set; }
+    public static bool ShouldOptimizeOutput { get; set; }
 
     public static ILogger Logger
     {
@@ -149,13 +149,9 @@ namespace Nancy.Cassette
     private readonly TinyIoCContainer container;
     private readonly CassetteRouteHandling routeHandling;
     private readonly ThreadLocal<NancyContext> currentContext = new ThreadLocal<NancyContext>(() => null);
-    
+
     private CassetteApplicationContainer<CassetteApplication> applicationContainer;
 
     private static ILogger logger;
   }
 }
-
-
-
-

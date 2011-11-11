@@ -102,6 +102,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\app\layout.coffee" />
+    <None Include="Styles\Main.less" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\dependencies\cassette\src\Cassette.Views\Cassette.Views.csproj">

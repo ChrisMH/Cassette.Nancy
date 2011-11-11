@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 using Cassette;
 using Nancy.Responses;
 using Utility.Logging;
@@ -19,7 +20,7 @@ namespace Nancy.Cassette
         return null;
       }
 
-      var path = RemoveTrailingHashFromPath(string.Concat("~", context.Request.Url.Path.Remove(0, HandlerRoot.Length)));
+      var path = Regex.Replace(string.Concat("~", context.Request.Url.Path.Remove(0, HandlerRoot.Length)), @"_[^_]+$", "");
 
       var bundle = BundleContainer.FindBundleContainingPath(path);
       if (bundle == null)
@@ -47,18 +48,5 @@ namespace Nancy.Cassette
       return response;
     }
 
-
-    /// <summary>
-    /// A Module URL has the hash appended after an underscore character. This method removes the underscore and hash from the path.
-    /// </summary>
-    private string RemoveTrailingHashFromPath(string path)
-    {
-      var index = path.LastIndexOf('_');
-      if (index >= 0)
-      {
-        return path.Substring(0, index);
-      }
-      return path;
-    }
   }
 }

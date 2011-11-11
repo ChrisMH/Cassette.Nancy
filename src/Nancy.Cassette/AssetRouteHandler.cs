@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 using Cassette;
 using Nancy.Responses;
 using Utility.Logging;
@@ -20,9 +21,7 @@ namespace Nancy.Cassette
         return null;
       }
 
-      string path, query;
-      path = string.Concat("~", context.Request.Url.Path.Remove(0, HandlerRoot.Length));
-      //UrlAndPathGenerator.RemoveUrlQuery(string.Concat("~", context.Request.Url.Path.Remove(0, HandlerRoot.Length)), out path, out query);
+      var path = Regex.Match(string.Concat("~", context.Request.Url.Path.Remove(0, HandlerRoot.Length)), @"^[^\?]*").Value;
 
       IAsset asset;
       Bundle bundle;

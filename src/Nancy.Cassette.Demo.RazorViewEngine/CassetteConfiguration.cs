@@ -11,7 +11,6 @@ namespace Nancy.Cassette.Demo.RazorViewEngine
     {
       bundles.Add<StylesheetBundle>("Styles");
       bundles.AddPerSubDirectory<ScriptBundle>("Scripts");
-            
     }
   }
 }

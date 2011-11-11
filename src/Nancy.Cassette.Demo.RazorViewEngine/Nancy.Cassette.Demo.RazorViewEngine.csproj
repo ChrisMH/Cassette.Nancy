@@ -65,8 +65,8 @@
     <Content Include="Scripts\lib\bundle.txt" />
     <Content Include="Scripts\lib\jquery-1.7.js" />
     <Content Include="Scripts\lib\underscore.js" />
-    <Content Include="Styles\app\images\lorry.png" />
-    <Content Include="Styles\app\Main.css" />
+    <Content Include="Styles\images\lorry.png" />
+    <Content Include="Styles\Main.css" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -113,6 +113,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="packages.config" />
+    <None Include="Styles\Main.less" />
     <None Include="Views\Home.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

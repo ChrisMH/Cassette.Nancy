@@ -9,7 +9,7 @@ namespace Nancy.Cassette.Test
     [Test]
     public void RazorViewContainsExpectedStylesheetReferencesWhenOutputIsNotOptimized()
     {
-      CassetteStartup.IsDebuggingEnabled = true;
+      CassetteStartup.ShouldOptimizeOutput = false;
       var browser = new Browser(new TestBootstrapper());
       var result = browser.Get("/RazorHome", with => with.HttpRequest());
 
@@ -21,7 +21,7 @@ namespace Nancy.Cassette.Test
     [Test]
     public void RazorViewContainsExpectedScriptReferencesWhenOutputIsNotOptimized()
     {
-      CassetteStartup.IsDebuggingEnabled = true;
+      CassetteStartup.ShouldOptimizeOutput = false;
       var browser = new Browser(new TestBootstrapper());
       var result = browser.Get("/RazorHome", with => with.HttpRequest());
 
@@ -35,7 +35,7 @@ namespace Nancy.Cassette.Test
     [Test]
     public void RazorViewContainsExpectedStylesheetReferencesWhenOutputIsOptimized()
     {
-      CassetteStartup.IsDebuggingEnabled = false;
+      CassetteStartup.ShouldOptimizeOutput = true;
       var browser = new Browser(new TestBootstrapper());
       var result = browser.Get("/RazorHome", with => with.HttpRequest());
 
@@ -47,7 +47,7 @@ namespace Nancy.Cassette.Test
     [Test]
     public void RazorViewContainsExpectedScriptReferencesWhenOutputIsOptimized()
     {
-      CassetteStartup.IsDebuggingEnabled = false;
+      CassetteStartup.ShouldOptimizeOutput = true;
       var browser = new Browser(new TestBootstrapper());
       var result = browser.Get("/RazorHome", with => with.HttpRequest());
 

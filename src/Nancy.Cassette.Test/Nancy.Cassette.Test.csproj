@@ -81,13 +81,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CompiledAssetHandlerTest.cs" />
-    <Compile Include="GlobalTest.cs" />
-    <Compile Include="ModuleHandlerTest.cs" />
+    <Compile Include="AssetRouteHandlerTest.cs" />
+    <Compile Include="BundleRouteHandlerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RawFileHandlerTest.cs" />
+    <Compile Include="RawFileRouteHandlerTest.cs" />
     <Compile Include="RazorViewTest.cs" />
-    <Compile Include="StaticContentHandlerTest.cs" />
     <Compile Include="TestBootstrapper.cs" />
     <Compile Include="TestCassetteConfiguration.cs" />
     <Compile Include="TestModule.cs" />
@@ -99,6 +97,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
+    <None Include="Styles\Main.less" />
     <None Include="Views\RazorHome.cshtml" />
   </ItemGroup>
   <ItemGroup>
