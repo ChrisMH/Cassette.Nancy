@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCopyright("Copyright © Chris Hogan 2011")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
+[assembly: AssemblyProduct("Nancy.Cassette")]
 
 [assembly: ComVisible(false)]
 
