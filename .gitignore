@@ -1,6 +1,7 @@
 obj/
 bin/
 logs/
+build/
 *.csproj.user
 *.suo
 *.ReSharper.user
