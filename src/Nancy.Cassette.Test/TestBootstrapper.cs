@@ -1,4 +1,5 @@
-﻿using Nancy.Conventions;
+﻿using Cassette.Configuration;
+using Nancy.Conventions;
 using Utility.Logging.NLog;
 
 namespace Nancy.Cassette.Test
@@ -9,7 +10,7 @@ namespace Nancy.Cassette.Test
     {
       CassetteStartup.Logger = new NLogLoggerFactory().GetCurrentClassLogger();
     }
-
+    
     protected override void ApplicationStartup(TinyIoC.TinyIoCContainer container, Bootstrapper.IPipelines pipelines)
     {
       base.ApplicationStartup(container, pipelines);

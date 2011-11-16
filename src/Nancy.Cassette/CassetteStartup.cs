@@ -8,17 +8,18 @@ using Cassette;
 using Cassette.Configuration;
 using Cassette.IO;
 using Nancy.Bootstrapper;
-using TinyIoC;
 using Utility.Logging;
 
 namespace Nancy.Cassette
 {
   public class CassetteStartup : IStartup
   {
-    public CassetteStartup(TinyIoCContainer container)
+    // TODO: Change to IEnumerable<ICassetteConfiguration> when I figure out how to get the types injected
+    public CassetteStartup(IRootPathProvider rootPathProvider, ICassetteConfiguration cassetteConfiguration)
     {
-      this.container = container;
-      routeHandling = new CassetteRouteHandling(container.Resolve<IRootPathProvider>().GetRootPath(), GetCurrentContext, logger);
+      this.rootPathProvider = rootPathProvider;
+      this.cassetteConfigurations = new List<ICassetteConfiguration> { cassetteConfiguration };
+      routeHandling = new CassetteRouteHandling(rootPathProvider.GetRootPath(), GetCurrentContext, logger);
     }
 
     public IEnumerable<TypeRegistration> TypeRegistrations
@@ -38,7 +39,7 @@ namespace Nancy.Cassette
 
     public void Initialize(IPipelines pipelines)
     {
-      var applicationRoot = container.Resolve<IRootPathProvider>().GetRootPath();
+      var applicationRoot = rootPathProvider.GetRootPath();
 
       applicationContainer = ShouldOptimizeOutput ? new CassetteApplicationContainer<CassetteApplication>(CreateCassetteApplication)
                                : new CassetteApplicationContainer<CassetteApplication>(CreateCassetteApplication, applicationRoot);
@@ -58,11 +59,10 @@ namespace Nancy.Cassette
 
     private CassetteApplication CreateCassetteApplication()
     {
-      var applicationRoot = container.Resolve<IRootPathProvider>().GetRootPath();
-      var configurations = container.ResolveAll<ICassetteConfiguration>().ToList();
+      var applicationRoot = rootPathProvider.GetRootPath();
       var cacheFile = IsolatedStorageFile.GetMachineStoreForAssembly();
 
-      var cacheVersion = GetConfigurationVersion(configurations, applicationRoot);
+      var cacheVersion = GetConfigurationVersion(cassetteConfigurations, applicationRoot);
 
       var settings = new CassetteSettings
                      {
@@ -73,10 +73,9 @@ namespace Nancy.Cassette
                      };
 
       var bundles = new BundleCollection(settings);
-
-      foreach (var configuration in configurations)
+      foreach (var cassetteConfiguration in cassetteConfigurations)
       {
-        configuration.Configure(bundles, settings);
+        cassetteConfiguration.Configure(bundles, settings);
       }
 
       if (logger != null) logger.Trace("Creating Cassette application object");
@@ -146,7 +145,8 @@ namespace Nancy.Cassette
       set { logger = value.GetCurrentClassLogger(); }
     }
 
-    private readonly TinyIoCContainer container;
+    private readonly IRootPathProvider rootPathProvider;
+    private readonly List<ICassetteConfiguration> cassetteConfigurations;
     private readonly CassetteRouteHandling routeHandling;
     private readonly ThreadLocal<NancyContext> currentContext = new ThreadLocal<NancyContext>(() => null);
 

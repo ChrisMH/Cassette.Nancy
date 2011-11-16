@@ -38,8 +38,9 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="Utility.Logging">
-      <HintPath>..\packages\Utility.Logging.1.3\lib\net40\Utility.Logging.dll</HintPath>
+    <Reference Include="Utility.Logging, Version=1.3.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Utility.Logging.1.3.1.0\lib\net40\Utility.Logging.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

@@ -12,7 +12,6 @@ namespace Nancy.Cassette.Test
     {
       bundles.Add<StylesheetBundle>("Styles");
       bundles.AddPerSubDirectory<ScriptBundle>("Scripts");
-            
     }
   }
 }
