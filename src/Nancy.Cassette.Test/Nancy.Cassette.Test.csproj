@@ -69,6 +69,7 @@
   <ItemGroup>
     <Compile Include="AssetRouteHandlerTest.cs" />
     <Compile Include="BundleRouteHandlerTest.cs" />
+    <Compile Include="TestCassetteConfigurationToo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RawFileRouteHandlerTest.cs" />
     <Compile Include="RazorViewTest.cs" />
@@ -125,10 +126,10 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>Call "$(ProjectDir)setup_test_environment.bat" Images "$(ProjectDir)" "$(TargetDir)"
-Call "$(ProjectDir)setup_test_environment.bat" Scripts "$(ProjectDir)" "$(TargetDir)"
-Call "$(ProjectDir)setup_test_environment.bat" Styles "$(ProjectDir)" "$(TargetDir)"
-Call "$(ProjectDir)setup_test_environment.bat" Views "$(ProjectDir)" "$(TargetDir)"
+    <PostBuildEvent>powershell -Command . "$(ProjectDir)SetupTestEnvironment.ps1" Images "$(ProjectDir)" "$(TargetDir)"
+powershell -Command . "$(ProjectDir)SetupTestEnvironment.ps1" Scripts "$(ProjectDir)" "$(TargetDir)"
+powershell -Command . "$(ProjectDir)SetupTestEnvironment.ps1" Styles "$(ProjectDir)" "$(TargetDir)"
+powershell -Command . "$(ProjectDir)SetupTestEnvironment.ps1" Views "$(ProjectDir)" "$(TargetDir)"
 
 
 </PostBuildEvent>

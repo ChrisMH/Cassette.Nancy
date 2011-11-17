@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.IO.IsolatedStorage;
 using System.Linq;
@@ -14,11 +15,9 @@ namespace Nancy.Cassette
 {
   public class CassetteStartup : IStartup
   {
-    // TODO: Change to IEnumerable<ICassetteConfiguration> when I figure out how to get the types injected
-    public CassetteStartup(IRootPathProvider rootPathProvider, ICassetteConfiguration cassetteConfiguration)
+    public CassetteStartup(IRootPathProvider rootPathProvider)
     {
       this.rootPathProvider = rootPathProvider;
-      this.cassetteConfigurations = new List<ICassetteConfiguration> { cassetteConfiguration };
       routeHandling = new CassetteRouteHandling(rootPathProvider.GetRootPath(), GetCurrentContext, logger);
     }
 
@@ -62,6 +61,13 @@ namespace Nancy.Cassette
       var applicationRoot = rootPathProvider.GetRootPath();
       var cacheFile = IsolatedStorageFile.GetMachineStoreForAssembly();
 
+      var cassetteConfigurations = AppDomain.CurrentDomain
+        .GetAssemblies()
+        .SelectMany(a => a.GetTypes())
+        .Where(t => typeof (ICassetteConfiguration).IsAssignableFrom(t) && !t.IsInterface && !t.IsAbstract)
+        .Select(t => (ICassetteConfiguration) Activator.CreateInstance(t))
+        .ToList();
+
       var cacheVersion = GetConfigurationVersion(cassetteConfigurations, applicationRoot);
 
       var settings = new CassetteSettings
@@ -73,6 +79,7 @@ namespace Nancy.Cassette
                      };
 
       var bundles = new BundleCollection(settings);
+
       foreach (var cassetteConfiguration in cassetteConfigurations)
       {
         cassetteConfiguration.Configure(bundles, settings);
@@ -146,7 +153,6 @@ namespace Nancy.Cassette
     }
 
     private readonly IRootPathProvider rootPathProvider;
-    private readonly List<ICassetteConfiguration> cassetteConfigurations;
     private readonly CassetteRouteHandling routeHandling;
     private readonly ThreadLocal<NancyContext> currentContext = new ThreadLocal<NancyContext>(() => null);
 

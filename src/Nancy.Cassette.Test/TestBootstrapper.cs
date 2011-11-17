@@ -1,4 +1,6 @@
-﻿using Cassette.Configuration;
+﻿using System;
+using System.ComponentModel;
+using Cassette.Configuration;
 using Nancy.Conventions;
 using Utility.Logging.NLog;
 

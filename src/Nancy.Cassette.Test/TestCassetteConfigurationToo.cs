@@ -6,12 +6,12 @@ using Cassette.Stylesheets;
 
 namespace Nancy.Cassette.Test
 {
-  public class TestCassetteConfiguration : ICassetteConfiguration
+  public class TestCassetteConfigurationToo : ICassetteConfiguration
   {
     public void Configure(BundleCollection bundles, CassetteSettings settings)
     {
-      //bundles.Add<StylesheetBundle>("Styles");
-      bundles.AddPerSubDirectory<ScriptBundle>("Scripts");
+      bundles.Add<StylesheetBundle>("Styles");
+      //bundles.AddPerSubDirectory<ScriptBundle>("Scripts");
     }
   }
 }
