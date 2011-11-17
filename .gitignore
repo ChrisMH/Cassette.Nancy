@@ -2,8 +2,7 @@ obj/
 bin/
 logs/
 build/
-*.csproj.user
+*.user
 *.suo
-*.ReSharper.user
 *.dotCover
-*.DotSettings.user
+*.ReSharper
