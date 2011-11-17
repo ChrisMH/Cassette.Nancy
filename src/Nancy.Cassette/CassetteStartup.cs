@@ -18,7 +18,7 @@ namespace Nancy.Cassette
     public CassetteStartup(IRootPathProvider rootPathProvider)
     {
       this.rootPathProvider = rootPathProvider;
-      routeHandling = new CassetteRouteHandling(rootPathProvider.GetRootPath(), GetCurrentContext, logger);
+      routeHandling = new CassetteRouteHandling(rootPathProvider.GetRootPath(), GetCurrentContext, Logger);
     }
 
     public IEnumerable<TypeRegistration> TypeRegistrations
@@ -85,9 +85,9 @@ namespace Nancy.Cassette
         cassetteConfiguration.Configure(bundles, settings);
       }
 
-      if (logger != null) logger.Trace("Creating Cassette application object");
-      if (logger != null) logger.Trace("IsDebuggingEnabled: {0}", settings.IsDebuggingEnabled);
-      if (logger != null) logger.Trace("Cache version: {0}", cacheVersion);
+      if (Logger != null) Logger.Trace("Creating Cassette application object");
+      if (Logger != null) Logger.Trace("IsDebuggingEnabled: {0}", settings.IsDebuggingEnabled);
+      if (Logger != null) Logger.Trace("Cache version: {0}", cacheVersion);
 
       return new CassetteApplication(
         bundles,
@@ -127,7 +127,7 @@ namespace Nancy.Cassette
         return;
       }
 
-      if (logger != null) logger.Trace("RewriteResponseContents : {0} : {1}", Thread.CurrentThread.ManagedThreadId, context.Request.Url.Path);
+      if (Logger != null) Logger.Trace("RewriteResponseContents : {0} : {1}", Thread.CurrentThread.ManagedThreadId, context.Request.Url.Path);
 
       var currentContents = context.Response.Contents;
       context.Response.Contents =
@@ -145,19 +145,14 @@ namespace Nancy.Cassette
         };
     }
 
+    public static ILogger Logger { get; set; }
     public static bool ShouldOptimizeOutput { get; set; }
-
-    public static ILogger Logger
-    {
-      set { logger = value.GetCurrentClassLogger(); }
-    }
-
+    
     private readonly IRootPathProvider rootPathProvider;
     private readonly CassetteRouteHandling routeHandling;
     private readonly ThreadLocal<NancyContext> currentContext = new ThreadLocal<NancyContext>(() => null);
 
     private CassetteApplicationContainer<CassetteApplication> applicationContainer;
 
-    private static ILogger logger;
   }
 }

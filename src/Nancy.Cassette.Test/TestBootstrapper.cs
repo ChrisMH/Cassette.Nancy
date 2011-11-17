@@ -10,9 +10,9 @@ namespace Nancy.Cassette.Test
   {
     public TestBootstrapper()
     {
-      CassetteStartup.Logger = new NLogLoggerFactory().GetCurrentClassLogger();
+      Cassette.CassetteStartup.Logger = new NLogLoggerFactory().GetLogger("CassetteStartup");
     }
-    
+
     protected override void ApplicationStartup(TinyIoC.TinyIoCContainer container, Bootstrapper.IPipelines pipelines)
     {
       base.ApplicationStartup(container, pipelines);

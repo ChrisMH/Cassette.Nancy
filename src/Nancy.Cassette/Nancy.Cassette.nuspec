@@ -22,6 +22,7 @@
 
   <files>
     <file src="..\..\dependencies\cassette\src\Cassette\bin\Release\Cassette.dll" target="lib\net40" />
+    <file src="..\..\dependencies\cassette\src\Cassette.Views\bin\Release\Cassette.Views.dll" target="lib\net40" />
     <file src="..\..\dependencies\cassette\src\Cassette.Web\CassetteConfiguration.cs.pp" target="content"/>
   </files>
 </package>

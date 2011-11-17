@@ -17,10 +17,10 @@ Cassette currently works with the Razor View Engine.
     &lt;/configSections&gt;
     &lt;razor disableAutoIncludeModelNamespace="true"&gt;
       &lt;assemblies&gt;
-        &lt;add assembly="Cassette"/&gt;
+        &lt;add assembly="Cassette.Views"/&gt;
       &lt;/assemblies&gt;
       &lt;namespaces&gt;
-        &lt;add namespace="Cassette.UI"/&gt;
+        &lt;add namespace="Cassette.Views"/&gt;
       &lt;/namespaces&gt;
     &lt;/razor&gt;</pre>
 6. Start including and rending modules in your Razor views.  Once again, see: http://http://getcassette.net/

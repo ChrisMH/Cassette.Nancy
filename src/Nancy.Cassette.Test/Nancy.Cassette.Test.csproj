@@ -126,13 +126,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>powershell -Command . "$(ProjectDir)SetupTestEnvironment.ps1" Images "$(ProjectDir)" "$(TargetDir)"
-powershell -Command . "$(ProjectDir)SetupTestEnvironment.ps1" Scripts "$(ProjectDir)" "$(TargetDir)"
-powershell -Command . "$(ProjectDir)SetupTestEnvironment.ps1" Styles "$(ProjectDir)" "$(TargetDir)"
-powershell -Command . "$(ProjectDir)SetupTestEnvironment.ps1" Views "$(ProjectDir)" "$(TargetDir)"
-
-
-</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
