@@ -8,6 +8,7 @@ using System.Threading;
 using Cassette;
 using Cassette.Configuration;
 using Cassette.IO;
+using Nancy;
 using Nancy.Bootstrapper;
 using Utility.Logging;
 
@@ -69,13 +70,14 @@ namespace Cassette.Nancy
         .ToList();
 
       var cacheVersion = GetConfigurationVersion(cassetteConfigurations, applicationRoot);
-
+      
       var settings = new CassetteSettings
                      {
                        IsDebuggingEnabled = !ShouldOptimizeOutput,
                        IsHtmlRewritingEnabled = true,
                        SourceDirectory = new FileSystemDirectory(applicationRoot),
-                       CacheDirectory = new IsolatedStorageDirectory(cacheFile)
+                       CacheDirectory = new IsolatedStorageDirectory(cacheFile),
+                       UrlGenerator = routeHandling
                      };
 
       var bundles = new BundleCollection(settings);
@@ -92,8 +94,8 @@ namespace Cassette.Nancy
       return new CassetteApplication(
         bundles,
         settings,
-        routeHandling,
         cacheVersion,
+        routeHandling,
         GetCurrentContext);
     }
 

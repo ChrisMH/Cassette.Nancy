@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using Cassette;
 using Cassette.Configuration;
+using Nancy;
 
 namespace Cassette.Nancy
 {
@@ -10,14 +10,14 @@ namespace Cassette.Nancy
     public const string PlaceholderTrackerContextKey = "CassettePlaceholderTracker";
     public const string ReferenceBuilderContextKey = "CassetteReferenceBuilder";
 
-    public CassetteApplication(IEnumerable<Bundle> bundles, CassetteSettings settings, IUrlGenerator routeHandling, string cacheVersion,
-                               Func<NancyContext> getCurrentContext)
-      : base(bundles, settings, routeHandling, cacheVersion)
+    public CassetteApplication(IEnumerable<Bundle> bundles, CassetteSettings settings, string cacheVersion,
+                               CassetteRouteHandling routeHandling, Func<NancyContext> getCurrentContext)
+      : base(bundles, settings, cacheVersion)
     {
       if (getCurrentContext == null) throw new ArgumentNullException("getCurrentContext");
       this.getCurrentContext = getCurrentContext;
 
-      ((CassetteRouteHandling) routeHandling).InstallCassetteRouteHandlers(BundleContainer);
+      routeHandling.InstallCassetteRouteHandlers(BundleContainer);
     }
 
     protected override IReferenceBuilder GetOrCreateReferenceBuilder(Func<IReferenceBuilder> create)

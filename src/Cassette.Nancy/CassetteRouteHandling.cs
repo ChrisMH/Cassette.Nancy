@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Cassette;
 using Cassette.HtmlTemplates;
 using Cassette.Scripts;
 using Cassette.Stylesheets;
 using Cassette.Utilities;
+using Nancy;
 using Nancy.Extensions;
 using Utility.Logging;
 
@@ -15,14 +15,14 @@ namespace Cassette.Nancy
   {
     public CassetteRouteHandling(string applicationRoot, Func<NancyContext> getCurrentContext, ILogger logger)
     {
-      if(string.IsNullOrEmpty(applicationRoot)) throw new ArgumentNullException("applicationRoot");
+      if (string.IsNullOrEmpty(applicationRoot)) throw new ArgumentNullException("applicationRoot");
       if (getCurrentContext == null) throw new ArgumentNullException("getCurrentContext");
 
       this.applicationRoot = applicationRoot;
       this.getCurrentContext = getCurrentContext;
-      if(logger != null) this.logger = logger.GetCurrentClassLogger();
+      if (logger != null) this.logger = logger.GetCurrentClassLogger();
     }
-    
+
     #region IUrlGenerator
 
     public string CreateBundleUrl(Bundle bundle)
@@ -72,7 +72,7 @@ namespace Cassette.Nancy
       InstallBundleHandler<ScriptBundle>(bundleContainer);
       InstallBundleHandler<StylesheetBundle>(bundleContainer);
       InstallBundleHandler<HtmlTemplateBundle>(bundleContainer);
-      
+
       InstallAssetHandler(bundleContainer);
 
       InstallRawFileAssetHandler(bundleContainer);
@@ -86,7 +86,7 @@ namespace Cassette.Nancy
         .SingleOrDefault();
     }
 
-    
+
     private void InstallBundleHandler<T>(IBundleContainer bundleContainer)
       where T : Bundle
     {
@@ -110,7 +110,7 @@ namespace Cassette.Nancy
       if (logger != null) logger.Trace("Installed Cassette route handler for '{0}'", handlerRoot);
     }
 
-    
+
     private void InstallRawFileAssetHandler(IBundleContainer bundleContainer)
     {
       var handlerRoot = string.Format("/{0}/file", RoutePrefix);
@@ -119,7 +119,7 @@ namespace Cassette.Nancy
 
       if (logger != null) logger.Trace("Installed Cassette route handler for '{0}'", handlerRoot);
     }
-    
+
 
     private static string ConventionalBundlePathName(Type bundleType)
     {
@@ -138,7 +138,7 @@ namespace Cassette.Nancy
     {
       return path.Replace('\\', '/');
     }
-    
+
     private const string RoutePrefix = "_cassette";
 
     private readonly Func<NancyContext> getCurrentContext;

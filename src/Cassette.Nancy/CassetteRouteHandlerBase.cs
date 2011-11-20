@@ -1,5 +1,5 @@
 ﻿using System;
-using Cassette;
+using Nancy;
 using Utility.Logging;
 
 namespace Cassette.Nancy
@@ -13,7 +13,7 @@ namespace Cassette.Nancy
 
       BundleContainer = bundleContainer;
       HandlerRoot = handlerRoot;
-      if(logger != null) Logger = logger.GetCurrentClassLogger();
+      if (logger != null) Logger = logger.GetCurrentClassLogger();
     }
 
     public abstract Response ProcessRequest(NancyContext context);

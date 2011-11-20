@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Text.RegularExpressions;
-using Cassette;
+using Nancy;
 using Nancy.Responses;
 using Utility.Logging;
 
@@ -47,6 +47,5 @@ namespace Cassette.Nancy
       if (Logger != null) Logger.Trace("BundleRouteHandler.ProcessRequest : Returned response for '{0}'", context.Request.Url.Path);
       return response;
     }
-
   }
 }

@@ -1,4 +1,6 @@
-﻿namespace Cassette.Nancy
+﻿using Nancy;
+
+namespace Cassette.Nancy
 {
   internal interface ICassetteRouteHandler
   {
