@@ -104,7 +104,7 @@
     </ProjectReference>
     <ProjectReference Include="..\Cassette.Nancy\Cassette.Nancy.csproj">
       <Project>{7514833D-27E3-42B1-9BF7-CAE8CBAB0446}</Project>
-      <Name>Nancy.Cassette</Name>
+      <Name>Cassette.Nancy</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

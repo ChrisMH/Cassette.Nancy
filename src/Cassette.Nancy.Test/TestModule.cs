@@ -1,4 +1,6 @@
-﻿namespace Cassette.Nancy.Test
+﻿using Nancy;
+
+namespace Cassette.Nancy.Test
 {
   public class TestModule : NancyModule
   {

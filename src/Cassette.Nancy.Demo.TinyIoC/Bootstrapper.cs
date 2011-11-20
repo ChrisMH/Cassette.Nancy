@@ -1,5 +1,6 @@
-﻿using Nancy.Conventions;
-using Utility.Logging;
+﻿using Nancy;
+using Nancy.Conventions;
+using Cassette.Nancy;
 using Utility.Logging.NLog;
 
 namespace Cassette.Nancy.Demo.TinyIoC
@@ -9,7 +10,7 @@ namespace Cassette.Nancy.Demo.TinyIoC
     public Bootstrapper()
     {
       //CassetteStartup.ShouldOptimizeOutput = true;
-      Cassette.CassetteStartup.Logger = new NLogLoggerFactory().GetLogger("CassetteStartup");
+      CassetteStartup.Logger = new NLogLoggerFactory().GetLogger("CassetteStartup");
     }
     
     protected override void ApplicationStartup(global::TinyIoC.TinyIoCContainer container, global::Nancy.Bootstrapper.IPipelines pipelines)

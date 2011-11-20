@@ -6,7 +6,8 @@ using Utility.Logging;
 
 namespace Cassette.Nancy
 {
-  internal class BundleRouteHandler : CassetteRouteHandlerBase
+  internal class BundleRouteHandler<T> : CassetteRouteHandlerBase
+    where T : Bundle
   {
     public BundleRouteHandler(IBundleContainer bundleContainer, string handlerRoot, ILogger logger)
       : base(bundleContainer, handlerRoot, logger)
@@ -22,7 +23,7 @@ namespace Cassette.Nancy
 
       var path = Regex.Replace(string.Concat("~", context.Request.Url.Path.Remove(0, HandlerRoot.Length)), @"_[^_]+$", "");
 
-      var bundle = BundleContainer.FindBundleContainingPath(path);
+      var bundle = BundleContainer.FindBundleContainingPath<T>(path);
       if (bundle == null)
       {
         if (Logger != null) Logger.Error("BundleRouteHandler.ProcessRequest : Bundle not found for path '{0}'", context.Request.Url.Path);

@@ -1,4 +1,6 @@
-﻿namespace Cassette.Nancy.Demo.TinyIoC
+﻿using Nancy;
+
+namespace Cassette.Nancy.Demo.TinyIoC
 {
   public class MainNancyModule : NancyModule
   {

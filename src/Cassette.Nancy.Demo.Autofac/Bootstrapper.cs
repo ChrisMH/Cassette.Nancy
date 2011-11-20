@@ -1,7 +1,6 @@
 ﻿using Autofac;
 using Nancy.Bootstrappers.Autofac;
 using Nancy.Conventions;
-using Utility.Logging;
 using Utility.Logging.NLog;
 
 namespace Cassette.Nancy.Demo.Autofac
@@ -11,10 +10,10 @@ namespace Cassette.Nancy.Demo.Autofac
     public Bootstrapper()
     {
       //CassetteStartup.ShouldOptimizeOutput = true;
-      Cassette.CassetteStartup.Logger = new NLogLoggerFactory().GetLogger("CassetteStartup");
+      CassetteStartup.Logger = new NLogLoggerFactory().GetLogger("CassetteStartup");
     }
     
-    protected override void ApplicationStartup(ILifetimeScope container, Nancy.Bootstrapper.IPipelines pipelines)
+    protected override void ApplicationStartup(ILifetimeScope container, global::Nancy.Bootstrapper.IPipelines pipelines)
     {
       base.ApplicationStartup(container, pipelines);
       

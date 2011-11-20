@@ -1,5 +1,6 @@
 ﻿using System;
 using NUnit.Framework;
+using Nancy;
 using Nancy.Testing;
 
 namespace Cassette.Nancy.Test

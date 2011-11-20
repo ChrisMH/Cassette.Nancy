@@ -1,6 +1,6 @@
 ﻿using System;
-using HtmlAgilityPlus;
 using NUnit.Framework;
+using Nancy;
 using Nancy.Testing;
 
 namespace Cassette.Nancy.Test
@@ -15,7 +15,6 @@ namespace Cassette.Nancy.Test
       Console.Write(response.Body.AsString());
       
       Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-      
-    } 
+    }
   }
 }

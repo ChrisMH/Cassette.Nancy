@@ -1,4 +1,6 @@
-﻿namespace Cassette.Nancy.Demo.Autofac
+﻿using Nancy;
+
+namespace Cassette.Nancy.Demo.Autofac
 {
   public class MainNancyModule : NancyModule
   {

@@ -95,7 +95,7 @@ namespace Cassette.Nancy
         RoutePrefix,
         ConventionalBundlePathName(typeof (T)));
 
-      cassetteHandlers.Add(handlerRoot, context => new BundleRouteHandler(bundleContainer, handlerRoot, logger).ProcessRequest(context));
+      cassetteHandlers.Add(handlerRoot, context => new BundleRouteHandler<T>(bundleContainer, handlerRoot, logger).ProcessRequest(context));
 
       if (logger != null) logger.Trace("Installed Cassette route handler for '{0}'", handlerRoot);
     }

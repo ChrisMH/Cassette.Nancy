@@ -1,6 +1,7 @@
 ﻿using System;
 using HtmlAgilityPlus;
 using NUnit.Framework;
+using Nancy;
 using Nancy.Testing;
 
 namespace Cassette.Nancy.Test
@@ -24,6 +25,6 @@ namespace Cassette.Nancy.Test
       response = browser.Get(url, with => with.HttpRequest());
       Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
       Console.Write(response.Body.AsString());
-    } 
+    }
   }
 }

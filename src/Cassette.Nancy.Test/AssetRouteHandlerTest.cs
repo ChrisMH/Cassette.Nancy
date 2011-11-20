@@ -1,6 +1,7 @@
 ﻿using System;
 using HtmlAgilityPlus;
 using NUnit.Framework;
+using Nancy;
 using Nancy.Testing;
 
 namespace Cassette.Nancy.Test
