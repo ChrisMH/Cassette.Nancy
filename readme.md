@@ -1,4 +1,4 @@
-#Cassette
+#Cassette.Nancy
 Cassette integration into the Nancy web framework
 
 #Installation
