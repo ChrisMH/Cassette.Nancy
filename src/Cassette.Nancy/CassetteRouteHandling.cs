@@ -69,21 +69,29 @@ namespace Cassette.Nancy
 
     internal void InstallCassetteRouteHandlers(IBundleContainer bundleContainer)
     {
-      InstallBundleHandler<ScriptBundle>(bundleContainer);
-      InstallBundleHandler<StylesheetBundle>(bundleContainer);
-      InstallBundleHandler<HtmlTemplateBundle>(bundleContainer);
+      lock(cassetteHandlers)
+      {
+        cassetteHandlers.Clear();
 
-      InstallAssetHandler(bundleContainer);
+        InstallBundleHandler<ScriptBundle>(bundleContainer);
+        InstallBundleHandler<StylesheetBundle>(bundleContainer);
+        InstallBundleHandler<HtmlTemplateBundle>(bundleContainer);
 
-      InstallRawFileAssetHandler(bundleContainer);
+        InstallAssetHandler(bundleContainer);
+
+        InstallRawFileAssetHandler(bundleContainer);
+      }
     }
 
     internal Response RunCassetteRouteHandler(NancyContext context)
     {
-      return cassetteHandlers
-        .Where(kvp => context.Request.Url.Path.StartsWith(kvp.Key, StringComparison.InvariantCultureIgnoreCase))
-        .Select(kvp => kvp.Value.Invoke(context))
-        .SingleOrDefault();
+      lock(cassetteHandlers)
+      {
+        return cassetteHandlers
+          .Where(kvp => context.Request.Url.Path.StartsWith(kvp.Key, StringComparison.InvariantCultureIgnoreCase))
+          .Select(kvp => kvp.Value.Invoke(context))
+          .SingleOrDefault();
+      }
     }
 
 

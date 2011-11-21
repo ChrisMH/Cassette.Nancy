@@ -1,4 +1,4 @@
-﻿# reference "~/Scripts/lib"
+﻿# @reference "~/Scripts/lib"
 
 window.app = window.app ? {}
 window.app.layout = window.app.layout ? {}

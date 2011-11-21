@@ -105,7 +105,7 @@ namespace Cassette.Nancy
         configuration => new AssemblyName(configuration.GetType().Assembly.FullName).Version.ToString()
         ).Distinct();
 
-      var parts = assemblyVersion.Concat(new[] {applicationRoot});
+      var parts = assemblyVersion.Concat(new[] {applicationRoot.TrimEnd(new [] { '\\' } ).Replace('\\', '_')});
       return string.Join("|", parts);
     }
 
@@ -129,12 +129,17 @@ namespace Cassette.Nancy
         return;
       }
 
-      if (Logger != null) Logger.Trace("RewriteResponseContents : {0} : {1}", Thread.CurrentThread.ManagedThreadId, context.Request.Url.Path);
+      if(!context.Response.ContentType.Equals("text/html"))
+      {
+        // Only html needs to be (possibly) rewritten
+        return;
 
+      }
       var currentContents = context.Response.Contents;
       context.Response.Contents =
         stream =>
         {
+          if (Logger != null) Logger.Trace("RewriteResponseContents : {0} : {1} : content type = {2}", Thread.CurrentThread.ManagedThreadId, context.Request.Url.Path, context.Response.ContentType);
           var currentContentsStream = new MemoryStream();
           currentContents(currentContentsStream);
           currentContentsStream.Position = 0;

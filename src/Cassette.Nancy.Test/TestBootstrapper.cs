@@ -28,7 +28,7 @@ namespace Cassette.Nancy.Test
     protected override void ConfigureApplicationContainer(TinyIoC.TinyIoCContainer container)
     {
       base.ConfigureApplicationContainer(container);
-      FakeRootPathProvider.RootPath = System.IO.Path.Combine(FakeRootPathProvider.RootPath, "..\\..");
+      //FakeRootPathProvider.RootPath = System.IO.Path.Combine(FakeRootPathProvider.RootPath, "..\\..");
     }
 
     protected override void ApplicationStartup(global::TinyIoC.TinyIoCContainer container, global::Nancy.Bootstrapper.IPipelines pipelines)

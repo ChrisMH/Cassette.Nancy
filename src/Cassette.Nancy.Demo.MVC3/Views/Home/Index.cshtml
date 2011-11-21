@@ -1,0 +1,26 @@
+﻿@{
+  Bundles.Reference("Scripts/app");
+  Bundles.Reference("Styles");
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Cassette.Nancy</title>
+  @Bundles.RenderStylesheets()
+</head>
+<body>
+  <div id="header"><h1>Cassette.Nancy</h1></div>
+  <div id="body"><img src="@Url.Content("~/Images/kitten.jpg")" /></div>
+  <div id="footer">Copyright</div>
+
+  @Bundles.RenderScripts()
+  
+  <script type="text/javascript">
+    $(function () 
+    {
+      window.app.layout.init('div#header', 'div#body', 'div#footer');
+    });
+  </script>
+</body>
+</html>
