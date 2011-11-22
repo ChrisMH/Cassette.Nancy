@@ -1,5 +1,4 @@
 ﻿using System;
-using Cassette.Nancy;
 using Nancy;
 using Nancy.Conventions;
 using Nancy.Testing.Fakes;
@@ -24,7 +23,7 @@ namespace Cassette.Nancy.Test
     protected override void ConfigureApplicationContainer(TinyIoC.TinyIoCContainer container)
     {
       base.ConfigureApplicationContainer(container);
-      //FakeRootPathProvider.RootPath = System.IO.Path.Combine(FakeRootPathProvider.RootPath, "..\\..");
+      FakeRootPathProvider.RootPath = Utility.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..\\..");
     }
 
     protected override void ApplicationStartup(global::TinyIoC.TinyIoCContainer container, global::Nancy.Bootstrapper.IPipelines pipelines)
