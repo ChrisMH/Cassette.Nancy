@@ -13,7 +13,7 @@ Cassette on Nancy currently works with the Razor View Engine.
 
 4. Install the Nancy.ViewEngines.Razor and Nancy.Hosting.AspNet packages
 
-5. Modify the CassetteConfiguration (see http://http://getcassette.net/).  An empty configuration should be added by the Nuget package.
+5. Modify the CassetteConfiguration (see http://getcassette.net/).  An empty configuration should be added by the Nuget package.
 
 6. Add configuration to pull the Cassette namespace into the Razor view engine:
   <pre>&lt;configSections&gt;
@@ -31,7 +31,7 @@ Cassette on Nancy currently works with the Razor View Engine.
     
   Alternatively, implement the IRazorConfiguration interface and configure appropriately there.
   
-7. Start including and rendering modules in your Razor views.  Once again, see: http://http://getcassette.net/.  It works the same as is ASP.NET MVC3 Razor views, although you may need to @include Cassette.Views and @include Nancy at the top of your .cshtml to keep the preprocessor happy.
+7. Start including and rendering modules in your Razor views (see: http://getcassette.net/).  It works the same as is ASP.NET MVC3 Razor views, although you may need to @include Cassette.Views and @include Nancy at the top of your .cshtml to keep the preprocessor happy.
 
 #Customization
 
@@ -49,3 +49,25 @@ To turn optimized output on, set the CassetteStartup.ShouldOptimizeOutput attrib
   </pre>
 
 TODO: This should be a configuration setting, but I'm not sure how I want to do that yet.
+
+#Testing
+
+If you use Nancy's testing infrastructure, Cassette will not be able to find your assets because the unit test's project root will be different than your project's root.  Luckily, Nancy uses a pluggable object that serves up a root path.  In your test project, implement a bootstrapper, derived from your web application's bootstrapper if it has one, like so:
+
+  public class TestNancyBootstrapper : Client.Web.NancyBootstrapper 
+  {
+    public TestNancyBootstrapper()
+    {
+      // Set the root path for scripts, styles, views, etc. 
+      // FakeRootPathProvider is the IRootPathProvider Nancy uses when it is running in test mode
+      FakeRootPathProvider.RootPath = Utility.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\Client.Web");
+    }
+  }
+  
+  Use this bootstrapper in calls to Nancy.Testing's Browser class:
+  
+  var browser = new Browser(new TestNancyBootstrapper());
+  
+  In the above example I'm using a utility class that combines and canonicalize the path, but you can set it however you like.
+  
+  
