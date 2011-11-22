@@ -9,7 +9,7 @@ namespace Cassette.Nancy.Demo.Autofac
   {
     public Bootstrapper()
     {
-      //CassetteStartup.ShouldOptimizeOutput = true;
+      CassetteStartup.ShouldOptimizeOutput = true;
       CassetteStartup.Logger = new NLogLoggerFactory().GetLogger("CassetteStartup");
     }
     

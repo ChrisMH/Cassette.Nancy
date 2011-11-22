@@ -38,9 +38,9 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="Utility.Logging, Version=1.3.1.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Utility.Logging, Version=1.3.2.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Utility.Logging.1.3.1.0\lib\net40\Utility.Logging.dll</HintPath>
+      <HintPath>..\packages\Utility.Logging.1.3.2.0\lib\net40\Utility.Logging.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -72,10 +72,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\dependencies\cassette\src\Cassette.Views\Cassette.Views.csproj">
-      <Project>{3A021487-A395-4FE6-9B41-336D0F1E6AD0}</Project>
-      <Name>Cassette.Views</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\dependencies\cassette\src\Cassette\Cassette.csproj">
       <Project>{A5CCF9D3-5D49-4BFC-B9A6-9EC9E0E29C50}</Project>
       <Name>Cassette</Name>

@@ -14,10 +14,6 @@ namespace Cassette.Nancy.Test
       CassetteStartup.Logger = new NLogLoggerFactory().GetLogger("CassetteStartup");
     }
 
-    protected override void RequestStartup(TinyIoC.TinyIoCContainer container, global::Nancy.Bootstrapper.IPipelines pipelines)
-    {
-      base.RequestStartup(container, pipelines);
-    }
     protected override void ConfigureConventions(NancyConventions nancyConventions)
     {
       base.ConfigureConventions(nancyConventions);
@@ -34,8 +30,6 @@ namespace Cassette.Nancy.Test
     protected override void ApplicationStartup(global::TinyIoC.TinyIoCContainer container, global::Nancy.Bootstrapper.IPipelines pipelines)
     {
       base.ApplicationStartup(container, pipelines);
-
-
     }
   }
 }

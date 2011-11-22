@@ -37,9 +37,8 @@ namespace Cassette.Nancy
         if (Logger != null) Logger.Error("RawFileRouteHandler.ProcessRequest : Raw file does not exist '{0}'", filePath);
         return null;
       }
-      if (Logger != null) Logger.Debug("RawFileRouteHandler.ProcessRequest : Loading File: '{0}', MIME Type: {1}", filePath, MimeTypes.GetMimeType(filePath));
 
-      var response = new GenericFileResponse(filePath);// new StreamResponse(() => File.OpenRead(filePath), MimeTypes.GetMimeType(filePath));
+      var response = new StreamResponse(() => File.OpenRead(filePath), MimeTypes.GetMimeType(filePath));
       if (Logger != null) Logger.Trace("RawFileRouteHandler.ProcessRequest : Returned response for '{0}'", context.Request.Url.Path);
       return response;
     }

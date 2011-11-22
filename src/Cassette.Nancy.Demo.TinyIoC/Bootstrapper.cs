@@ -9,7 +9,7 @@ namespace Cassette.Nancy.Demo.TinyIoC
   {
     public Bootstrapper()
     {
-      //CassetteStartup.ShouldOptimizeOutput = true;
+      CassetteStartup.ShouldOptimizeOutput = true;
       CassetteStartup.Logger = new NLogLoggerFactory().GetLogger("CassetteStartup");
     }
     
