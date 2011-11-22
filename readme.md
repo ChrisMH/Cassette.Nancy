@@ -7,13 +7,13 @@ Cassette on Nancy currently works with the Razor View Engine.
 
 1. Create an empty web project
 
-2. Install the Cassette.Nancy NuGet package
+2. Install the Cassette.Nancy Nuget package
 
 3. Install the Cassette.Views package
 
 4. Install the Nancy.ViewEngines.Razor and Nancy.Hosting.AspNet packages
 
-5. Modify the CassetteConfiguration (see http://http://getcassette.net/).  An empty configuration should be added by Cassette's NuGet package.
+5. Modify the CassetteConfiguration (see http://http://getcassette.net/).  An empty configuration should be added by the Nuget package.
 
 6. Add configuration to pull the Cassette namespace into the Razor view engine:
   <pre>&lt;configSections&gt;

@@ -18,4 +18,7 @@
       <dependency id="Cassette" version="0.9.1" />
     </dependencies>
   </metadata>
+  <files>
+    <file src="..\..\dependencies\cassette\src\Cassette.Web\CassetteConfiguration.cs.pp" target="content"/>
+  </files>
 </package>
