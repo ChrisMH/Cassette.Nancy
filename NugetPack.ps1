@@ -3,9 +3,8 @@ $versionFile = 'SharedAssemblyInfo.cs' # relative to $srcRoot
 $outputPath = "$home\Dropbox\Packages"
 $scriptRoot = "$home\Dropbox\Scripts"
 
-. "$scriptRoot\New-Path.ps1" $outputPath
+Import-Module NugetUtilities
 
-$version = . "$scriptRoot\Get-Version.ps1" (Join-Path $srcRoot $versionFile -Resolve)
+$version = Get-Version (Join-Path $srcRoot $versionFile)
 
-. "$scriptRoot\Pack-Project.ps1" Cassette.Nancy $srcRoot $version $outputPath
-
+Pack-Project Cassette.Nancy $srcRoot $version $outputPath
