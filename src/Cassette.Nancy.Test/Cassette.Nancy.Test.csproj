@@ -85,6 +85,7 @@
     <None Include="app.config" />
     <None Include="nlog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
     <None Include="Styles\Main.less" />
