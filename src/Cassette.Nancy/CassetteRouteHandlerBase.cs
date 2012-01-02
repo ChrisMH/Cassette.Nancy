@@ -13,7 +13,7 @@ namespace Cassette.Nancy
 
       BundleContainer = bundleContainer;
       HandlerRoot = handlerRoot;
-      if (logger != null) Logger = logger.GetCurrentClassLogger();
+      Logger = logger;
     }
 
     public abstract Response ProcessRequest(NancyContext context);

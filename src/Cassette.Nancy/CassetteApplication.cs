@@ -10,9 +10,9 @@ namespace Cassette.Nancy
     public const string PlaceholderTrackerContextKey = "CassettePlaceholderTracker";
     public const string ReferenceBuilderContextKey = "CassetteReferenceBuilder";
 
-    public CassetteApplication(IEnumerable<Bundle> bundles, CassetteSettings settings, string cacheVersion,
+    public CassetteApplication(IEnumerable<Bundle> bundles, CassetteSettings settings,
                                CassetteRouteHandling routeHandling, Func<NancyContext> getCurrentContext)
-      : base(bundles, settings, cacheVersion)
+      : base(bundles, settings)
     {
       if (getCurrentContext == null) throw new ArgumentNullException("getCurrentContext");
       this.getCurrentContext = getCurrentContext;

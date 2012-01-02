@@ -34,17 +34,21 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AjaxMin">
-      <HintPath>..\packages\AjaxMin.4.19.4141.18463\lib\AjaxMin.dll</HintPath>
+    <Reference Include="AjaxMin, Version=4.37.4345.34101, Culture=neutral, PublicKeyToken=21ef50ce11b5d80f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\AjaxMin.4.37.4345.34101\lib\net20\AjaxMin.dll</HintPath>
     </Reference>
-    <Reference Include="Cassette">
-      <HintPath>..\packages\Cassette.0.9\lib\net40-Client\Cassette.dll</HintPath>
+    <Reference Include="Cassette, Version=1.0.0.21170, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Cassette.1.0.0\lib\net40-Client\Cassette.dll</HintPath>
     </Reference>
-    <Reference Include="Cassette.Views">
-      <HintPath>..\packages\Cassette.Views.0.9\lib\net40\Cassette.Views.dll</HintPath>
+    <Reference Include="Cassette.Views, Version=1.0.0.21171, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Cassette.Views.1.0.0\lib\net40\Cassette.Views.dll</HintPath>
     </Reference>
-    <Reference Include="Cassette.Web">
-      <HintPath>..\packages\Cassette.Web.0.9\lib\net40\Cassette.Web.dll</HintPath>
+    <Reference Include="Cassette.Web, Version=1.0.0.21172, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Cassette.Web.1.0.0\lib\net40\Cassette.Web.dll</HintPath>
     </Reference>
     <Reference Include="Jurassic">
       <HintPath>..\packages\Jurassic.2.1.1\lib\Jurassic.dll</HintPath>
@@ -53,8 +57,9 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.4.0.4\lib\net40\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=4.0.5.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.4.0.5\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
@@ -79,8 +84,9 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
-    <Reference Include="WebActivator">
-      <HintPath>..\packages\WebActivator.1.4.4\lib\net40\WebActivator.dll</HintPath>
+    <Reference Include="WebActivator, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\WebActivator.1.5\lib\net40\WebActivator.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
