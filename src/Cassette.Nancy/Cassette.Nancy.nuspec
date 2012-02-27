@@ -13,8 +13,9 @@
     <copyright>Copyright 2011</copyright>
     <tags>Cassette Nancy</tags>
     <dependencies>
-      <dependency id="Nancy" version="0.9.0" />
-      <dependency id="Cassette" version="0.9.5" />
+      <dependency id="Utility.Logging" version="1.4.0" />
+      <dependency id="Nancy" version="0.10.0" />
+      <dependency id="Cassette" version="1.1.0" />
     </dependencies>
   </metadata>
   <files>

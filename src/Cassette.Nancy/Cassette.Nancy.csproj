@@ -32,15 +32,16 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="Utility.Logging, Version=1.3.3.1, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Utility.Logging, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Utility.Logging.1.3.3.1\lib\net40\Utility.Logging.dll</HintPath>
+      <HintPath>..\packages\Utility.Logging.1.4.0.0\lib\net40\Utility.Logging.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -50,6 +51,7 @@
     <Compile Include="CassetteApplication.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="CassetteApplicationContainerFactory.cs" />
     <Compile Include="CassetteRouteHandlerBase.cs" />
     <Compile Include="CassetteStartup.cs">
       <SubType>Code</SubType>
@@ -64,6 +66,8 @@
     <Compile Include="BundleRouteHandler.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="InitialConfiguration.cs" />
+    <Compile Include="IsolatedStorageContainer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CassetteRouteHandling.cs">
       <SubType>Code</SubType>
@@ -81,9 +85,6 @@
       <Project>{34576216-0DCA-4B0F-A0DC-9075E75A676F}</Project>
       <Name>Nancy</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="lib\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

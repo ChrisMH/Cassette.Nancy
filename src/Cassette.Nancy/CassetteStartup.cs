@@ -18,7 +18,14 @@ namespace Cassette.Nancy
     public CassetteStartup(IRootPathProvider rootPathProvider)
     {
       this.rootPathProvider = rootPathProvider;
+
+      // This will trigger creation of the Cassette infrastructure at the time of the first request.
+      // The virtual directory is not known until that point, and the virtual directory is required for creation.
+      this.getApplication = InitializeApplication;
+      CassetteApplicationContainer.SetApplicationAccessor(getApplication);
+
       routeHandling = new CassetteRouteHandling(rootPathProvider.GetRootPath(), GetCurrentContext, Logger.GetLogger(typeof(CassetteRouteHandling)));
+
     }
 
     public IEnumerable<TypeRegistration> TypeRegistrations
@@ -37,13 +44,7 @@ namespace Cassette.Nancy
     }
 
     public void Initialize(IPipelines pipelines)
-    {
-      var applicationRoot = rootPathProvider.GetRootPath();
-
-      CassetteApplicationContainer.Instance = ShouldOptimizeOutput
-                               ? new CassetteApplicationContainer(CreateCassetteApplication)
-                               : new CassetteApplicationContainer(CreateCassetteApplication, applicationRoot);
-      
+    {            
       pipelines.BeforeRequest.AddItemToStartOfPipeline(RunCassetteHandler);
       pipelines.BeforeRequest.AddItemToStartOfPipeline(InitializeCassetteRequestState);
 
@@ -55,6 +56,7 @@ namespace Cassette.Nancy
       return currentContext.Value;
     }
 
+    /*
     private CassetteApplication CreateCassetteApplication()
     {
       var applicationRoot = rootPathProvider.GetRootPath();
@@ -105,11 +107,12 @@ namespace Cassette.Nancy
       var parts = assemblyVersion.Concat(new[] {applicationRoot.TrimEnd(new[] {'\\'}).Replace('\\', '_')});
       return string.Join("|", parts);
     }
+    */
 
     private Response InitializeCassetteRequestState(NancyContext context)
     {
       currentContext.Value = context;
-      return ((CassetteApplication) CassetteApplicationContainer.Instance.Application).InitPlaceholderTracker(context);
+      return ((CassetteApplication) CassetteApplicationContainer.Application).InitPlaceholderTracker(context);
     }
 
     private Response RunCassetteHandler(NancyContext context)
@@ -149,6 +152,39 @@ namespace Cassette.Nancy
             writer.Flush();
           };
     }
+    
+    private CassetteApplication InitializeApplication()
+    {
+      if(currentContext.Value == null) throw new ApplicationException("currentContext.Value must be set before InitializeApplication is called");
+
+      var applicationRoot = rootPathProvider.GetRootPath();
+      
+      var factory = new CassetteApplicationContainerFactory(
+        new AssemblyScanningCassetteConfigurationFactory(AppDomain.CurrentDomain.GetAssemblies()),
+                new CassetteConfigurationSection(),
+                applicationRoot,
+                currentContext.Value.Request.Path,
+                !ShouldOptimizeOutput,
+                GetCurrentContext,
+                routeHandling
+            );
+
+
+      container = factory.CreateContainer();
+
+      getApplication = GetApplication;
+      return container.Application;
+    }
+
+    private CassetteApplication GetApplication()
+    {
+      if (container == null) throw new ApplicationException("container must be set before GetApplication is called");
+
+      return container.Application;
+    }
+
+
+    private Func<CassetteApplication> getApplication;
 
     public static ILogger Logger { get; set; }
     public static bool ShouldOptimizeOutput { get; set; }
@@ -156,5 +192,8 @@ namespace Cassette.Nancy
     private readonly IRootPathProvider rootPathProvider;
     private readonly CassetteRouteHandling routeHandling;
     private readonly ThreadLocal<NancyContext> currentContext = new ThreadLocal<NancyContext>(() => null);
+
+
+    private CassetteApplicationContainer<CassetteApplication> container;
   }
 }

@@ -1,10 +1,31 @@
-$srcRoot = '.\src'                     # relative to script directory
-$versionFile = 'SharedAssemblyInfo.cs' # relative to $srcRoot
+# relative to script directory
+$srcRoot = '.\src'                       
+
+# relative to $srcRoot
+[string[]] $buildFiles = 'Cassette.Nancy\Cassette.Nancy.csproj'
+[string[]] $nuspecFiles = 'Cassette.Nancy\Cassette.Nancy.nuspec'
+$versionFile = 'SharedAssemblyInfo.cs'
+
+$buildConfiguration = 'Release'
 $outputPath = "$home\Dropbox\Packages"
-$scriptRoot = "$home\Dropbox\Scripts"
 
-Import-Module NugetUtilities
+Import-Module BuildUtilities
 
-$version = Get-Version (Join-Path $srcRoot $versionFile)
+$versionFile = Resolve-Path(Join-Path $srcRoot $versionFile)
 
-Pack-Project Cassette.Nancy $srcRoot $version $outputPath
+$version = Get-Version $versionFile
+  
+New-Path $outputPath
+
+
+foreach($buildFile in $buildFiles)
+{
+  Invoke-Build (Resolve-Path(Join-Path $srcRoot $buildFile)) $buildConfiguration
+}
+
+foreach($nuspecFile in $nuspecFiles)
+{
+  New-Package (Resolve-Path(Join-Path $srcRoot $nuspecFile)) $version $outputPath
+}
+
+Remove-Module BuildUtilities
