@@ -10,7 +10,7 @@ namespace Cassette.Nancy
     public const string ReferenceBuilderContextKey = "CassetteReferenceBuilder";
 
     public CassetteApplication(IBundleContainer bundleContainer, CassetteSettings settings,
-                               CassetteRouteHandling routeHandling, Func<NancyContext> getCurrentContext)
+                               CassetteRouteGenerator routeHandling, Func<NancyContext> getCurrentContext)
       : base(bundleContainer, settings)
     {
       if (getCurrentContext == null) throw new ArgumentNullException("getCurrentContext");

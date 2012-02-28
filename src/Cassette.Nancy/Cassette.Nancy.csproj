@@ -59,6 +59,7 @@
     <Compile Include="AssetRouteHandler.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="CassetteUrlModifier.cs" />
     <Compile Include="HudRouteHandler.cs" />
     <Compile Include="ICassetteRouteHandler.cs">
       <SubType>Code</SubType>
@@ -69,7 +70,7 @@
     <Compile Include="InitialConfiguration.cs" />
     <Compile Include="IsolatedStorageContainer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="CassetteRouteHandling.cs">
+    <Compile Include="CassetteRouteGenerator.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="RawFileRouteHandler.cs">

@@ -2,14 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Threading;
 using Cassette.Configuration;
-using Cassette.IO;
 using Nancy;
 using Nancy.Bootstrapper;
 using Utility.Logging;
-using IsolatedStorageFile = System.IO.IsolatedStorage.IsolatedStorageFile;
 
 namespace Cassette.Nancy
 {
@@ -24,27 +21,35 @@ namespace Cassette.Nancy
       this.getApplication = InitializeApplication;
       CassetteApplicationContainer.SetApplicationAccessor(getApplication);
 
-      routeHandling = new CassetteRouteHandling(rootPathProvider.GetRootPath(), GetCurrentContext, Logger.GetLogger(typeof(CassetteRouteHandling)));
-
+      routeGenerator = new CassetteRouteGenerator(rootPathProvider.GetRootPath(), GetCurrentContext, Logger.GetLogger(typeof(CassetteRouteGenerator)));
     }
 
     public IEnumerable<TypeRegistration> TypeRegistrations
     {
-      get { return null; }
+      get
+      {
+        return null;
+      }
     }
 
     public IEnumerable<CollectionTypeRegistration> CollectionTypeRegistrations
     {
-      get { return null; }
+      get
+      {
+        return null;
+      }
     }
 
     public IEnumerable<InstanceRegistration> InstanceRegistrations
     {
-      get { return null; }
+      get
+      {
+        return null;
+      }
     }
 
     public void Initialize(IPipelines pipelines)
-    {            
+    { 
       pipelines.BeforeRequest.AddItemToStartOfPipeline(RunCassetteHandler);
       pipelines.BeforeRequest.AddItemToStartOfPipeline(InitializeCassetteRequestState);
 
@@ -59,53 +64,53 @@ namespace Cassette.Nancy
     /*
     private CassetteApplication CreateCassetteApplication()
     {
-      var applicationRoot = rootPathProvider.GetRootPath();
-      var cacheFile = IsolatedStorageFile.GetMachineStoreForAssembly();
+    var applicationRoot = rootPathProvider.GetRootPath();
+    var cacheFile = IsolatedStorageFile.GetMachineStoreForAssembly();
 
-      var cassetteConfigurations = AppDomain.CurrentDomain
-        .GetAssemblies()
-        .SelectMany(a => a.GetTypes())
-        .Where(t => typeof (ICassetteConfiguration).IsAssignableFrom(t) && !t.IsInterface && !t.IsAbstract)
-        .Select(t => (ICassetteConfiguration) Activator.CreateInstance(t))
-        .ToList();
+    var cassetteConfigurations = AppDomain.CurrentDomain
+    .GetAssemblies()
+    .SelectMany(a => a.GetTypes())
+    .Where(t => typeof (ICassetteConfiguration).IsAssignableFrom(t) && !t.IsInterface && !t.IsAbstract)
+    .Select(t => (ICassetteConfiguration) Activator.CreateInstance(t))
+    .ToList();
 
-      var cacheVersion = GetConfigurationVersion(cassetteConfigurations, applicationRoot);
+    var cacheVersion = GetConfigurationVersion(cassetteConfigurations, applicationRoot);
 
-      var settings = new CassetteSettings(cacheVersion)
-                       {
-                         IsDebuggingEnabled = !ShouldOptimizeOutput,
-                         IsHtmlRewritingEnabled = true,
-                         SourceDirectory = new FileSystemDirectory(applicationRoot),
-                         CacheDirectory = new IsolatedStorageDirectory(cacheFile),
-                         UrlGenerator = routeHandling
-                       };
+    var settings = new CassetteSettings(cacheVersion)
+    {
+    IsDebuggingEnabled = !ShouldOptimizeOutput,
+    IsHtmlRewritingEnabled = true,
+    SourceDirectory = new FileSystemDirectory(applicationRoot),
+    CacheDirectory = new IsolatedStorageDirectory(cacheFile),
+    UrlGenerator = routeHandling
+    };
 
-      var bundles = new BundleCollection(settings);
+    var bundles = new BundleCollection(settings);
 
-      foreach (var cassetteConfiguration in cassetteConfigurations)
-      {
-        cassetteConfiguration.Configure(bundles, settings);
-      }
+    foreach (var cassetteConfiguration in cassetteConfigurations)
+    {
+    cassetteConfiguration.Configure(bundles, settings);
+    }
 
-      if (Logger != null) Logger.Trace("Creating Cassette application object");
-      if (Logger != null) Logger.Trace("IsDebuggingEnabled: {0}", settings.IsDebuggingEnabled);
-      if (Logger != null) Logger.Trace("Cache version: {0}", cacheVersion);
+    if (Logger != null) Logger.Trace("Creating Cassette application object");
+    if (Logger != null) Logger.Trace("IsDebuggingEnabled: {0}", settings.IsDebuggingEnabled);
+    if (Logger != null) Logger.Trace("Cache version: {0}", cacheVersion);
 
-      return new CassetteApplication(
-        bundles,
-        settings,
-        routeHandling,
-        GetCurrentContext);
+    return new CassetteApplication(
+    bundles,
+    settings,
+    routeHandling,
+    GetCurrentContext);
     }
 
     private static string GetConfigurationVersion(IEnumerable<ICassetteConfiguration> configurations, string applicationRoot)
     {
-      var assemblyVersion = configurations.Select(
-        configuration => new AssemblyName(configuration.GetType().Assembly.FullName).Version.ToString()
-        ).Distinct();
+    var assemblyVersion = configurations.Select(
+    configuration => new AssemblyName(configuration.GetType().Assembly.FullName).Version.ToString()
+    ).Distinct();
 
-      var parts = assemblyVersion.Concat(new[] {applicationRoot.TrimEnd(new[] {'\\'}).Replace('\\', '_')});
-      return string.Join("|", parts);
+    var parts = assemblyVersion.Concat(new[] {applicationRoot.TrimEnd(new[] {'\\'}).Replace('\\', '_')});
+    return string.Join("|", parts);
     }
     */
 
@@ -117,9 +122,8 @@ namespace Cassette.Nancy
 
     private Response RunCassetteHandler(NancyContext context)
     {
-      return routeHandling.RunCassetteRouteHandler(context);
+      return routeGenerator.RunCassetteRouteHandler(context);
     }
-
 
     public void RewriteResponseContents(NancyContext context)
     {
@@ -137,38 +141,37 @@ namespace Cassette.Nancy
       var currentContents = context.Response.Contents;
       context.Response.Contents =
         stream =>
-          {
-            if (Logger != null)
-              Logger.Trace("RewriteResponseContents : {0} : {1} : content type = {2}", Thread.CurrentThread.ManagedThreadId, context.Request.Url.Path,
-                           context.Response.ContentType);
-            var currentContentsStream = new MemoryStream();
-            currentContents(currentContentsStream);
-            currentContentsStream.Position = 0;
+        {
+          if (Logger != null)
+            Logger.Trace("RewriteResponseContents : {0} : {1} : content type = {2}", Thread.CurrentThread.ManagedThreadId, context.Request.Url.Path,
+              context.Response.ContentType);
+          var currentContentsStream = new MemoryStream();
+          currentContents(currentContentsStream);
+          currentContentsStream.Position = 0;
 
-            var reader = new StreamReader(currentContentsStream);
+          var reader = new StreamReader(currentContentsStream);
 
-            var writer = new StreamWriter(stream);
-            writer.Write(((IPlaceholderTracker) context.Items[CassetteApplication.PlaceholderTrackerContextKey]).ReplacePlaceholders(reader.ReadToEnd()));
-            writer.Flush();
-          };
+          var writer = new StreamWriter(stream);
+          writer.Write(((IPlaceholderTracker) context.Items[CassetteApplication.PlaceholderTrackerContextKey]).ReplacePlaceholders(reader.ReadToEnd()));
+          writer.Flush();
+        };
     }
     
     private CassetteApplication InitializeApplication()
     {
-      if(currentContext.Value == null) throw new ApplicationException("currentContext.Value must be set before InitializeApplication is called");
+      if (currentContext.Value == null)
+        throw new ApplicationException("currentContext.Value must be set before InitializeApplication is called");
 
       var applicationRoot = rootPathProvider.GetRootPath();
       
       var factory = new CassetteApplicationContainerFactory(
         new AssemblyScanningCassetteConfigurationFactory(AppDomain.CurrentDomain.GetAssemblies()),
-                new CassetteConfigurationSection(),
-                applicationRoot,
-                currentContext.Value.Request.Path,
-                !ShouldOptimizeOutput,
-                GetCurrentContext,
-                routeHandling
-            );
-
+        new CassetteConfigurationSection(),
+        applicationRoot,
+        "/",
+        !ShouldOptimizeOutput,
+        GetCurrentContext,
+        routeGenerator);
 
       container = factory.CreateContainer();
 
@@ -178,11 +181,11 @@ namespace Cassette.Nancy
 
     private CassetteApplication GetApplication()
     {
-      if (container == null) throw new ApplicationException("container must be set before GetApplication is called");
+      if (container == null)
+        throw new ApplicationException("container must be set before GetApplication is called");
 
       return container.Application;
     }
-
 
     private Func<CassetteApplication> getApplication;
 
@@ -190,9 +193,8 @@ namespace Cassette.Nancy
     public static bool ShouldOptimizeOutput { get; set; }
 
     private readonly IRootPathProvider rootPathProvider;
-    private readonly CassetteRouteHandling routeHandling;
+    private readonly CassetteRouteGenerator routeGenerator;
     private readonly ThreadLocal<NancyContext> currentContext = new ThreadLocal<NancyContext>(() => null);
-
 
     private CassetteApplicationContainer<CassetteApplication> container;
   }

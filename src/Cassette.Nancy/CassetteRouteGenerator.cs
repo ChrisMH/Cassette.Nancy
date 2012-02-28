@@ -11,9 +11,9 @@ using Utility.Logging;
 
 namespace Cassette.Nancy
 {
-  internal class CassetteRouteHandling : IUrlGenerator
+  internal class CassetteRouteGenerator : IUrlGenerator
   {
-    public CassetteRouteHandling(string applicationRoot, Func<NancyContext> getCurrentContext, ILogger logger)
+    public CassetteRouteGenerator(string applicationRoot, Func<NancyContext> getCurrentContext, ILogger logger)
     {
       if (string.IsNullOrEmpty(applicationRoot)) throw new ArgumentNullException("applicationRoot");
       if (getCurrentContext == null) throw new ArgumentNullException("getCurrentContext");
