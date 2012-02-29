@@ -14,6 +14,8 @@ namespace Cassette.Nancy
   {
     public CassetteStartup(IRootPathProvider rootPathProvider)
     {
+      if(Logger != null) Logger.Trace("CassetteStartup");
+
       this.rootPathProvider = rootPathProvider;
 
       // This will trigger creation of the Cassette infrastructure at the time of the first request.
@@ -50,6 +52,8 @@ namespace Cassette.Nancy
 
     public void Initialize(IPipelines pipelines)
     { 
+      if(Logger != null) Logger.Trace("Initialize");
+
       pipelines.BeforeRequest.AddItemToStartOfPipeline(RunCassetteHandler);
       pipelines.BeforeRequest.AddItemToStartOfPipeline(InitializeCassetteRequestState);
 
@@ -146,19 +150,38 @@ namespace Cassette.Nancy
             Logger.Trace("RewriteResponseContents : {0} : {1} : content type = {2}", Thread.CurrentThread.ManagedThreadId, context.Request.Url.Path,
               context.Response.ContentType);
           var currentContentsStream = new MemoryStream();
+
           currentContents(currentContentsStream);
-          currentContentsStream.Position = 0;
 
           var reader = new StreamReader(currentContentsStream);
 
+          if (Logger != null)
+          {
+            reader.BaseStream.Seek(0, SeekOrigin.Begin);
+            Logger.Trace("RewriteResponseContents : {0} : Original Contents: \r\n {1}", Thread.CurrentThread.ManagedThreadId, reader.ReadToEnd());
+          }
+
+
+          reader.BaseStream.Seek(0, SeekOrigin.Begin);
           var writer = new StreamWriter(stream);
           writer.Write(((IPlaceholderTracker) context.Items[CassetteApplication.PlaceholderTrackerContextKey]).ReplacePlaceholders(reader.ReadToEnd()));
           writer.Flush();
+
+
+          if (Logger != null)
+          {
+            var outputReader = new StreamReader(stream);
+            outputReader.BaseStream.Seek(0, SeekOrigin.Begin);
+            Logger.Trace("RewriteResponseContents : {0} : Rewritten Contents: \r\n {1}", Thread.CurrentThread.ManagedThreadId, outputReader.ReadToEnd());
+          }
+
         };
     }
     
     private CassetteApplication InitializeApplication()
     {
+      Logger.Trace("InitializeApplication");
+
       if (currentContext.Value == null)
         throw new ApplicationException("currentContext.Value must be set before InitializeApplication is called");
 
