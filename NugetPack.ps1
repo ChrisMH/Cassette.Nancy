@@ -18,10 +18,10 @@ $version = Get-Version $versionFile
 New-Path $outputPath
 
 
-foreach($buildFile in $buildFiles)
-{
-  Invoke-Build (Resolve-Path(Join-Path $srcRoot $buildFile)) $buildConfiguration
-}
+#foreach($buildFile in $buildFiles)
+#{
+#  Invoke-Build (Resolve-Path(Join-Path $srcRoot $buildFile)) $buildConfiguration
+#}
 
 foreach($nuspecFile in $nuspecFiles)
 {

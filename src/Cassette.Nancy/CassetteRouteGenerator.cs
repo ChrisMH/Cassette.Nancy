@@ -92,7 +92,23 @@ namespace Cassette.Nancy
         return cassetteHandlers
           .Where(kvp => context.Request.Url.Path.StartsWith(kvp.Key, StringComparison.InvariantCultureIgnoreCase))
           .Select(kvp => kvp.Value.Invoke(context))
-          .SingleOrDefault();
+          .SingleOrDefault(r => r != null);
+        /*
+          Response firstResponse = null;
+          foreach(var cassetteHandler in cassetteHandlers)
+          {
+            if(context.Request.Url.Path.StartsWith(cassetteHandler.Key, StringComparison.InvariantCultureIgnoreCase))
+            {
+              var response = cassetteHandler.Value.Invoke(context);
+              if(firstResponse == null)
+              {
+                firstResponse = response;
+              }
+            }
+          }
+          return firstResponse;
+         * 
+         */
       }
     }
 

@@ -3,35 +3,36 @@ Cassette integration into the Nancy web framework
 
 #Installation
 
+NOTE: Dependency on Cassette.Views has been removed.  If upgrading an existing installation, you can remove that Nuget package.
+
 Cassette on Nancy currently works with the Razor View Engine.
 
 1. Create an empty web project
 
-2. Install the Cassette.Nancy Nuget package
+2. Install the Cassette.Nancy Nuget package (this references Cassette, Nancy and Nancy.ViewEngines.Razor, so those will be installed, too)
 
-3. Install the Cassette.Views package
+4. Install the  Nancy.Hosting.AspNet packages
 
-4. Install the Nancy.ViewEngines.Razor and Nancy.Hosting.AspNet packages
+5. Modify the CassetteConfiguration (see http://getcassette.net/).  A default configuration should be added by the Nuget package.
 
-5. Modify the CassetteConfiguration (see http://getcassette.net/).  An empty configuration should be added by the Nuget package.
+6. The web.config file should have been modified to include the Cassette & Cassette.Nancy namespaces, looking like:
 
-6. Add configuration to pull the Cassette namespace into the Razor view engine:
   <pre>&lt;configSections&gt;
       &lt;section name="razor" type="Nancy.ViewEngines.Razor.RazorConfigurationSection, Nancy.ViewEngines.Razor"/&gt;
     &lt;/configSections&gt;
     &lt;razor disableAutoIncludeModelNamespace="true"&gt;
       &lt;assemblies&gt;
         &lt;add assembly="Cassette"/&gt;
-        &lt;add assembly="Cassette.Views"/&gt;
+        &lt;add assembly="Cassette.Nancy"/&gt;
       &lt;/assemblies&gt;
       &lt;namespaces&gt;
-        &lt;add namespace="Cassette.Views"/&gt;
+        &lt;add namespace="Cassette.Nancy"/&gt;
       &lt;/namespaces&gt;
     &lt;/razor&gt;</pre>
     
-  Alternatively, implement the IRazorConfiguration interface and configure appropriately there.
+  Alternatively, you could implement the IRazorConfiguration interface and configure appropriately there.
   
-7. Start including and rendering modules in your Razor views (see: http://getcassette.net/).  It works the same as is ASP.NET MVC3 Razor views, although you may need to @include Cassette.Views and @include Nancy at the top of your .cshtml to keep the preprocessor happy.
+7. Start including and rendering modules in your Razor views (see: http://getcassette.net/).  It works the same as is ASP.NET MVC3 Razor views, although you may need to @include Cassette.Nancy and at the top of your .cshtml to keep the preprocessor happy.
 
 #Customization
 

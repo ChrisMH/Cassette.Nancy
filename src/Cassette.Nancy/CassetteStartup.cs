@@ -155,11 +155,11 @@ namespace Cassette.Nancy
 
           var reader = new StreamReader(currentContentsStream);
 
-          if (Logger != null)
-          {
-            reader.BaseStream.Seek(0, SeekOrigin.Begin);
-            Logger.Trace("RewriteResponseContents : {0} : Original Contents: \r\n {1}", Thread.CurrentThread.ManagedThreadId, reader.ReadToEnd());
-          }
+          //if (Logger != null)
+          //{
+          //  reader.BaseStream.Seek(0, SeekOrigin.Begin);
+          //  Logger.Trace("RewriteResponseContents : {0} : Original Contents: \r\n {1}", Thread.CurrentThread.ManagedThreadId, reader.ReadToEnd());
+          //}
 
 
           reader.BaseStream.Seek(0, SeekOrigin.Begin);
@@ -168,12 +168,12 @@ namespace Cassette.Nancy
           writer.Flush();
 
 
-          if (Logger != null)
-          {
-            var outputReader = new StreamReader(stream);
-            outputReader.BaseStream.Seek(0, SeekOrigin.Begin);
-            Logger.Trace("RewriteResponseContents : {0} : Rewritten Contents: \r\n {1}", Thread.CurrentThread.ManagedThreadId, outputReader.ReadToEnd());
-          }
+          //if (Logger != null)
+          //{
+          //  var outputReader = new StreamReader(stream);
+          //  outputReader.BaseStream.Seek(0, SeekOrigin.Begin);
+          //  Logger.Trace("RewriteResponseContents : {0} : Rewritten Contents: \r\n {1}", Thread.CurrentThread.ManagedThreadId, outputReader.ReadToEnd());
+          //}
 
         };
     }

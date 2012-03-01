@@ -89,10 +89,6 @@
     <None Include="Views\RazorHome.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\dependencies\cassette\src\Cassette.Views\Cassette.Views.csproj">
-      <Project>{3A021487-A395-4FE6-9B41-336D0F1E6AD0}</Project>
-      <Name>Cassette.Views</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\dependencies\cassette\src\Cassette\Cassette.csproj">
       <Project>{A5CCF9D3-5D49-4BFC-B9A6-9EC9E0E29C50}</Project>
       <Name>Cassette</Name>
@@ -111,7 +107,7 @@
     </ProjectReference>
     <ProjectReference Include="..\Cassette.Nancy\Cassette.Nancy.csproj">
       <Project>{7514833D-27E3-42B1-9BF7-CAE8CBAB0446}</Project>
-      <Name>Nancy.Cassette</Name>
+      <Name>Cassette.Nancy</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

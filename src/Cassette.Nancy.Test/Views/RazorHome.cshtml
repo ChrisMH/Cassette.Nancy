@@ -1,7 +1,6 @@
-﻿@using Cassette.Views
-@using Nancy
+﻿@using Cassette.Nancy
 @{
-  //Bundles.Reference("Scripts/app");
+  Bundles.Reference("Scripts/app");
   Bundles.Reference("Styles");
 }
 
@@ -9,14 +8,14 @@
 <html>
 <head>
   <title>Cassette.Nancy</title>
-  @*@Bundles.RenderStylesheets()*@
+  @Bundles.RenderStylesheets()
 </head>
 <body>
   <div id="header"><h1>Cassette.Nancy</h1></div>
   <div id="body"><img src="@Url.Content("~/Images/kitten.jpg")" /></div>
   <div id="footer">Copyright</div>
 
-  @*@Bundles.RenderScripts()*@
+  @Bundles.RenderScripts()
   
   <script type="text/javascript">
     $(function () {
