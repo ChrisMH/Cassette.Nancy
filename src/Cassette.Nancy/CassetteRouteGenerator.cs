@@ -7,20 +7,18 @@ using Cassette.Stylesheets;
 using Cassette.Utilities;
 using Nancy;
 using Nancy.Extensions;
-using Utility.Logging;
 
 namespace Cassette.Nancy
 {
   internal class CassetteRouteGenerator : IUrlGenerator
   {
-    public CassetteRouteGenerator(string applicationRoot, Func<NancyContext> getCurrentContext, ILogger logger)
+    public CassetteRouteGenerator(string applicationRoot, Func<NancyContext> getCurrentContext)
     {
       if (string.IsNullOrEmpty(applicationRoot)) throw new ArgumentNullException("applicationRoot");
       if (getCurrentContext == null) throw new ArgumentNullException("getCurrentContext");
 
       this.applicationRoot = applicationRoot;
       this.getCurrentContext = getCurrentContext;
-      this.logger = logger;
     }
 
     #region IUrlGenerator
@@ -122,10 +120,9 @@ namespace Cassette.Nancy
         ConventionalBundlePathName(typeof (T)));
 
       cassetteHandlers.Add(handlerRoot,
-                           context => new BundleRouteHandler<T>(bundleContainer, handlerRoot,
-                                                                logger.GetLogger(typeof (BundleRouteHandler<T>))).ProcessRequest(context));
+                           context => new BundleRouteHandler<T>(bundleContainer, handlerRoot).ProcessRequest(context));
 
-      if (logger != null) logger.Trace("Installed Cassette route handler for '{0}'", handlerRoot);
+      //if (logger != null) logger.Trace("Installed Cassette route handler for '{0}'", handlerRoot);
     }
 
 
@@ -134,10 +131,9 @@ namespace Cassette.Nancy
       var handlerRoot = string.Format("/{0}/asset", RoutePrefix);
 
       cassetteHandlers.Add(handlerRoot,
-                           context => new AssetRouteHandler(bundleContainer, handlerRoot,
-                                                            logger.GetLogger(typeof (AssetRouteHandler))).ProcessRequest(context));
+                           context => new AssetRouteHandler(bundleContainer, handlerRoot).ProcessRequest(context));
 
-      if (logger != null) logger.Trace("Installed Cassette route handler for '{0}'", handlerRoot);
+      //if (logger != null) logger.Trace("Installed Cassette route handler for '{0}'", handlerRoot);
     }
 
 
@@ -147,10 +143,9 @@ namespace Cassette.Nancy
 
       cassetteHandlers.Add(handlerRoot,
                            context =>
-                           new RawFileRouteHandler(bundleContainer, handlerRoot,
-                                                   logger.GetLogger(typeof (RawFileRouteHandler)), applicationRoot).ProcessRequest(context));
+                           new RawFileRouteHandler(bundleContainer, handlerRoot, applicationRoot).ProcessRequest(context));
 
-      if (logger != null) logger.Trace("Installed Cassette route handler for '{0}'", handlerRoot);
+      //if (logger != null) logger.Trace("Installed Cassette route handler for '{0}'", handlerRoot);
     }
 
     private void InstallHudHandler()
@@ -158,10 +153,9 @@ namespace Cassette.Nancy
       var handlerRoot = string.Format("/{0}", RoutePrefix);
 
       cassetteHandlers.Add(handlerRoot,
-                           context => new HudRouteHandler(handlerRoot,
-                                                          logger.GetLogger(typeof (HudRouteHandler))).ProcessRequest(context));
+                           context => new HudRouteHandler(handlerRoot).ProcessRequest(context));
 
-      if (logger != null) logger.Trace("Installed Cassette route handler for '{0}'", handlerRoot);
+      //if (logger != null) logger.Trace("Installed Cassette route handler for '{0}'", handlerRoot);
     }
 
     private static string ConventionalBundlePathName(Type bundleType)
@@ -187,6 +181,5 @@ namespace Cassette.Nancy
     private readonly Func<NancyContext> getCurrentContext;
     private readonly string applicationRoot;
     private readonly SortedDictionary<string, Func<NancyContext, Response>> cassetteHandlers = new SortedDictionary<string, Func<NancyContext, Response>>();
-    private readonly ILogger logger;
   }
 }

@@ -6,7 +6,6 @@ using System.Threading;
 using Cassette.Configuration;
 using Nancy;
 using Nancy.Bootstrapper;
-using Utility.Logging;
 
 namespace Cassette.Nancy
 {
@@ -14,8 +13,6 @@ namespace Cassette.Nancy
   {
     public CassetteStartup(IRootPathProvider rootPathProvider)
     {
-      if(Logger != null) Logger.Trace("CassetteStartup");
-
       this.rootPathProvider = rootPathProvider;
 
       // This will trigger creation of the Cassette infrastructure at the time of the first request.
@@ -23,7 +20,7 @@ namespace Cassette.Nancy
       this.getApplication = InitializeApplication;
       CassetteApplicationContainer.SetApplicationAccessor(getApplication);
 
-      routeGenerator = new CassetteRouteGenerator(rootPathProvider.GetRootPath(), GetCurrentContext, Logger.GetLogger(typeof(CassetteRouteGenerator)));
+      routeGenerator = new CassetteRouteGenerator(rootPathProvider.GetRootPath(), GetCurrentContext);
     }
 
     public IEnumerable<TypeRegistration> TypeRegistrations
@@ -52,8 +49,6 @@ namespace Cassette.Nancy
 
     public void Initialize(IPipelines pipelines)
     { 
-      if(Logger != null) Logger.Trace("Initialize");
-
       pipelines.BeforeRequest.AddItemToStartOfPipeline(RunCassetteHandler);
       pipelines.BeforeRequest.AddItemToStartOfPipeline(InitializeCassetteRequestState);
 
@@ -146,9 +141,9 @@ namespace Cassette.Nancy
       context.Response.Contents =
         stream =>
         {
-          if (Logger != null)
-            Logger.Trace("RewriteResponseContents : {0} : {1} : content type = {2}", Thread.CurrentThread.ManagedThreadId, context.Request.Url.Path,
-              context.Response.ContentType);
+          //if (Logger != null)
+          //  Logger.Trace("RewriteResponseContents : {0} : {1} : content type = {2}", Thread.CurrentThread.ManagedThreadId, context.Request.Url.Path,
+          //    context.Response.ContentType);
           var currentContentsStream = new MemoryStream();
 
           currentContents(currentContentsStream);
@@ -180,8 +175,6 @@ namespace Cassette.Nancy
     
     private CassetteApplication InitializeApplication()
     {
-      Logger.Trace("InitializeApplication");
-
       if (currentContext.Value == null)
         throw new ApplicationException("currentContext.Value must be set before InitializeApplication is called");
 
@@ -212,7 +205,6 @@ namespace Cassette.Nancy
 
     private Func<CassetteApplication> getApplication;
 
-    public static ILogger Logger { get; set; }
     public static bool ShouldOptimizeOutput { get; set; }
 
     private readonly IRootPathProvider rootPathProvider;

@@ -3,15 +3,14 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Nancy;
 using Nancy.Responses;
-using Utility.Logging;
 
 namespace Cassette.Nancy
 {
   internal class BundleRouteHandler<T> : CassetteRouteHandlerBase
     where T : Bundle
   {
-    public BundleRouteHandler(IBundleContainer bundleContainer, string handlerRoot, ILogger logger)
-      : base(bundleContainer, handlerRoot, logger)
+    public BundleRouteHandler(IBundleContainer bundleContainer, string handlerRoot)
+      : base(bundleContainer, handlerRoot)
     {
     }
 
@@ -27,7 +26,7 @@ namespace Cassette.Nancy
       var bundles = BundleContainer.FindBundlesContainingPath(path).ToList();
       if (bundles == null || bundles.Count != 1)
       {
-        if (Logger != null) Logger.Error("BundleRouteHandler.ProcessRequest : Bundle not found for path '{0}'", context.Request.Url.Path);
+        //if (Logger != null) Logger.Error("BundleRouteHandler.ProcessRequest : Bundle not found for path '{0}'", context.Request.Url.Path);
         return null;
       }
 
@@ -46,7 +45,7 @@ namespace Cassette.Nancy
       */
 
       var response = new StreamResponse(() => bundles[0].Assets[0].OpenStream(), bundles[0].ContentType);
-      if (Logger != null) Logger.Trace("BundleRouteHandler.ProcessRequest : Returned response for '{0}'", context.Request.Url.Path);
+      //if (Logger != null) Logger.Trace("BundleRouteHandler.ProcessRequest : Returned response for '{0}'", context.Request.Url.Path);
       return response;
     }
   }

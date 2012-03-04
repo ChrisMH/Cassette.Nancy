@@ -3,14 +3,13 @@ using System.IO;
 using System.Text.RegularExpressions;
 using Nancy;
 using Nancy.Responses;
-using Utility.Logging;
 
 namespace Cassette.Nancy
 {
   internal class RawFileRouteHandler : CassetteRouteHandlerBase
   {
-    public RawFileRouteHandler(IBundleContainer bundleContainer, string handlerRoot, ILogger logger, string applicationRoot)
-      : base(bundleContainer, handlerRoot, logger)
+    public RawFileRouteHandler(IBundleContainer bundleContainer, string handlerRoot, string applicationRoot)
+      : base(bundleContainer, handlerRoot)
     {
       this.applicationRoot = applicationRoot;
     }
@@ -26,7 +25,7 @@ namespace Cassette.Nancy
       var match = Regex.Match(path, @"^(?<filename>.*)_[a-z0-9]+_(?<extension>[a-z]+)$", RegexOptions.IgnoreCase);
       if (match.Success == false)
       {
-        if (Logger != null) Logger.Error("RawFileRouteHandler.ProcessRequest : Invalid file path in URL '{0}'", path);
+        //if (Logger != null) Logger.Error("RawFileRouteHandler.ProcessRequest : Invalid file path in URL '{0}'", path);
         return null;
       }
       var extension = match.Groups["extension"].Value;
@@ -34,12 +33,12 @@ namespace Cassette.Nancy
       var filePath = Path.Combine(applicationRoot, string.Concat(match.Groups["filename"].Value, ".", extension).Replace('/', '\\'));
       if (!File.Exists(filePath))
       {
-        if (Logger != null) Logger.Error("RawFileRouteHandler.ProcessRequest : Raw file does not exist '{0}'", filePath);
+        //if (Logger != null) Logger.Error("RawFileRouteHandler.ProcessRequest : Raw file does not exist '{0}'", filePath);
         return null;
       }
 
       var response = new StreamResponse(() => File.OpenRead(filePath), MimeTypes.GetMimeType(filePath));
-      if (Logger != null) Logger.Trace("RawFileRouteHandler.ProcessRequest : Returned response for '{0}'", context.Request.Url.Path);
+      //if (Logger != null) Logger.Trace("RawFileRouteHandler.ProcessRequest : Returned response for '{0}'", context.Request.Url.Path);
       return response;
     }
 

@@ -1,16 +1,16 @@
 ﻿using System;
+using System.Linq;
 using Nancy;
 using Nancy.Conventions;
 using Nancy.Testing.Fakes;
-using Utility.Logging.NLog;
 
 namespace Cassette.Nancy.Test
 {
-  public class TestBootstrapper : DefaultNancyBootstrapper
+  public class OptimizingBootstrapper : DefaultNancyBootstrapper
   {
-    public TestBootstrapper()
+    public OptimizingBootstrapper()
     {
-      CassetteStartup.Logger = new NLogLoggerFactory().GetLogger("CassetteStartup");
+      CassetteStartup.ShouldOptimizeOutput = true;
     }
 
     protected override void ConfigureConventions(NancyConventions nancyConventions)
@@ -24,11 +24,6 @@ namespace Cassette.Nancy.Test
     {
       base.ConfigureApplicationContainer(container);
       FakeRootPathProvider.RootPath = Utility.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..\\..");
-    }
-
-    protected override void ApplicationStartup(global::TinyIoC.TinyIoCContainer container, global::Nancy.Bootstrapper.IPipelines pipelines)
-    {
-      base.ApplicationStartup(container, pipelines);
     }
   }
 }

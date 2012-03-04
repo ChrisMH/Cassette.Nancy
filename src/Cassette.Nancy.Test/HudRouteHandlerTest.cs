@@ -11,7 +11,7 @@ namespace Cassette.Nancy.Test
     [Test]
     public void HudIsReturned()
     {
-      var browser = new Browser(new TestBootstrapper());
+      var browser = new Browser(new NonOptimizingBootstrapper());
       var response = browser.Get("/_cassette", with => with.HttpRequest());
       Console.Write(response.Body.AsString());
 

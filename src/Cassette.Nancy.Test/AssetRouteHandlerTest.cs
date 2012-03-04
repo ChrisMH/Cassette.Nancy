@@ -11,7 +11,7 @@ namespace Cassette.Nancy.Test
     [Test]
     public void CssFileIsReturned()
     {
-      var browser = new Browser(new TestBootstrapper());
+      var browser = new Browser(new NonOptimizingBootstrapper());
       var response = browser.Get("/RazorHome", with => with.HttpRequest());
       Console.Write(response.Body.AsString());
 
@@ -27,7 +27,7 @@ namespace Cassette.Nancy.Test
     [Test]
     public void LessFileIsReturned()
     {
-      var browser = new Browser(new TestBootstrapper());
+      var browser = new Browser(new NonOptimizingBootstrapper());
       var response = browser.Get("/RazorHome", with => with.HttpRequest());
       Console.Write(response.Body.AsString());
 
@@ -42,7 +42,7 @@ namespace Cassette.Nancy.Test
     [Test]
     public void JsFileIsReturned()
     {
-      var browser = new Browser(new TestBootstrapper());
+      var browser = new Browser(new NonOptimizingBootstrapper());
       var response = browser.Get("/RazorHome", with => with.HttpRequest());
       Console.Write(response.Body.AsString());
 
@@ -57,7 +57,7 @@ namespace Cassette.Nancy.Test
     [Test]
     public void CoffeeFileIsReturned()
     {
-      var browser = new Browser(new TestBootstrapper());
+      var browser = new Browser(new NonOptimizingBootstrapper());
       var response = browser.Get("/RazorHome", with => with.HttpRequest());
       Console.Write(response.Body.AsString());
       

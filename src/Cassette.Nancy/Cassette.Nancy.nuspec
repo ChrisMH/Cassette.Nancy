@@ -16,7 +16,6 @@
       <dependency id="Cassette" version="1.1.0" />
       <dependency id="Nancy" version="0.10.0" />
       <dependency id="Nancy.ViewEngines.Razor" version="0.10.0" />
-      <dependency id="Utility.Logging" version="1.4.0" />
     </dependencies>
   </metadata>
   <files>

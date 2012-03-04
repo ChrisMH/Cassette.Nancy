@@ -13,8 +13,7 @@ namespace Cassette.Nancy.Test
     [TestCase("body", "script", "src", "/_cassette/scriptbundle/Scripts/app")]
     public void BundleIsReturned(string location, string element, string attribute, string urlFragmet)
     {
-      CassetteStartup.ShouldOptimizeOutput = true;
-      var browser = new Browser(new TestBootstrapper());
+      var browser = new Browser(new OptimizingBootstrapper());
       var response = browser.Get("/RazorHome", with => with.HttpRequest());
       Console.Write(response.Body.AsString());
       

@@ -1,14 +1,12 @@
 ﻿using Nancy;
-using Utility.Logging;
 
 namespace Cassette.Nancy
 {
   public class HudRouteHandler
   {
-    public HudRouteHandler(string handlerRoot, ILogger logger)
+    public HudRouteHandler(string handlerRoot)
     {
       HandlerRoot = handlerRoot;
-      Logger = logger;
     }
 
     public Response ProcessRequest(NancyContext context)
@@ -17,6 +15,5 @@ namespace Cassette.Nancy
     }
 
     protected string HandlerRoot { get; private set; }
-    protected ILogger Logger { get; private set; }
   }
 }
