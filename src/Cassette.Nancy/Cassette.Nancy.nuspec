@@ -13,7 +13,7 @@
     <copyright>Copyright 2011</copyright>
     <tags>Cassette Nancy</tags>
     <dependencies>
-      <dependency id="Cassette" version="1.1.0" />
+      <dependency id="Cassette" version="1.2.0" />
       <dependency id="Nancy" version="0.10.0" />
       <dependency id="Nancy.ViewEngines.Razor" version="0.10.0" />
     </dependencies>
