@@ -37,8 +37,39 @@ namespace Cassette.Nancy.Test
       response = browser.Get(url, with => with.HttpRequest());
       Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
       Console.Write(response.Body.AsString());
+    }
 
-    }    
+    [Test]
+    public void ScssFileIsReturned()
+    {
+      var browser = new Browser(new NonOptimizingBootstrapper());
+      var response = browser.Get("/RazorHome", with => with.HttpRequest());
+      Console.Write(response.Body.AsString());
+
+      var query = new SharpQuery(response.Body.AsString());
+      var url = query.Find("head link[href^='/_cassette/asset/Styles/Main.scss?']").Attr("href");
+
+      response = browser.Get(url, with => with.HttpRequest());
+      Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+      Console.Write(response.Body.AsString());
+    }
+
+    [Test]
+    public void SassFileIsReturned()
+    {
+      var browser = new Browser(new NonOptimizingBootstrapper());
+      var response = browser.Get("/RazorHome", with => with.HttpRequest());
+      Console.Write(response.Body.AsString());
+
+      var query = new SharpQuery(response.Body.AsString());
+      var url = query.Find("head link[href^='/_cassette/asset/Styles/Main.sass?']").Attr("href");
+
+      response = browser.Get(url, with => with.HttpRequest());
+      Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+      Console.Write(response.Body.AsString());
+    } 
+
+
     [Test]
     public void JsFileIsReturned()
     {
