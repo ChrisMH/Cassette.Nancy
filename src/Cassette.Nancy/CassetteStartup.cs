@@ -18,7 +18,7 @@ namespace Cassette.Nancy
       // This will trigger creation of the Cassette infrastructure at the time of the first request.
       // The virtual directory is not known until that point, and the virtual directory is required for creation.
       this.getApplication = InitializeApplication;
-      CassetteApplicationContainer.SetApplicationAccessor(getApplication);
+      CassetteApplicationContainer.SetApplicationAccessor(() => getApplication());
 
       routeGenerator = new CassetteRouteGenerator(rootPathProvider.GetRootPath(), GetCurrentContext);
     }
