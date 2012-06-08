@@ -18,7 +18,7 @@ namespace Cassette.Nancy
       // This will trigger creation of the Cassette infrastructure at the time of the first request.
       // The virtual directory is not known until that point, and the virtual directory is required for creation.
       this.getApplication = InitializeApplication;
-      CassetteApplicationContainer.SetApplicationAccessor(getApplication);
+      CassetteApplicationContainer.SetApplicationAccessor(() => getApplication());
 
       routeGenerator = new CassetteRouteGenerator(rootPathProvider.GetRootPath(), GetCurrentContext);
     }
@@ -178,21 +178,26 @@ namespace Cassette.Nancy
       if (currentContext.Value == null)
         throw new ApplicationException("currentContext.Value must be set before InitializeApplication is called");
 
-      var applicationRoot = rootPathProvider.GetRootPath();
+      lock (initializeApplicationLock) {
+        if (container != null)
+          return container.Application;
+
+        var applicationRoot = rootPathProvider.GetRootPath();
       
-      var factory = new CassetteApplicationContainerFactory(
-        new AssemblyScanningCassetteConfigurationFactory(AppDomain.CurrentDomain.GetAssemblies()),
-        new CassetteConfigurationSection(),
-        applicationRoot,
-        "/",
-        !ShouldOptimizeOutput,
-        GetCurrentContext,
-        routeGenerator);
+        var factory = new CassetteApplicationContainerFactory(
+          new AssemblyScanningCassetteConfigurationFactory(AppDomain.CurrentDomain.GetAssemblies()),
+          new CassetteConfigurationSection(),
+          applicationRoot,
+          "/",
+          !ShouldOptimizeOutput,
+          GetCurrentContext,
+          routeGenerator);
 
-      container = factory.CreateContainer();
+        container = factory.CreateContainer();
 
-      getApplication = GetApplication;
-      return container.Application;
+        getApplication = GetApplication;
+        return container.Application;
+      }
     }
 
     private CassetteApplication GetApplication()
@@ -212,5 +217,6 @@ namespace Cassette.Nancy
     private readonly ThreadLocal<NancyContext> currentContext = new ThreadLocal<NancyContext>(() => null);
 
     private CassetteApplicationContainer<CassetteApplication> container;
+    private static object initializeApplicationLock = new object();
   }
 }
