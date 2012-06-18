@@ -46,35 +46,10 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Bundles.cs" />
-    <Compile Include="CassetteApplication.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="CassetteApplicationContainerFactory.cs" />
-    <Compile Include="CassetteRouteHandlerBase.cs" />
-    <Compile Include="CassetteStartup.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="AssetRouteHandler.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="CassetteUrlModifier.cs" />
-    <Compile Include="HudRouteHandler.cs" />
-    <Compile Include="ICassetteRouteHandler.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="BundleRouteHandler.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="InitialConfiguration.cs" />
-    <Compile Include="IsolatedStorageContainer.cs" />
+    <Compile Include="NancyCassetteStartup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="CassetteRouteGenerator.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="RawFileRouteHandler.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="WebHost.cs" />
+    <Compile Include="WebHostSettingsConfiguration.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\dependencies\cassette\src\Cassette\Cassette.csproj">
