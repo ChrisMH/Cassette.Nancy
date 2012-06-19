@@ -39,6 +39,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\AjaxMin.4.55.4545.19776\lib\net20\AjaxMin.dll</HintPath>
     </Reference>
+    <Reference Include="Jurassic">
+      <HintPath>..\packages\Jurassic.2.1.1\lib\Jurassic.dll</HintPath>
+    </Reference>
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Web.WebPages, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
@@ -106,6 +109,10 @@
     <ProjectReference Include="..\..\dependencies\cassette\src\Cassette.Aspnet\Cassette.Aspnet.csproj">
       <Project>{8C1F1C72-86AD-4280-9AF6-8685A2A8F060}</Project>
       <Name>Cassette.Aspnet</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\dependencies\cassette\src\Cassette.CoffeeScript\Cassette.CoffeeScript.csproj">
+      <Project>{C9A552DA-83EB-4479-BAB6-C40B6091E3D4}</Project>
+      <Name>Cassette.CoffeeScript</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\dependencies\cassette\src\Cassette.Views\Cassette.Views.csproj">
       <Project>{3A021487-A395-4FE6-9B41-336D0F1E6AD0}</Project>

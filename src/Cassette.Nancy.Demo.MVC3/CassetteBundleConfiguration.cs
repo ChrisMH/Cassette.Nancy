@@ -13,7 +13,7 @@ namespace Cassette.Nancy.Demo.MVC3
       // This default configuration treats each file as a separate 'bundle'.
       // In production the content will be minified, but the files are not combined.
       // So you probably want to tweak these defaults!
-      bundles.AddPerIndividualFile<StylesheetBundle>("Styles");
+      bundles.Add<StylesheetBundle>("Styles");
       bundles.AddPerSubDirectory<ScriptBundle>("Scripts");
 
       // To combine files, try something like this instead:

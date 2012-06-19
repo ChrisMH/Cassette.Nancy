@@ -1,11 +1,8 @@
 using Cassette.Scripts;
 using Cassette.Stylesheets;
 
-namespace Cassette.Nancy.Demo.TinyIoC
+namespace Cassette.Nancy.Demo.Autofac
 {
-  /// <summary>
-  /// Configures the Cassette asset bundles for the web application.
-  /// </summary>
   public class CassetteBundleConfiguration : IConfiguration<BundleCollection>
   {
     public void Configure(BundleCollection bundles)
@@ -29,5 +26,4 @@ namespace Cassette.Nancy.Demo.TinyIoC
       // This is useful when there are lots of scripts for different areas of the website.
     }
   }
-
 }
