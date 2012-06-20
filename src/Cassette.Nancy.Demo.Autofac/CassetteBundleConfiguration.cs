@@ -1,6 +1,3 @@
-using Cassette.Scripts;
-using Cassette.Stylesheets;
-
 namespace Cassette.Nancy.Demo.Autofac
 {
   public class CassetteBundleConfiguration : IConfiguration<BundleCollection>
