@@ -85,7 +85,9 @@
     <Content Include="Styles\Main.css" />
     <Content Include="Styles\Main.sass" />
     <Content Include="Styles\Main.scss" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>

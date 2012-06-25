@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Cassette.Nancy
 {
-  class CassetteUrlModifier : IUrlModifier
+  class UrlModifier : IUrlModifier
   {
     public string Modify(string url)
     {

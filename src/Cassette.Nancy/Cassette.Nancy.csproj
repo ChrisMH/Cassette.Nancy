@@ -49,8 +49,13 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Bundles.cs" />
+    <Compile Include="BundlesHelper.cs" />
+    <Compile Include="IBundlesHelper.cs" />
     <Compile Include="CassetteNancyStartup.cs" />
     <Compile Include="CassetteRequestHandler.cs" />
+    <Compile Include="UrlModifier.cs" />
+    <Compile Include="HandlerPathPrepender.cs" />
     <Compile Include="IsolatedStorageContainer.cs" />
     <Compile Include="NancyContextLifetimeProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
