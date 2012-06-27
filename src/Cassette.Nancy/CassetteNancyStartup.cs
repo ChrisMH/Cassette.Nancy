@@ -16,10 +16,6 @@ namespace Cassette.Nancy
     {
       this.rootPathProvider = rootPathProvider;
       this.loggerFactory = loggerFactory;
-      this.logger = loggerFactory.GetCurrentInstanceLogger();
-
-      webHost = new WebHost(rootPathProvider, () => currentContext.Value, loggerFactory);
-      webHost.Initialize();
     }
 
     public IEnumerable<TypeRegistration> TypeRegistrations
@@ -39,7 +35,6 @@ namespace Cassette.Nancy
 
     public void Initialize(IPipelines pipelines)
     {
-
       pipelines.BeforeRequest.AddItemToStartOfPipeline(RunCassetteRequestHandler);
 
       pipelines.AfterRequest.AddItemToEndOfPipeline(RewriteResponseContents);
@@ -48,6 +43,15 @@ namespace Cassette.Nancy
     private Response RunCassetteRequestHandler(NancyContext context)
     {
       currentContext.Value = context;
+
+      // Some parts of WebHost initialization require a valid NancyContext, so defer
+      // creation of the WebHost until the first request hits the pipeline.
+      if(webHost == null)
+      {
+        webHost = new WebHost(rootPathProvider, () => currentContext.Value, loggerFactory);
+        webHost.Initialize();
+      }
+
       return webHost.RunCassetteRequestHandler(context);
     }
 
@@ -64,6 +68,5 @@ namespace Cassette.Nancy
     private WebHost webHost;
 
     private readonly ILoggerFactory loggerFactory;
-    private readonly ILogger logger;
   }
 }

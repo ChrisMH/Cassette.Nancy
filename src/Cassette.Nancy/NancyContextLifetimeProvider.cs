@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Cassette.TinyIoC;
 using Nancy;
@@ -14,7 +15,14 @@ namespace Cassette.Nancy
 
     public override object GetObject()
     {
-      return getContext().Items[keyName];
+      try
+      { 
+        return getContext().Items[keyName];
+      }
+      catch(KeyNotFoundException)
+      {
+        return null;
+      }
     }
 
     public override void SetObject(object value)

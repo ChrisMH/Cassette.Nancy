@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
+using Cassette.TinyIoC;
 using Nancy;
 using Nancy.Bootstrapper;
 using Utility.Logging;
@@ -19,49 +21,40 @@ namespace Cassette.Nancy
 
     public Response RunCassetteRequestHandler(NancyContext context)
     {
+      logger.Info("RunCassetteRequestHandler : {0}", context.Request.Path);
+      if (context.Request.Path.StartsWith(AssetRequestHandler.PathPrefix))
+      {
+        var handler = Container.Resolve<ICassetteRequestHandler>(AssetRequestHandler.PathPrefix);
+        return handler.ProcessRequest(context);
+      }
+
       return null;
     }
 
     public void RewriteResponseContents(NancyContext context)
     {
-      /*
-      if (!context.Items.ContainsKey(CassetteApplication.PlaceholderTrackerContextKey))
-      {
-      // InitializePlaceholderTracker was not called for this request.  Do not attempt to rewrite.
-      return;
-      }
       if (!context.Response.ContentType.Equals("text/html"))
       {
-      // Only html needs to be (possibly) rewritten
-      return;
+        // Only html needs to be (possibly) rewritten
+        return;
       }
       var currentContents = context.Response.Contents;
       context.Response.Contents =
-      stream =>
-      {
-      //if (Logger != null)
-      //  Logger.Trace("RewriteResponseContents : {0} : {1} : content type = {2}", Thread.CurrentThread.ManagedThreadId, context.Request.Url.Path,
-      //    context.Response.ContentType);
-      var currentContentsStream = new MemoryStream();
-      currentContents(currentContentsStream);
-      var reader = new StreamReader(currentContentsStream);
-      //if (Logger != null)
-      //{
-      //  reader.BaseStream.Seek(0, SeekOrigin.Begin);
-      //  Logger.Trace("RewriteResponseContents : {0} : Original Contents: \r\n {1}", Thread.CurrentThread.ManagedThreadId, reader.ReadToEnd());
-      //}
-      reader.BaseStream.Seek(0, SeekOrigin.Begin);
-      var writer = new StreamWriter(stream);
-      writer.Write(((IPlaceholderTracker)context.Items[CassetteApplication.PlaceholderTrackerContextKey]).ReplacePlaceholders(reader.ReadToEnd()));
-      writer.Flush();
-      //if (Logger != null)
-      //{
-      //  var outputReader = new StreamReader(stream);
-      //  outputReader.BaseStream.Seek(0, SeekOrigin.Begin);
-      //  Logger.Trace("RewriteResponseContents : {0} : Rewritten Contents: \r\n {1}", Thread.CurrentThread.ManagedThreadId, outputReader.ReadToEnd());
-      //}
-      };
-      */
+        stream =>
+        { 
+          var placeholderTracker = Container.Resolve<IPlaceholderTracker>();
+
+          var currentContentsStream = new MemoryStream();
+          currentContents(currentContentsStream);
+          var reader = new StreamReader(currentContentsStream);
+
+          reader.BaseStream.Seek(0, SeekOrigin.Begin);
+          var writer = new StreamWriter(stream);
+          
+          writer.Write(placeholderTracker.ReplacePlaceholders(reader.ReadToEnd()));
+          
+          writer.Flush();
+        };
     }
      
     protected override IEnumerable<Assembly> LoadAssemblies()
@@ -86,7 +79,11 @@ namespace Cassette.Nancy
 
     protected override void ConfigureContainer()
     {
-      Container.Register<IUrlModifier>((c, p) => new UrlModifier());
+      Container.Register<IUrlModifier>((c, p) => new UrlModifier(getContext));
+
+      Container.Register<ICassetteRequestHandler, AssetRequestHandler>(AssetRequestHandler.PathPrefix)
+               .AsPerRequestSingleton(CreateRequestLifetimeProvider());
+
       base.ConfigureContainer();
     }
     

@@ -6,7 +6,7 @@ namespace Cassette.Nancy.Test
   {
     public void Configure(BundleCollection configurable)
     {
-      //bundles.Add<StylesheetBundle>("Styles");
+      //configurable.Add<StylesheetBundle>("Styles");
       configurable.AddPerSubDirectory<ScriptBundle>("Scripts");
     }
   }

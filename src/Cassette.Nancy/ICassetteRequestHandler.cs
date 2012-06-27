@@ -2,7 +2,7 @@
 
 namespace Cassette.Nancy
 {
-  internal interface ICassetteRouteHandler
+  internal interface ICassetteRequestHandler
   {
     Response ProcessRequest(NancyContext context);
   }
