@@ -15,7 +15,7 @@ namespace Cassette.Nancy.Test
 
       Assert.Equal(HttpStatusCode.OK, result.StatusCode);
       Console.Write(result.Body.AsString());
-      result.Body["head link[href^='/_cassette/asset/Styles/Main.css?']"].ShouldExistOnce();
+      result.Body["head link[href^='/asset/Styles/Main.css?']"].ShouldExistOnce();
     }
 
     [Fact]
@@ -26,9 +26,9 @@ namespace Cassette.Nancy.Test
 
       Assert.Equal(HttpStatusCode.OK, result.StatusCode);
       Console.Write(result.Body.AsString());
-      result.Body["body script[src^='/_cassette/asset/Scripts/lib/jquery-1.7.js?']"].ShouldExistOnce();
-      result.Body["body script[src^='/_cassette/asset/Scripts/lib/underscore.js?']"].ShouldExistOnce();
-      result.Body["body script[src^='/_cassette/asset/Scripts/app/layout.coffee?']"].ShouldExistOnce();
+      result.Body["body script[src^='/asset/Scripts/lib/jquery-1.7.js?']"].ShouldExistOnce();
+      result.Body["body script[src^='/asset/Scripts/lib/underscore.js?']"].ShouldExistOnce();
+      result.Body["body script[src^='/asset/Scripts/app/layout.coffee?']"].ShouldExistOnce();
     }
 
     [Fact]

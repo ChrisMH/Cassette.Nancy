@@ -20,6 +20,7 @@ namespace Cassette.Nancy
       configurable.AllowRemoteDiagnostics = true;
       configurable.SourceDirectory = new FileSystemDirectory(rootPathProvider.GetRootPath());
       configurable.CacheDirectory = new IsolatedStorageDirectory(() => IsolatedStorageContainer.IsolatedStorageFile);
+      
 
       // Include the virtual directory so that if the application is moved to 
       // another virtual directory the bundles will be rebuilt with the updated URLs.

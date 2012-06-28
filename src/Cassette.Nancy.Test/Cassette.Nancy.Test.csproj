@@ -31,11 +31,21 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AjaxMin, Version=4.56.4560.33404, Culture=neutral, PublicKeyToken=21ef50ce11b5d80f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\AjaxMin.4.56.4560.33404\lib\net20\AjaxMin.dll</HintPath>
+    </Reference>
     <Reference Include="HtmlAgilityPack">
       <HintPath>..\..\dependencies\Nancy\dependencies\htmlagilitypack\HtmlAgilityPack.dll</HintPath>
     </Reference>
     <Reference Include="HtmlAgilityPlus">
       <HintPath>..\..\dependencies\Nancy\dependencies\htmlagilitypack\HtmlAgilityPlus.dll</HintPath>
+    </Reference>
+    <Reference Include="Jurassic">
+      <HintPath>..\packages\Jurassic.2.1.1\lib\Jurassic.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.4.5.7\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NLog">
       <HintPath>..\packages\NLog.2.0.0.2000\lib\net40\NLog.dll</HintPath>
@@ -48,21 +58,16 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="Utility, Version=0.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Utility, Version=0.7.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Utility.0.7.0.0\lib\net40\Utility.dll</HintPath>
-    </Reference>
-    <Reference Include="Utility.Logging">
-      <HintPath>..\packages\Utility.Logging.1.4.2.2\lib\net40\Utility.Logging.dll</HintPath>
-    </Reference>
-    <Reference Include="Utility.Logging.NLog">
-      <HintPath>..\packages\Utility.Logging.NLog.1.4.2.2\lib\net40\Utility.Logging.NLog.dll</HintPath>
+      <HintPath>..\packages\Utility.0.7.1.0\lib\net40\Utility.dll</HintPath>
     </Reference>
     <Reference Include="xunit">
       <HintPath>..\packages\xunit.1.9.0.1566\lib\xunit.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AssetRequestHandlerTest.cs" />
     <Compile Include="OptimizingBootstrapper.cs" />
     <Compile Include="TestCassetteBundleConfigurationToo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -74,15 +79,20 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="nlog.config">
+    <Content Include="nlog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <SubType>Designer</SubType>
-    </None>
+      <SubType>
+      </SubType>
+    </Content>
     <None Include="packages.config" />
     <None Include="Styles\Main.less" />
     <None Include="Views\RazorHome.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\dependencies\cassette\src\Cassette.CoffeeScript\Cassette.CoffeeScript.csproj">
+      <Project>{C9A552DA-83EB-4479-BAB6-C40B6091E3D4}</Project>
+      <Name>Cassette.CoffeeScript</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\dependencies\cassette\src\Cassette\Cassette.csproj">
       <Project>{A5CCF9D3-5D49-4BFC-B9A6-9EC9E0E29C50}</Project>
       <Name>Cassette</Name>

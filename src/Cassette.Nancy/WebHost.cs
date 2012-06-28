@@ -6,17 +6,20 @@ using System.Reflection;
 using Cassette.TinyIoC;
 using Nancy;
 using Nancy.Bootstrapper;
-using Utility.Logging;
 
 namespace Cassette.Nancy
 {
   public class WebHost : HostBase
   {
-    public WebHost(IRootPathProvider rootPathProvider, Func<NancyContext> getContext, ILoggerFactory loggerFactory)
+    private readonly IRootPathProvider rootPathProvider;
+    private readonly Func<NancyContext> getContext;
+    private readonly NLog.Logger logger;
+
+    public WebHost(IRootPathProvider rootPathProvider, Func<NancyContext> getContext)
     {
       this.rootPathProvider = rootPathProvider;
       this.getContext = getContext;
-      this.logger = loggerFactory.GetCurrentInstanceLogger();
+      this.logger = NLog.LogManager.GetCurrentClassLogger();
     }
 
     public Response RunCassetteRequestHandler(NancyContext context)
@@ -87,8 +90,5 @@ namespace Cassette.Nancy
       base.ConfigureContainer();
     }
     
-    private readonly IRootPathProvider rootPathProvider;
-    private readonly Func<NancyContext> getContext;
-    private readonly ILogger logger;
   }
 }

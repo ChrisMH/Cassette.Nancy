@@ -2,8 +2,6 @@
 using Nancy;
 using Nancy.Conventions;
 using Nancy.Testing.Fakes;
-using Utility.Logging;
-using Utility.Logging.NLog;
 
 namespace Cassette.Nancy.Test
 {
@@ -17,7 +15,7 @@ namespace Cassette.Nancy.Test
     protected override void ConfigureApplicationContainer(global::TinyIoC.TinyIoCContainer container)
     {
       base.ConfigureApplicationContainer(container);
-      container.Register<ILoggerFactory>((c, p) => new NLogLoggerFactory());
+
       FakeRootPathProvider.RootPath = Utility.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..\\..");
     }
 

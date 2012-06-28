@@ -33,6 +33,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="NLog">
+      <HintPath>..\packages\NLog.2.0.0.2000\lib\net40\NLog.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
@@ -41,9 +44,6 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="Utility.Logging">
-      <HintPath>..\packages\Utility.Logging.1.4.2.2\lib\net40\Utility.Logging.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\SharedAssemblyInfo.cs">
@@ -54,7 +54,6 @@
     <Compile Include="BundlesHelper.cs" />
     <Compile Include="IBundlesHelper.cs" />
     <Compile Include="CassetteNancyStartup.cs" />
-    <Compile Include="CassetteRequestHandler.cs" />
     <Compile Include="ICassetteRequestHandler.cs" />
     <Compile Include="UrlModifier.cs" />
     <Compile Include="HandlerPathPrepender.cs" />

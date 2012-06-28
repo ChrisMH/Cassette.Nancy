@@ -13,15 +13,16 @@
     <copyright>Copyright 2011</copyright>
     <tags>Cassette Nancy</tags>
     <dependencies>
-      <dependency id="Cassette" version="1.2.0" />
-      <dependency id="Nancy" version="0.10.0" />
-      <dependency id="Nancy.ViewEngines.Razor" version="0.10.0" />
+      <dependency id="Cassette"/>
+      <dependency id="Nancy"/>
+      <dependency id="Nancy.ViewEngines.Razor"/>
+      <dependency id="NLog"/>
     </dependencies>
   </metadata>
   <files>
     <file src="bin\Release\Cassette.Nancy.dll" target="lib\net40" />
     <file src="bin\Release\Cassette.Nancy.pdb" target="lib\net40" />
-    <file src="..\..\dependencies\cassette\src\Cassette.Web\CassetteConfiguration.cs.pp" target="content"/>
+    <file src="..\..\dependencies\cassette\src\Cassette.Aspnet\CassetteConfiguration.cs.pp" target="content"/>
     <file src="web.config.transform" target="content" />
   </files>
 </package>

@@ -1,14 +1,14 @@
 ﻿using System;
 using HtmlAgilityPlus;
-using NUnit.Framework;
 using Nancy;
 using Nancy.Testing;
+using Xunit;
 
 namespace Cassette.Nancy.Test
 {
-  public class AssetRouteHandlerTest
+  public class AssetRequestHandlerTest
   {
-    [Test]
+    [Fact]
     public void CssFileIsReturned()
     {
       var browser = new Browser(new NonOptimizingBootstrapper());
@@ -16,15 +16,15 @@ namespace Cassette.Nancy.Test
       Console.Write(response.Body.AsString());
 
       var query = new SharpQuery(response.Body.AsString());
-      var url = query.Find("head link[href^='/_cassette/asset/Styles/Main.css?']").Attr("href");
+      var url = query.Find("head link[href^='/asset/Styles/Main.css?']").Attr("href");
       
       response = browser.Get(url, with => with.HttpRequest());
-      Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+      Assert.Equal(HttpStatusCode.OK, response.StatusCode);
       Console.Write(response.Body.AsString());
 
     }
 
-    [Test]
+    [Fact]
     public void LessFileIsReturned()
     {
       var browser = new Browser(new NonOptimizingBootstrapper());
@@ -32,14 +32,14 @@ namespace Cassette.Nancy.Test
       Console.Write(response.Body.AsString());
 
       var query = new SharpQuery(response.Body.AsString());
-      var url = query.Find("head link[href^='/_cassette/asset/Styles/Main.less?']").Attr("href");
+      var url = query.Find("head link[href^='/asset/Styles/Main.less?']").Attr("href");
       
       response = browser.Get(url, with => with.HttpRequest());
-      Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+      Assert.Equal(HttpStatusCode.OK, response.StatusCode);
       Console.Write(response.Body.AsString());
     }
 
-    [Test]
+    [Fact]
     public void ScssFileIsReturned()
     {
       var browser = new Browser(new NonOptimizingBootstrapper());
@@ -47,14 +47,14 @@ namespace Cassette.Nancy.Test
       Console.Write(response.Body.AsString());
 
       var query = new SharpQuery(response.Body.AsString());
-      var url = query.Find("head link[href^='/_cassette/asset/Styles/Main.scss?']").Attr("href");
+      var url = query.Find("head link[href^='/asset/Styles/Main.scss?']").Attr("href");
 
       response = browser.Get(url, with => with.HttpRequest());
-      Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+      Assert.Equal(HttpStatusCode.OK, response.StatusCode);
       Console.Write(response.Body.AsString());
     }
 
-    [Test]
+    [Fact]
     public void SassFileIsReturned()
     {
       var browser = new Browser(new NonOptimizingBootstrapper());
@@ -62,15 +62,15 @@ namespace Cassette.Nancy.Test
       Console.Write(response.Body.AsString());
 
       var query = new SharpQuery(response.Body.AsString());
-      var url = query.Find("head link[href^='/_cassette/asset/Styles/Main.sass?']").Attr("href");
+      var url = query.Find("head link[href^='/asset/Styles/Main.sass?']").Attr("href");
 
       response = browser.Get(url, with => with.HttpRequest());
-      Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+      Assert.Equal(HttpStatusCode.OK, response.StatusCode);
       Console.Write(response.Body.AsString());
     } 
 
 
-    [Test]
+    [Fact]
     public void JsFileIsReturned()
     {
       var browser = new Browser(new NonOptimizingBootstrapper());
@@ -78,14 +78,14 @@ namespace Cassette.Nancy.Test
       Console.Write(response.Body.AsString());
 
       var query = new SharpQuery(response.Body.AsString());
-      var url = query.Find("body script[src^='/_cassette/asset/Scripts/lib/underscore.js?']").Attr("src");
+      var url = query.Find("body script[src^='/asset/Scripts/lib/underscore.js?']").Attr("src");
       
       response = browser.Get(url, with => with.HttpRequest());
-      Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+      Assert.Equal(HttpStatusCode.OK, response.StatusCode);
       Console.Write(response.Body.AsString());
     }
 
-    [Test]
+    [Fact]
     public void CoffeeFileIsReturned()
     {
       var browser = new Browser(new NonOptimizingBootstrapper());
@@ -93,10 +93,10 @@ namespace Cassette.Nancy.Test
       Console.Write(response.Body.AsString());
       
       var query = new SharpQuery(response.Body.AsString());
-      var url = query.Find("body script[src^='/_cassette/asset/Scripts/app/layout.coffee?']").Attr("src");
+      var url = query.Find("body script[src^='/asset/Scripts/app/layout.coffee?']").Attr("src");
       
       response = browser.Get(url, with => with.HttpRequest());
-      Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+      Assert.Equal(HttpStatusCode.OK, response.StatusCode);
       Console.Write(response.Body.AsString());
     } 
 

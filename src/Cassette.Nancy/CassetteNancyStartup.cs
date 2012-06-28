@@ -4,18 +4,25 @@ using System.Linq;
 using System.Threading;
 using Nancy;
 using Nancy.Bootstrapper;
-using Nancy.Responses;
-using Utility.Logging;
 
 namespace Cassette.Nancy
 {
   public class CassetteNancyStartup : IStartup
   {
+    private readonly IRootPathProvider rootPathProvider;
+    private readonly ThreadLocal<NancyContext> currentContext = new ThreadLocal<NancyContext>(() => null);
 
-    public CassetteNancyStartup(IRootPathProvider rootPathProvider, ILoggerFactory loggerFactory)
+    private WebHost webHost;
+    
+    public CassetteNancyStartup(IRootPathProvider rootPathProvider)
     {
       this.rootPathProvider = rootPathProvider;
-      this.loggerFactory = loggerFactory;
+      AppDomainAssemblyTypeScanner.LoadAssemblies("Cassette.CoffeeScript.dll");
+      AppDomainAssemblyTypeScanner.LoadAssemblies("Cassette.Hogan.dll");
+      AppDomainAssemblyTypeScanner.LoadAssemblies("Cassette.JQueryTmpl.dll");
+      AppDomainAssemblyTypeScanner.LoadAssemblies("Cassette.KnockoutJQueryTmpl.dll");
+      AppDomainAssemblyTypeScanner.LoadAssemblies("Cassette.Less.dll");
+      AppDomainAssemblyTypeScanner.LoadAssemblies("Cassette.Sass.dll");
     }
 
     public IEnumerable<TypeRegistration> TypeRegistrations
@@ -39,7 +46,9 @@ namespace Cassette.Nancy
 
       pipelines.AfterRequest.AddItemToEndOfPipeline(RewriteResponseContents);
     }
-    
+
+    public static bool OptimizeOutput { get; set; }
+
     private Response RunCassetteRequestHandler(NancyContext context)
     {
       currentContext.Value = context;
@@ -48,25 +57,17 @@ namespace Cassette.Nancy
       // creation of the WebHost until the first request hits the pipeline.
       if(webHost == null)
       {
-        webHost = new WebHost(rootPathProvider, () => currentContext.Value, loggerFactory);
+        webHost = new WebHost(rootPathProvider, () => currentContext.Value);
         webHost.Initialize();
       }
 
       return webHost.RunCassetteRequestHandler(context);
     }
 
-    public void RewriteResponseContents(NancyContext context)
+    private void RewriteResponseContents(NancyContext context)
     {
       webHost.RewriteResponseContents(context);
     }
 
-    public static bool OptimizeOutput { get; set; }
-
-    private readonly IRootPathProvider rootPathProvider; 
-    private readonly ThreadLocal<NancyContext> currentContext = new ThreadLocal<NancyContext>(() => null);
-    
-    private WebHost webHost;
-
-    private readonly ILoggerFactory loggerFactory;
   }
 }

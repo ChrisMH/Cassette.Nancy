@@ -74,13 +74,6 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
-    <Reference Include="Utility.Logging, Version=1.4.2.3, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Utility.Logging.1.4.2.3\lib\net40\Utility.Logging.dll</HintPath>
-    </Reference>
-    <Reference Include="Utility.Logging.NLog">
-      <HintPath>..\packages\Utility.Logging.NLog.1.4.2.3\lib\net40\Utility.Logging.NLog.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Images\kitten.jpg" />

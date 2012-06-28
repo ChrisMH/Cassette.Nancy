@@ -3,8 +3,6 @@ using System.Linq;
 using Nancy;
 using Nancy.Conventions;
 using Nancy.Testing.Fakes;
-using Utility.Logging;
-using Utility.Logging.NLog;
 
 namespace Cassette.Nancy.Test
 {
@@ -12,13 +10,12 @@ namespace Cassette.Nancy.Test
   {
     public OptimizingBootstrapper()
     {
-      CassetteNancyStartup.OptimizeOutput = false;
+      CassetteNancyStartup.OptimizeOutput = true;
     }
 
     protected override void ConfigureApplicationContainer(global::TinyIoC.TinyIoCContainer container)
     {
       base.ConfigureApplicationContainer(container);
-      container.Register<ILoggerFactory>((c, p) => new NLogLoggerFactory());
       FakeRootPathProvider.RootPath = Utility.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..\\..");
     }
 
