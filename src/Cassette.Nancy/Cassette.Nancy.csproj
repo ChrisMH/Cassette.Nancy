@@ -52,9 +52,16 @@
     <Compile Include="AssetRequestHandler.cs" />
     <Compile Include="Bundles.cs" />
     <Compile Include="BundlesHelper.cs" />
+    <Compile Include="DiagnosticBundleConfiguration.cs" />
+    <Compile Include="DiagnosticRequestHandler.cs" />
     <Compile Include="IBundlesHelper.cs" />
     <Compile Include="CassetteNancyStartup.cs" />
     <Compile Include="ICassetteRequestHandler.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="UrlModifier.cs" />
     <Compile Include="HandlerPathPrepender.cs" />
     <Compile Include="IsolatedStorageContainer.cs" />
@@ -80,6 +87,22 @@
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="web.config.transform" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\diagnostic-page.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\hud.htm" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\jquery.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\knockout.js" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -7,7 +7,6 @@ namespace Cassette.Nancy
 {
   class UrlModifier : IUrlModifier
   {
-
     public UrlModifier(Func<NancyContext> getContext)
     {
       this.getContext = getContext;

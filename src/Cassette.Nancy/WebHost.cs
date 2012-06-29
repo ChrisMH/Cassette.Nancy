@@ -25,6 +25,13 @@ namespace Cassette.Nancy
     public Response RunCassetteRequestHandler(NancyContext context)
     {
       logger.Info("RunCassetteRequestHandler : {0}", context.Request.Path);
+      if(context.Request.Path.StartsWith(DiagnosticRequestHandler.PathPrefix))
+      {
+        var handler = Container.Resolve<ICassetteRequestHandler>(DiagnosticRequestHandler.PathPrefix);
+        return handler.ProcessRequest(context);
+      }
+
+
       if (context.Request.Path.StartsWith(AssetRequestHandler.PathPrefix))
       {
         var handler = Container.Resolve<ICassetteRequestHandler>(AssetRequestHandler.PathPrefix);
@@ -85,6 +92,8 @@ namespace Cassette.Nancy
       Container.Register<IUrlModifier>((c, p) => new UrlModifier(getContext));
 
       Container.Register<ICassetteRequestHandler, AssetRequestHandler>(AssetRequestHandler.PathPrefix)
+               .AsPerRequestSingleton(CreateRequestLifetimeProvider());
+      Container.Register<ICassetteRequestHandler, DiagnosticRequestHandler>(DiagnosticRequestHandler.PathPrefix)
                .AsPerRequestSingleton(CreateRequestLifetimeProvider());
 
       base.ConfigureContainer();

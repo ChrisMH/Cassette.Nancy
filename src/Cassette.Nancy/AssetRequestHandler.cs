@@ -30,9 +30,7 @@ namespace Cassette.Nancy
         if (!bundles.TryGetAssetByPath(path, out asset, out bundle))
         {
           logger.Info("ProcessRequest : asset bundle '{0}' was not found", path);
-          var notFound = new Response();
-          notFound.StatusCode = HttpStatusCode.NotFound;
-          return notFound;
+          return new HtmlResponse(HttpStatusCode.NotFound);
         }
 
         var actualETag = "\"" + asset.Hash.ToHexString() + "\"";
@@ -41,8 +39,7 @@ namespace Cassette.Nancy
         if(givenETag.Equals(actualETag))
         {
           logger.Info("ProcessRequest : asset bundle '{0}' was not modified", path);
-          var notModified = new global::Nancy.Response();
-          notModified.StatusCode = HttpStatusCode.NotModified;
+          var notModified = new HtmlResponse(HttpStatusCode.NotModified);
           notModified.ContentType = bundle.ContentType;
           return notModified;
         }
