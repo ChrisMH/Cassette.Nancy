@@ -16,11 +16,11 @@ namespace Cassette.Nancy.Test
       Console.Write(response.Body.AsString());
 
       var query = new SharpQuery(response.Body.AsString());
-      var url = query.Find("head link[href^='/asset/Styles/Main.css?']").Attr("href");
-      
-      response = browser.Get(url, with => with.HttpRequest());
-      Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+      var url = query.Find("head link[href^='/_cassette/asset/Styles/Main.css?']").Attr("href").Split(new char[] { '?' });
+
+      response = browser.Get(url[0], with => with.HttpRequest());
       Console.Write(response.Body.AsString());
+      Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
     }
 
@@ -32,11 +32,11 @@ namespace Cassette.Nancy.Test
       Console.Write(response.Body.AsString());
 
       var query = new SharpQuery(response.Body.AsString());
-      var url = query.Find("head link[href^='/asset/Styles/Main.less?']").Attr("href");
-      
-      response = browser.Get(url, with => with.HttpRequest());
-      Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+      var url = query.Find("head link[href^='/_cassette/asset/Styles/Main.less?']").Attr("href").Split(new char[] { '?' });
+
+      response = browser.Get(url[0], with => with.HttpRequest());
       Console.Write(response.Body.AsString());
+      Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
 
     [Fact]
@@ -47,11 +47,11 @@ namespace Cassette.Nancy.Test
       Console.Write(response.Body.AsString());
 
       var query = new SharpQuery(response.Body.AsString());
-      var url = query.Find("head link[href^='/asset/Styles/Main.scss?']").Attr("href");
+      var url = query.Find("head link[href^='/_cassette/asset/Styles/Main.scss?']").Attr("href").Split(new char[] { '?' });
 
-      response = browser.Get(url, with => with.HttpRequest());
-      Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+      response = browser.Get(url[0], with => with.HttpRequest());
       Console.Write(response.Body.AsString());
+      Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
 
     [Fact]
@@ -62,11 +62,11 @@ namespace Cassette.Nancy.Test
       Console.Write(response.Body.AsString());
 
       var query = new SharpQuery(response.Body.AsString());
-      var url = query.Find("head link[href^='/asset/Styles/Main.sass?']").Attr("href");
+      var url = query.Find("head link[href^='/_cassette/asset/Styles/Main.sass?']").Attr("href").Split(new char[] { '?' });
 
-      response = browser.Get(url, with => with.HttpRequest());
-      Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+      response = browser.Get(url[0], with => with.HttpRequest());
       Console.Write(response.Body.AsString());
+      Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     } 
 
 
@@ -78,11 +78,11 @@ namespace Cassette.Nancy.Test
       Console.Write(response.Body.AsString());
 
       var query = new SharpQuery(response.Body.AsString());
-      var url = query.Find("body script[src^='/asset/Scripts/lib/underscore.js?']").Attr("src");
-      
-      response = browser.Get(url, with => with.HttpRequest());
-      Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+      var url = query.Find("body script[src^='/_cassette/asset/Scripts/lib/underscore.js?']").Attr("src").Split(new char[] { '?' });
+
+      response = browser.Get(url[0], with => with.HttpRequest());
       Console.Write(response.Body.AsString());
+      Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
 
     [Fact]
@@ -93,11 +93,11 @@ namespace Cassette.Nancy.Test
       Console.Write(response.Body.AsString());
       
       var query = new SharpQuery(response.Body.AsString());
-      var url = query.Find("body script[src^='/asset/Scripts/app/layout.coffee?']").Attr("src");
-      
-      response = browser.Get(url, with => with.HttpRequest());
-      Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+      var url = query.Find("body script[src^='/_cassette/asset/Scripts/app/layout.coffee?']").Attr("src").Split(new char[] { '?' });
+
+      response = browser.Get(url[0], with => with.HttpRequest());
       Console.Write(response.Body.AsString());
+      Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     } 
 
   }

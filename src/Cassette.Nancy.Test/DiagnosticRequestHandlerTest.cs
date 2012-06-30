@@ -1,15 +1,14 @@
 ﻿using System;
 using HtmlAgilityPlus;
-using NUnit.Framework;
 using Nancy.Testing;
+using Xunit;
 
 namespace Cassette.Nancy.Test
 {
-  public class HudRouteHandlerTest
+  public class DiagnosticRequestHandlerTest
   {
-  
-    [Test]
-    public void HudIsReturned()
+    [Fact]
+    public void DiagnosticPageIsReturned()
     {
       var browser = new Browser(new NonOptimizingBootstrapper());
       var response = browser.Get("/_cassette", with => with.HttpRequest());
@@ -18,7 +17,7 @@ namespace Cassette.Nancy.Test
       var query = new SharpQuery(response.Body.AsString());
       var title = query.Find("head title").First();
 
-      Assert.That(title, Is.Not.Null);
+      Assert.NotNull(title);
 
     }
   }

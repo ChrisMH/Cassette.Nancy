@@ -1,16 +1,17 @@
 ﻿using System;
 using HtmlAgilityPlus;
-using NUnit.Framework;
 using Nancy;
 using Nancy.Testing;
+using Xunit;
 
 namespace Cassette.Nancy.Test
 {
-  public class BundleRouteHandlerTest
+  public class BundleRequestHandlerTest
   {
-    [TestCase("head", "link", "href", "/_cassette/stylesheetbundle/Styles")]
-    [TestCase("body", "script", "src", "/_cassette/scriptbundle/Scripts/lib")]
-    [TestCase("body", "script", "src", "/_cassette/scriptbundle/Scripts/app")]
+    [Theory]
+    [InlineData("head", "link", "href", "/_cassette/stylesheetbundle/Styles")]
+    [InlineData("body", "script", "src", "/_cassette/scriptbundle/Scripts/lib")]
+    [InlineData("body", "script", "src", "/_cassette/scriptbundle/Scripts/app")]
     public void BundleIsReturned(string location, string element, string attribute, string urlFragmet)
     {
       var browser = new Browser(new OptimizingBootstrapper());
@@ -20,10 +21,10 @@ namespace Cassette.Nancy.Test
       var query = new SharpQuery(response.Body.AsString());
 
       var url = query.Find(string.Format("{0} {1}[{2}^='{3}']", location, element, attribute, urlFragmet)).Attr(attribute);
-      
+
       response = browser.Get(url, with => with.HttpRequest());
-      Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
       Console.Write(response.Body.AsString());
+      Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
   }
 }

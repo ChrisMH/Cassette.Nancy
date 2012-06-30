@@ -24,21 +24,58 @@ namespace Cassette.Nancy
 
     public Response RunCassetteRequestHandler(NancyContext context)
     {
-      logger.Info("RunCassetteRequestHandler : {0}", context.Request.Path);
-      if(context.Request.Path.StartsWith(DiagnosticRequestHandler.PathPrefix))
+      try
       {
-        var handler = Container.Resolve<ICassetteRequestHandler>(DiagnosticRequestHandler.PathPrefix);
-        return handler.ProcessRequest(context);
+        logger.Info("RunCassetteRequestHandler : {0}", context.Request.Path);
+
+        if(!context.Request.Path.StartsWith(UrlModifier.CassettePrefix))
+          return null;
+
+        var path = context.Request.Path.Substring(UrlModifier.CassettePrefix.Length);
+
+        if (string.IsNullOrWhiteSpace(path))
+        {
+          var handler = Container.Resolve<ICassetteRequestHandler>(DiagnosticRequestHandler.PathPrefix);
+          return handler.ProcessRequest(context, path);
+        }
+
+        if (path.StartsWith(AssetRequestHandler.PathPrefix))
+        {
+          var handler = Container.Resolve<ICassetteRequestHandler>(AssetRequestHandler.PathPrefix);
+          return handler.ProcessRequest(context, path);
+        }
+      
+        if (path.StartsWith(RawFileRequestHandler.PathPrefix))
+        {
+          var handler = Container.Resolve<ICassetteRequestHandler>(RawFileRequestHandler.PathPrefix);
+          return handler.ProcessRequest(context, path);
+        }
+
+        if (path.StartsWith(BundleRequestHandler<Scripts.ScriptBundle>.PathPrefix))
+        {
+          var handler = Container.Resolve<ICassetteRequestHandler>(BundleRequestHandler<Scripts.ScriptBundle>.PathPrefix);
+          return handler.ProcessRequest(context, path);
+        }
+
+        if (path.StartsWith(BundleRequestHandler<Stylesheets.StylesheetBundle>.PathPrefix))
+        {
+          var handler = Container.Resolve<ICassetteRequestHandler>(BundleRequestHandler<Stylesheets.StylesheetBundle>.PathPrefix);
+          return handler.ProcessRequest(context, path);
+        }
+
+        if (path.StartsWith(BundleRequestHandler<HtmlTemplates.HtmlTemplateBundle>.PathPrefix))
+        {
+          var handler = Container.Resolve<ICassetteRequestHandler>(BundleRequestHandler<HtmlTemplates.HtmlTemplateBundle>.PathPrefix);
+          return handler.ProcessRequest(context, path);
+        }
+
+        return null;
       }
-
-
-      if (context.Request.Path.StartsWith(AssetRequestHandler.PathPrefix))
+      catch(Exception ex)
       {
-        var handler = Container.Resolve<ICassetteRequestHandler>(AssetRequestHandler.PathPrefix);
-        return handler.ProcessRequest(context);
+        logger.FatalException(string.Format("RunCassetteRequestHandler : {0} : {1}", ex.GetType(), ex.Message), ex);
+        return null;
       }
-
-      return null;
     }
 
     public void RewriteResponseContents(NancyContext context)
@@ -90,8 +127,17 @@ namespace Cassette.Nancy
     protected override void ConfigureContainer()
     {
       Container.Register<IUrlModifier>((c, p) => new UrlModifier(getContext));
+      Container.Register<IRootPathProvider>(rootPathProvider);
 
       Container.Register<ICassetteRequestHandler, AssetRequestHandler>(AssetRequestHandler.PathPrefix)
+               .AsPerRequestSingleton(CreateRequestLifetimeProvider());
+      Container.Register<ICassetteRequestHandler, BundleRequestHandler<Scripts.ScriptBundle>>(BundleRequestHandler<Scripts.ScriptBundle>.PathPrefix)
+               .AsPerRequestSingleton(CreateRequestLifetimeProvider());
+      Container.Register<ICassetteRequestHandler, BundleRequestHandler<Stylesheets.StylesheetBundle>>(BundleRequestHandler<Stylesheets.StylesheetBundle>.PathPrefix)
+               .AsPerRequestSingleton(CreateRequestLifetimeProvider());
+      Container.Register<ICassetteRequestHandler, BundleRequestHandler<HtmlTemplates.HtmlTemplateBundle>>(BundleRequestHandler<HtmlTemplates.HtmlTemplateBundle>.PathPrefix)
+               .AsPerRequestSingleton(CreateRequestLifetimeProvider());
+      Container.Register<ICassetteRequestHandler, RawFileRequestHandler>(RawFileRequestHandler.PathPrefix)
                .AsPerRequestSingleton(CreateRequestLifetimeProvider());
       Container.Register<ICassetteRequestHandler, DiagnosticRequestHandler>(DiagnosticRequestHandler.PathPrefix)
                .AsPerRequestSingleton(CreateRequestLifetimeProvider());

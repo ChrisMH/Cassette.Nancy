@@ -28,7 +28,7 @@ namespace Cassette.Nancy
       this.bundleCacheRebuilder = bundleCacheRebuilder;
     }
 
-    public Response ProcessRequest(NancyContext context)
+    public Response ProcessRequest(NancyContext context, string path)
     {
       if (!CanAccessHud(context))
       {
@@ -45,13 +45,12 @@ namespace Cassette.Nancy
 
       var html = Properties.Resources.hud;
       html = html.Replace("$scripts$", Bundles.RenderScripts().ToHtmlString());
-      return new HtmlResponse(HttpStatusCode.OK, s => 
+      return new HtmlResponse(HttpStatusCode.OK, s =>
       {
         var w = new StreamWriter(s);
         w.Write(html);
         w.Flush();
-      }
-        );
+      });
     }
 
     Response ProcessPost(NancyContext context)
@@ -61,7 +60,7 @@ namespace Cassette.Nancy
         bundleCacheRebuilder.RebuildCache();
       }
 
-      return null;// new HttpResponse(HttpStatusCode.OK);
+      return new HtmlResponse(HttpStatusCode.OK);
     }
 
     bool CanAccessHud(NancyContext context)
