@@ -1,6 +1,8 @@
 ﻿using System;
 using Nancy;
 using Nancy.Testing;
+using Xunit;
+using Xunit.Extensions;
 
 namespace Cassette.Nancy.Test
 {

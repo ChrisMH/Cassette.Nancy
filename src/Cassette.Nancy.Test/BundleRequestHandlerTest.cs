@@ -3,15 +3,16 @@ using HtmlAgilityPlus;
 using Nancy;
 using Nancy.Testing;
 using Xunit;
+using Xunit.Extensions;
 
 namespace Cassette.Nancy.Test
 {
   public class BundleRequestHandlerTest
   {
     [Theory]
-    [InlineData("head", "link", "href", "/_cassette/stylesheetbundle/Styles")]
-    [InlineData("body", "script", "src", "/_cassette/scriptbundle/Scripts/lib")]
-    [InlineData("body", "script", "src", "/_cassette/scriptbundle/Scripts/app")]
+    [InlineData("head", "link", "href", "/_cassette/stylesheet/xxx=/Styles")]
+    [InlineData("body", "script", "src", "/_cassette/script/xxx=/Scripts/lib")]
+    [InlineData("body", "script", "src", "/_cassette/script/xxx=/Scripts/app")]
     public void BundleIsReturned(string location, string element, string attribute, string urlFragmet)
     {
       var browser = new Browser(new OptimizingBootstrapper());

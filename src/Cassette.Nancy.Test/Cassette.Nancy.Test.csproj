@@ -35,20 +35,67 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\AjaxMin.4.56.4560.33404\lib\net20\AjaxMin.dll</HintPath>
     </Reference>
+    <Reference Include="Cassette, Version=2.0.0.17340, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Cassette.2.0.0-beta3\lib\net40-client\Cassette.dll</HintPath>
+    </Reference>
+    <Reference Include="Cassette.CoffeeScript">
+      <HintPath>..\packages\Cassette.CoffeeScript.2.0.0-beta3\lib\net40-client\Cassette.CoffeeScript.dll</HintPath>
+    </Reference>
+    <Reference Include="Cassette.Less">
+      <HintPath>..\packages\Cassette.Less.2.0.0-beta3\lib\net40-client\Cassette.Less.dll</HintPath>
+    </Reference>
+    <Reference Include="Cassette.Sass, Version=2.0.0.17345, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Cassette.Sass.2.0.0-beta3\lib\net40-client\Cassette.Sass.dll</HintPath>
+    </Reference>
+    <Reference Include="dotless.ClientOnly">
+      <HintPath>..\packages\DotlessClientOnly.1.3.0.4\lib\dotless.ClientOnly.dll</HintPath>
+    </Reference>
+    <Reference Include="dotless.Core">
+      <HintPath>..\packages\dotless.1.3.0.4\lib\dotless.Core.dll</HintPath>
+    </Reference>
     <Reference Include="HtmlAgilityPack">
       <HintPath>..\..\dependencies\Nancy\dependencies\htmlagilitypack\HtmlAgilityPack.dll</HintPath>
     </Reference>
     <Reference Include="HtmlAgilityPlus">
       <HintPath>..\..\dependencies\Nancy\dependencies\htmlagilitypack\HtmlAgilityPlus.dll</HintPath>
     </Reference>
+    <Reference Include="Iesi.Collections">
+      <HintPath>..\packages\Iesi.Collections.3.3.1.4000\lib\Net35\Iesi.Collections.dll</HintPath>
+    </Reference>
+    <Reference Include="IronRuby, Version=1.1.3.0, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\IronRuby.1.1.3\Lib\IronRuby.dll</HintPath>
+    </Reference>
+    <Reference Include="IronRuby.Libraries">
+      <HintPath>..\packages\IronRuby.1.1.3\Lib\IronRuby.Libraries.dll</HintPath>
+    </Reference>
+    <Reference Include="IronRuby.Libraries.Yaml">
+      <HintPath>..\packages\IronRuby.1.1.3\Lib\IronRuby.Libraries.Yaml.dll</HintPath>
+    </Reference>
     <Reference Include="Jurassic">
       <HintPath>..\packages\Jurassic.2.1.1\lib\Jurassic.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Dynamic, Version=1.1.0.20, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\IronRuby.1.1.3\Lib\Microsoft.Dynamic.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Scripting, Version=1.1.0.20, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\IronRuby.1.1.3\Lib\Microsoft.Scripting.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Scripting.Metadata, Version=1.1.0.20, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\IronRuby.1.1.3\Lib\Microsoft.Scripting.Metadata.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.4.5.7\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NLog">
       <HintPath>..\packages\NLog.2.0.0.2000\lib\net40\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="SassAndCoffee.Core, Version=2.0.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SassAndCoffee.Core.2.0.2.0\lib\net40-Client\SassAndCoffee.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="SassAndCoffee.Ruby, Version=2.0.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SassAndCoffee.Ruby.2.0.2.0\lib\net40-Client\SassAndCoffee.Ruby.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -64,6 +111,9 @@
     </Reference>
     <Reference Include="xunit">
       <HintPath>..\packages\xunit.1.9.0.1566\lib\xunit.dll</HintPath>
+    </Reference>
+    <Reference Include="xunit.extensions">
+      <HintPath>..\packages\xunit.extensions.1.9.0.1566\lib\xunit.extensions.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -81,7 +131,9 @@
     <Compile Include="TestRazorConfiguration.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
     <Content Include="nlog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>
@@ -92,18 +144,6 @@
     <None Include="Views\RazorHome.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\dependencies\cassette\src\Cassette.CoffeeScript\Cassette.CoffeeScript.csproj">
-      <Project>{C9A552DA-83EB-4479-BAB6-C40B6091E3D4}</Project>
-      <Name>Cassette.CoffeeScript</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\dependencies\cassette\src\Cassette.Sass\Cassette.Sass.csproj">
-      <Project>{52B1448C-8165-46B7-B024-A6BF9F60D766}</Project>
-      <Name>Cassette.Sass</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\dependencies\cassette\src\Cassette\Cassette.csproj">
-      <Project>{A5CCF9D3-5D49-4BFC-B9A6-9EC9E0E29C50}</Project>
-      <Name>Cassette</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\dependencies\Nancy\src\Nancy.Testing\Nancy.Testing.csproj">
       <Project>{D79203C0-B672-4751-9C95-C3AB7D3FEFBE}</Project>
       <Name>Nancy.Testing</Name>

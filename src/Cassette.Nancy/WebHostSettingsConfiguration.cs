@@ -19,7 +19,7 @@ namespace Cassette.Nancy
       configurable.IsFileSystemWatchingEnabled = true;
       configurable.AllowRemoteDiagnostics = true;
       configurable.SourceDirectory = new FileSystemDirectory(rootPathProvider.GetRootPath());
-      configurable.CacheDirectory = new FileSystemDirectory(string.Concat(rootPathProvider.GetRootPath(), "\\cache"));// new IsolatedStorageDirectory(() => IsolatedStorageContainer.IsolatedStorageFile);
+      configurable.CacheDirectory = new IsolatedStorageDirectory(() => IsolatedStorageContainer.IsolatedStorageFile);
       
 
       // Include the virtual directory so that if the application is moved to 

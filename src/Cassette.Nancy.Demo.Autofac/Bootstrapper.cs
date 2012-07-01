@@ -8,7 +8,7 @@ namespace Cassette.Nancy.Demo.Autofac
   {
     public Bootstrapper()
     {
-      CassetteStartup.ShouldOptimizeOutput = true;
+      CassetteNancyStartup.OptimizeOutput = true;
     }
     
     protected override void ApplicationStartup(ILifetimeScope container, global::Nancy.Bootstrapper.IPipelines pipelines)
