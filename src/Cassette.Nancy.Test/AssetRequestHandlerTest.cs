@@ -1,5 +1,5 @@
 ﻿using System;
-using HtmlAgilityPlus;
+using CsQuery;
 using Nancy;
 using Nancy.Testing;
 using Xunit;
@@ -15,8 +15,8 @@ namespace Cassette.Nancy.Test
       var response = browser.Get("/RazorHome", with => with.HttpRequest());
       Console.Write(response.Body.AsString());
 
-      var query = new SharpQuery(response.Body.AsString());
-      var url = query.Find("head link[href^='/_cassette/asset/Styles/Main.css?']").Attr("href").Split(new char[] { '?' });
+      var cq = CQ.Create(response.Body.AsString());
+      var url = cq.Find("head link[href^='/_cassette/asset/Styles/Main.css?']").Attr("href").Split(new char[] { '?' });
 
       response = browser.Get(url[0], with => with.HttpRequest());
       Console.Write(response.Body.AsString());
@@ -31,8 +31,8 @@ namespace Cassette.Nancy.Test
       var response = browser.Get("/RazorHome", with => with.HttpRequest());
       Console.Write(response.Body.AsString());
 
-      var query = new SharpQuery(response.Body.AsString());
-      var url = query.Find("head link[href^='/_cassette/asset/Styles/Main.less?']").Attr("href").Split(new char[] { '?' });
+      var cq = CQ.Create(response.Body.AsString());
+      var url = cq.Find("head link[href^='/_cassette/asset/Styles/Main.less?']").Attr("href").Split(new char[] { '?' });
 
       response = browser.Get(url[0], with => with.HttpRequest());
       Console.Write(response.Body.AsString());
@@ -46,8 +46,8 @@ namespace Cassette.Nancy.Test
       var response = browser.Get("/RazorHome", with => with.HttpRequest());
       Console.Write(response.Body.AsString());
 
-      var query = new SharpQuery(response.Body.AsString());
-      var url = query.Find("head link[href^='/_cassette/asset/Styles/Main.scss?']").Attr("href").Split(new char[] { '?' });
+      var cq = CQ.Create(response.Body.AsString());
+      var url = cq.Find("head link[href^='/_cassette/asset/Styles/Main.scss?']").Attr("href").Split(new char[] { '?' });
 
       response = browser.Get(url[0], with => with.HttpRequest());
       Console.Write(response.Body.AsString());
@@ -61,8 +61,8 @@ namespace Cassette.Nancy.Test
       var response = browser.Get("/RazorHome", with => with.HttpRequest());
       Console.Write(response.Body.AsString());
 
-      var query = new SharpQuery(response.Body.AsString());
-      var url = query.Find("head link[href^='/_cassette/asset/Styles/Main.sass?']").Attr("href").Split(new char[] { '?' });
+      var cq = CQ.Create(response.Body.AsString());
+      var url = cq.Find("head link[href^='/_cassette/asset/Styles/Main.sass?']").Attr("href").Split(new char[] { '?' });
 
       response = browser.Get(url[0], with => with.HttpRequest());
       Console.Write(response.Body.AsString());
@@ -77,8 +77,8 @@ namespace Cassette.Nancy.Test
       var response = browser.Get("/RazorHome", with => with.HttpRequest());
       Console.Write(response.Body.AsString());
 
-      var query = new SharpQuery(response.Body.AsString());
-      var url = query.Find("body script[src^='/_cassette/asset/Scripts/lib/underscore.js?']").Attr("src").Split(new char[] { '?' });
+      var cq = CQ.Create(response.Body.AsString());
+      var url = cq.Find("body script[src^='/_cassette/asset/Scripts/lib/underscore.js?']").Attr("src").Split(new char[] { '?' });
 
       response = browser.Get(url[0], with => with.HttpRequest());
       Console.Write(response.Body.AsString());
@@ -92,8 +92,8 @@ namespace Cassette.Nancy.Test
       var response = browser.Get("/RazorHome", with => with.HttpRequest());
       Console.Write(response.Body.AsString());
       
-      var query = new SharpQuery(response.Body.AsString());
-      var url = query.Find("body script[src^='/_cassette/asset/Scripts/app/layout.coffee?']").Attr("src").Split(new char[] { '?' });
+      var cq = CQ.Create(response.Body.AsString());
+      var url = cq.Find("body script[src^='/_cassette/asset/Scripts/app/layout.coffee?']").Attr("src").Split(new char[] { '?' });
 
       response = browser.Get(url[0], with => with.HttpRequest());
       Console.Write(response.Body.AsString());

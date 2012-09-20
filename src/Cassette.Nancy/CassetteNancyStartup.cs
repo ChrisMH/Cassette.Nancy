@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Nancy;
@@ -7,7 +6,7 @@ using Nancy.Bootstrapper;
 
 namespace Cassette.Nancy
 {
-  public class CassetteNancyStartup : IStartup
+  public class CassetteNancyStartup : IApplicationStartup
   {
     private readonly IRootPathProvider rootPathProvider;
     private readonly ThreadLocal<NancyContext> currentContext = new ThreadLocal<NancyContext>(() => null);
@@ -24,22 +23,7 @@ namespace Cassette.Nancy
       AppDomainAssemblyTypeScanner.LoadAssemblies("Cassette.Less.dll");
       AppDomainAssemblyTypeScanner.LoadAssemblies("Cassette.Sass.dll");
     }
-
-    public IEnumerable<TypeRegistration> TypeRegistrations
-    {
-      get { return null; }
-    }
-
-    public IEnumerable<CollectionTypeRegistration> CollectionTypeRegistrations
-    {
-      get { return null; }
-    }
-
-    public IEnumerable<InstanceRegistration> InstanceRegistrations
-    {
-      get { return null; }
-    }
-
+    
     public void Initialize(IPipelines pipelines)
     {
       pipelines.BeforeRequest.AddItemToStartOfPipeline(RunCassetteRequestHandler);

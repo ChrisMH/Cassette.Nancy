@@ -21,8 +21,9 @@ namespace Cassette.Nancy
         readonly Func<IReferenceBuilder> getReferenceBuilder;
         readonly IFileAccessAuthorization fileAccessAuthorization;
         readonly IBundleCacheRebuilder bundleCacheRebuilder;
+        readonly IJsonSerializer jsonSerializer;
 
-        public BundlesHelper(BundleCollection bundles, CassetteSettings settings, IUrlGenerator urlGenerator, Func<IReferenceBuilder> getReferenceBuilder, IFileAccessAuthorization fileAccessAuthorization, IBundleCacheRebuilder bundleCacheRebuilder)
+        public BundlesHelper(BundleCollection bundles, CassetteSettings settings, IUrlGenerator urlGenerator, Func<IReferenceBuilder> getReferenceBuilder, IFileAccessAuthorization fileAccessAuthorization, IBundleCacheRebuilder bundleCacheRebuilder, IJsonSerializer jsonSerializer)
         {
             this.bundles = bundles;
             this.settings = settings;
@@ -30,6 +31,12 @@ namespace Cassette.Nancy
             this.getReferenceBuilder = getReferenceBuilder;
             this.fileAccessAuthorization = fileAccessAuthorization;
             this.bundleCacheRebuilder = bundleCacheRebuilder;
+            this.jsonSerializer = jsonSerializer;
+        }
+
+        public IJsonSerializer JsonSerializer
+        {
+            get { return jsonSerializer; }
         }
 
         void IStartUpTask.Start()
@@ -69,40 +76,11 @@ namespace Cassette.Nancy
         public IEnumerable<string> GetReferencedBundleUrls<T>(string pageLocation)
             where T : Bundle
         {
-            var referencedBundles = GetReferencedBundles(pageLocation).OfType<T>();
-
-            if (settings.IsDebuggingEnabled)
-            {
-                return referencedBundles
-                    .SelectMany(AssetCollector.GetAllAssets)
-                    .Select(urlGenerator.CreateAssetUrl);
-            }
-            else
-            {
-                return referencedBundles
-                    .Select(urlGenerator.CreateBundleUrl);
-            }
-        }
-
-        class AssetCollector : IBundleVisitor
-        {
-            public static IEnumerable<IAsset> GetAllAssets(Bundle bundle)
-            {
-                var collector = new AssetCollector();
-                bundle.Accept(collector);
-                return collector.assets;
-            }
-
-            readonly List<IAsset> assets = new List<IAsset>();
-
-            public void Visit(Bundle bundle)
-            {
-            }
-
-            public void Visit(IAsset asset)
-            {
-                assets.Add(asset);
-            }
+            return GetReferencedBundles(pageLocation)
+                .OfType<T>()
+                .SelectMany(
+                    bundle => bundle.GetUrls(settings.IsDebuggingEnabled, urlGenerator)
+                );
         }
 
         public string Url<T>(string bundlePath)

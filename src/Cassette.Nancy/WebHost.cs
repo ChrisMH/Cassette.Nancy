@@ -28,10 +28,10 @@ namespace Cassette.Nancy
       {
         logger.Info("RunCassetteRequestHandler : {0}", context.Request.Path);
 
-        if(!context.Request.Path.StartsWith(UrlModifier.CassettePrefix))
+        if(!context.Request.Path.StartsWith(string.Concat("/", UrlModifier.CassettePrefix)))
           return null;
 
-        var path = context.Request.Path.Substring(UrlModifier.CassettePrefix.Length);
+        var path = context.Request.Path.Substring(UrlModifier.CassettePrefix.Length + 1);
 
         if (string.IsNullOrWhiteSpace(path))
         {
@@ -126,8 +126,9 @@ namespace Cassette.Nancy
 
     protected override void ConfigureContainer()
     {
-      Container.Register<IUrlModifier>((c, p) => new UrlModifier(getContext));
       Container.Register<IRootPathProvider>(rootPathProvider);
+      Container.Register<IUrlModifier>((c, p) => new UrlModifier(getContext));
+      Container.Register<IUrlGenerator>((c, n) => new UrlGenerator(c.Resolve<IUrlModifier>(), UrlModifier.CassettePrefix));
 
       Container.Register<ICassetteRequestHandler, AssetRequestHandler>(AssetRequestHandler.PathPrefix)
                .AsPerRequestSingleton(CreateRequestLifetimeProvider());
@@ -143,6 +144,7 @@ namespace Cassette.Nancy
                .AsPerRequestSingleton(CreateRequestLifetimeProvider());
 
       base.ConfigureContainer();
+
     }
     
   }

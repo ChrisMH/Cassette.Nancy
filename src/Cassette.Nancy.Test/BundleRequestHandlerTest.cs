@@ -1,5 +1,5 @@
 ﻿using System;
-using HtmlAgilityPlus;
+using CsQuery;
 using Nancy;
 using Nancy.Testing;
 using Xunit;
@@ -19,9 +19,9 @@ namespace Cassette.Nancy.Test
       var response = browser.Get("/RazorHome", with => with.HttpRequest());
       Console.Write(response.Body.AsString());
       
-      var query = new SharpQuery(response.Body.AsString());
+      var cq = CQ.Create(response.Body.AsString());
 
-      var url = query.Find(string.Format("{0} {1}[{2}^='{3}']", location, element, attribute, urlFragmet)).Attr(attribute);
+      var url = cq.Find(string.Format("{0} {1}[{2}^='{3}']", location, element, attribute, urlFragmet)).Attr(attribute);
 
       response = browser.Get(url, with => with.HttpRequest());
       Console.Write(response.Body.AsString());

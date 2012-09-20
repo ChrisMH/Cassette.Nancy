@@ -7,7 +7,7 @@ namespace Cassette.Nancy
 {
   class UrlModifier : IUrlModifier
   {
-    public const string CassettePrefix = "/_cassette";
+    public const string CassettePrefix = "_cassette/";
 
     public UrlModifier(Func<NancyContext> getContext)
     {
@@ -16,7 +16,7 @@ namespace Cassette.Nancy
 
     public string Modify(string url)
     {
-      return getContext().ToFullPath(string.Concat("~", CassettePrefix, "/", url));
+      return getContext().ToFullPath(string.Concat("~/", CassettePrefix, url));
     }
 
     private readonly Func<NancyContext> getContext;

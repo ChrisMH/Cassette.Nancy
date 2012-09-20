@@ -27,5 +27,7 @@ namespace Cassette.Nancy
         string FileUrl(string applicationRelativeFilePath);
 
         void RebuildBundleCache();
+
+        IJsonSerializer JsonSerializer { get; }
     }
 }

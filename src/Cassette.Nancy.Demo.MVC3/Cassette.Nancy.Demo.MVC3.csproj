@@ -35,32 +35,29 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AjaxMin, Version=4.56.4560.33404, Culture=neutral, PublicKeyToken=21ef50ce11b5d80f, processorArchitecture=MSIL">
+    <Reference Include="AjaxMin, Version=4.67.4639.17277, Culture=neutral, PublicKeyToken=21ef50ce11b5d80f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\AjaxMin.4.56.4560.33404\lib\net20\AjaxMin.dll</HintPath>
+      <HintPath>..\packages\AjaxMin.4.67.4639.17289\lib\net40\AjaxMin.dll</HintPath>
     </Reference>
-    <Reference Include="Cassette, Version=2.0.0.17340, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Cassette.2.0.0-beta3\lib\net40-client\Cassette.dll</HintPath>
-    </Reference>
-    <Reference Include="Cassette.Aspnet, Version=2.0.0.17342, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Cassette, Version=2.0.0.17974, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Cassette.Aspnet.2.0.0-beta3\lib\net40\Cassette.Aspnet.dll</HintPath>
+      <HintPath>..\packages\Cassette.2.0.0\lib\net40-client\Cassette.dll</HintPath>
     </Reference>
-    <Reference Include="Cassette.CoffeeScript, Version=2.0.0.17343, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Cassette.CoffeeScript.2.0.0-beta3\lib\net40-client\Cassette.CoffeeScript.dll</HintPath>
-    </Reference>
-    <Reference Include="Cassette.Less, Version=2.0.0.17343, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Cassette.Less.2.0.0-beta3\lib\net40-client\Cassette.Less.dll</HintPath>
-    </Reference>
-    <Reference Include="Cassette.Sass">
-      <HintPath>..\packages\Cassette.Sass.2.0.0-beta3\lib\net40-client\Cassette.Sass.dll</HintPath>
-    </Reference>
-    <Reference Include="Cassette.Views, Version=2.0.0.17341, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Cassette.CoffeeScript, Version=2.0.0.17976, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Cassette.Views.2.0.0-beta3\lib\net40\Cassette.Views.dll</HintPath>
+      <HintPath>..\packages\Cassette.CoffeeScript.2.0.0\lib\net40-client\Cassette.CoffeeScript.dll</HintPath>
     </Reference>
-    <Reference Include="dotless.ClientOnly, Version=1.3.0.4, Culture=neutral, PublicKeyToken=96b446c9e63eae34, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotlessClientOnly.1.3.0.4\lib\dotless.ClientOnly.dll</HintPath>
+    <Reference Include="Cassette.Less, Version=2.0.0.17976, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Cassette.Less.2.0.0\lib\net40-client\Cassette.Less.dll</HintPath>
+    </Reference>
+    <Reference Include="Cassette.Sass, Version=2.0.0.17977, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Cassette.Sass.2.0.0\lib\net40-client\Cassette.Sass.dll</HintPath>
+    </Reference>
+    <Reference Include="dotless.ClientOnly, Version=1.3.0.5, Culture=neutral, PublicKeyToken=96b446c9e63eae34, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\DotlessClientOnly.1.3.0.5\lib\dotless.ClientOnly.dll</HintPath>
     </Reference>
     <Reference Include="IronRuby">
       <HintPath>..\packages\IronRuby.1.1.3\Lib\IronRuby.dll</HintPath>
