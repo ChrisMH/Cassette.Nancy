@@ -16,7 +16,7 @@ namespace Cassette.Nancy
 
     public string Modify(string url)
     {
-      return getContext().ToFullPath(string.Concat("~", CassettePrefix, "/", url));
+      return getContext().ToFullPath(string.Concat("~", CassettePrefix, "/", url.Substring("cassette.axd/".Length)));
     }
 
     private readonly Func<NancyContext> getContext;

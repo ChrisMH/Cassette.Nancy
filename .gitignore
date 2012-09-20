@@ -6,3 +6,7 @@ build/
 *.suo
 *.dotCover
 *.ReSharper
+
+*/_ReSharper.*
+*/_UpgradeReport_Files/*
+*/packages/*

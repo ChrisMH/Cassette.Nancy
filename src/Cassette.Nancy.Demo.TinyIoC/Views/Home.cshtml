@@ -1,4 +1,6 @@
-﻿@{
+﻿@inherits Nancy.ViewEngines.Razor.NancyRazorViewBase<dynamic>
+@using Cassette.Nancy
+@{
   Bundles.Reference("Scripts/app");
   Bundles.Reference("Styles");
 }
@@ -11,7 +13,7 @@
 </head>
 <body>
   <div id="header"><h1>Cassette.Nancy.Demo.TinyIoC</h1></div>
-  <div id="body"><img src="@Url.Content("~/Images/kitten.jpg")" /></div>
+  <div id="body"><img src="@Html.RenderContext.ParsePath("~/Images/kitten.jpg")" /></div>
   <div id="footer">Copyright</div>
 
   @Bundles.RenderScripts()
