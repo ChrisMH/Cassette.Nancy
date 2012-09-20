@@ -172,7 +172,7 @@ namespace Cassette.Nancy
         /// <param name="customizeBundle">The optional delegate used to customize the created bundle before adding it to the collection.</param>
         public static void AddPageData(string globalVariable, object data, string pageLocation, Action<ScriptBundle> customizeBundle)
         {
-            AddScriptBundle(new PageDataScriptBundle(globalVariable, data), pageLocation, customizeBundle);
+            AddScriptBundle(new PageDataScriptBundle(globalVariable, data, new SimpleJsonSerializer()), pageLocation, customizeBundle);
         }
 
         /// <summary>
@@ -204,7 +204,7 @@ namespace Cassette.Nancy
         /// <param name="customizeBundle">The optional delegate used to customize the created bundle before adding it to the collection.</param>
         public static void AddPageData(string globalVariable, IEnumerable<KeyValuePair<string, object>> data, string pageLocation, Action<ScriptBundle> customizeBundle)
         {
-            AddScriptBundle(new PageDataScriptBundle(globalVariable, data), pageLocation, customizeBundle);
+            AddScriptBundle(new PageDataScriptBundle(globalVariable, data, new SimpleJsonSerializer()), pageLocation, customizeBundle);
         }
 
         static void AddScriptBundle(ScriptBundle bundle, string pageLocation, Action<ScriptBundle> customizeBundle)

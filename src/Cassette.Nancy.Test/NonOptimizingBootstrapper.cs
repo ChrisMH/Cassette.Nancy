@@ -16,7 +16,7 @@ namespace Cassette.Nancy.Test
     {
       base.ConfigureApplicationContainer(container);
 
-      FakeRootPathProvider.RootPath = Utility.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..\\..");
+      FakeRootPathProvider.RootPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..\\..");
     }
 
     protected override void ConfigureConventions(NancyConventions nancyConventions)
