@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using Cassette.TinyIoC;
+using Cassette.IO;
 using Nancy;
 using Nancy.Bootstrapper;
 
@@ -144,7 +145,8 @@ namespace Cassette.Nancy
       base.ConfigureContainer();
 
       Container.Register<IUrlModifier>((c, p) => new UrlModifier(getContext));
-      Container.Register<IUrlGenerator>((c, n) => new UrlGenerator(c.Resolve<IUrlModifier>(), UrlModifier.CassettePrefix));
+      Container.Register<IDirectory>((c, p) => new FileSystemDirectory(c.Resolve<IRootPathProvider>().GetRootPath()));
+      Container.Register<IUrlGenerator>((c, n) => new UrlGenerator(c.Resolve<IUrlModifier>(), c.Resolve<IDirectory>(), UrlModifier.CassettePrefix));
     }
     
   }
