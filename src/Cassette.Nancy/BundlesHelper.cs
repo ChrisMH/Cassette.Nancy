@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Cassette.IO;
+using Cassette.Diagnostics;
 using Cassette.Utilities;
 using Nancy.ViewEngines.Razor;
 
