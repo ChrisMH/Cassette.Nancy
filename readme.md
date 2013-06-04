@@ -55,6 +55,7 @@ TODO: This should be a configuration setting, but I'm not sure how I want to do 
 
 If you use Nancy's testing infrastructure, Cassette will not be able to find your assets because the unit test's project root will be different than your project's root.  Luckily, Nancy uses a pluggable object that serves up a root path.  In your test project, implement a bootstrapper, derived from your web application's bootstrapper if it has one, like so:
 
+  <pre>
   public class TestNancyBootstrapper : Client.Web.NancyBootstrapper 
   {
     public TestNancyBootstrapper()
@@ -64,10 +65,11 @@ If you use Nancy's testing infrastructure, Cassette will not be able to find you
       FakeRootPathProvider.RootPath = Utility.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\Client.Web");
     }
   }
+  </pre>
   
   Use this bootstrapper in calls to Nancy.Testing's Browser class:
   
-  var browser = new Browser(new TestNancyBootstrapper());
+  <pre>var browser = new Browser(new TestNancyBootstrapper());</pre>
   
   In the above example I'm using a utility class that combines and canonicalize the path, but you can set it however you like.
   
