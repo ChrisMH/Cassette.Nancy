@@ -2,17 +2,15 @@
 using CsQuery;
 using Nancy;
 using Nancy.Testing;
-using Xunit;
-using Xunit.Extensions;
+using NUnit.Framework;
 
 namespace Cassette.Nancy.Test
 {
   public class BundleRequestHandlerTest
   {
-    [Theory]
-    [InlineData("head", "link", "href", "/_cassette/stylesheet/xxx=/Styles")]
-    [InlineData("body", "script", "src", "/_cassette/script/xxx=/Scripts/lib")]
-    [InlineData("body", "script", "src", "/_cassette/script/xxx=/Scripts/app")]
+    [TestCase("head", "link", "href", "/_cassette/stylesheet/xxx=/Styles")]
+    [TestCase("body", "script", "src", "/_cassette/script/xxx=/Scripts/lib")]
+    [TestCase("body", "script", "src", "/_cassette/script/xxx=/Scripts/app")]
     public void BundleIsReturned(string location, string element, string attribute, string urlFragmet)
     {
       var browser = new Browser(new OptimizingBootstrapper());
@@ -25,7 +23,7 @@ namespace Cassette.Nancy.Test
 
       response = browser.Get(url, with => with.HttpRequest());
       Console.Write(response.Body.AsString());
-      Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+      Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
     }
   }
 }

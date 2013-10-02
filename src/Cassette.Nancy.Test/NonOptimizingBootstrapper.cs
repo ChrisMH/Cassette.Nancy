@@ -12,13 +12,12 @@ namespace Cassette.Nancy.Test
       CassetteNancyStartup.OptimizeOutput = false;
     }
 
-    protected override void ConfigureApplicationContainer(global::TinyIoC.TinyIoCContainer container)
+    protected override void ConfigureApplicationContainer(global::Nancy.TinyIoc.TinyIoCContainer container)
     {
-      base.ConfigureApplicationContainer(container);
-
-      FakeRootPathProvider.RootPath = Utility.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..\\..");
+        base.ConfigureApplicationContainer(container);
+        FakeRootPathProvider.RootPath = Utility.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..\\..");
     }
-
+      
     protected override void ConfigureConventions(NancyConventions nancyConventions)
     {
       base.ConfigureConventions(nancyConventions);

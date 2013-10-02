@@ -2,13 +2,13 @@
 using System.Linq;
 using CsQuery;
 using Nancy.Testing;
-using Xunit;
+using NUnit.Framework;
 
 namespace Cassette.Nancy.Test
 {
   public class DiagnosticRequestHandlerTest
   {
-    [Fact]
+    [Test]
     public void DiagnosticPageIsReturned()
     {
       var browser = new Browser(new NonOptimizingBootstrapper());
