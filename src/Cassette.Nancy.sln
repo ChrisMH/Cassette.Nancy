@@ -1,8 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cassette.Nancy", "Cassette.Nancy\Cassette.Nancy.csproj", "{7514833D-27E3-42B1-9BF7-CAE8CBAB0446}"
-EndProject
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F8784DCA-7F35-4E50-B34C-34A857157EF5}"
 	ProjectSection(SolutionItems) = preProject
 		Cassette.Nancy\Cassette.Nancy.nuspec = Cassette.Nancy\Cassette.Nancy.nuspec
@@ -11,15 +9,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		..\readme.md = ..\readme.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cassette.Nancy.Test", "Cassette.Nancy.Test\Cassette.Nancy.Test.csproj", "{A364F722-2DBE-4038-89C5-9157289AD942}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dependencies", "Dependencies", "{8EBA1F36-B16E-47CC-9D59-55640D921F69}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Demos", "Demos", "{F9897763-0E34-4706-85D0-DC0DA0AC4722}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cassette.Nancy", "Cassette.Nancy\Cassette.Nancy.csproj", "{7514833D-27E3-42B1-9BF7-CAE8CBAB0446}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cassette.Nancy.Test", "Cassette.Nancy.Test\Cassette.Nancy.Test.csproj", "{A364F722-2DBE-4038-89C5-9157289AD942}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cassette", "..\dependencies\cassette\src\Cassette\Cassette.csproj", "{A5CCF9D3-5D49-4BFC-B9A6-9EC9E0E29C50}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nancy", "..\dependencies\Nancy\src\Nancy\Nancy.csproj", "{34576216-0DCA-4B0F-A0DC-9075E75A676F}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Demos", "Demos", "{F9897763-0E34-4706-85D0-DC0DA0AC4722}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cassette.Nancy.Demo.TinyIoC", "Cassette.Nancy.Demo.TinyIoC\Cassette.Nancy.Demo.TinyIoC.csproj", "{B9DB161B-2028-4F02-BA43-B4D60A4471FF}"
 EndProject
