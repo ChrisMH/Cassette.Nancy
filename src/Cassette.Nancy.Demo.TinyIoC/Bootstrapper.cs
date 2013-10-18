@@ -10,7 +10,7 @@ namespace Cassette.Nancy.Demo.TinyIoC
       CassetteNancyStartup.OptimizeOutput = false;
     }
 
-    protected override void ApplicationStartup(global::TinyIoC.TinyIoCContainer container, global::Nancy.Bootstrapper.IPipelines pipelines)
+    protected override void ApplicationStartup(global::Nancy.TinyIoc.TinyIoCContainer container, global::Nancy.Bootstrapper.IPipelines pipelines)
     {
       base.ApplicationStartup(container, pipelines);
       
