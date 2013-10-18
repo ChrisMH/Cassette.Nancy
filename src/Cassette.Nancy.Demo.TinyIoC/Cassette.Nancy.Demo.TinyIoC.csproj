@@ -43,8 +43,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AjaxMin, Version=4.60.4609.17023, Culture=neutral, PublicKeyToken=21ef50ce11b5d80f, processorArchitecture=MSIL">
-      <HintPath>..\packages\AjaxMin.4.60.4609.17023\lib\net20\AjaxMin.dll</HintPath>
+    <Reference Include="AjaxMin, Version=5.2.5021.15808, Culture=neutral, PublicKeyToken=21ef50ce11b5d80f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\AjaxMin.5.2.5021.15814\lib\net40\AjaxMin.dll</HintPath>
     </Reference>
     <Reference Include="Cassette, Version=2.0.0.17974, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
