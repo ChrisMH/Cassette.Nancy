@@ -51,9 +51,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Autofac.3.1.3\lib\net40\Autofac.dll</HintPath>
     </Reference>
-    <Reference Include="Cassette, Version=2.0.0.17974, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Cassette, Version=2.1.0.17228, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Cassette.2.0.0\lib\net40-client\Cassette.dll</HintPath>
+      <HintPath>..\packages\Cassette.2.1.0\lib\net40-client\Cassette.dll</HintPath>
     </Reference>
     <Reference Include="Cassette.CoffeeScript, Version=2.0.0.17976, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
