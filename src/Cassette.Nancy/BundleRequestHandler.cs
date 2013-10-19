@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Cassette.Utilities;
 using Nancy;
 using Nancy.Responses;
@@ -21,7 +22,8 @@ namespace Cassette.Nancy
 
     public Response ProcessRequest(NancyContext context, string path)
     {
-      path = string.Concat("~", path.Substring(path.LastIndexOf('=') + 1));
+      var pattern = new Regex(@"~?/?[a-z]{5,}/[a-f0-9]{10,}/", RegexOptions.IgnoreCase);
+      path = pattern.Replace(path, "/");
 
       using (bundles.GetReadLock())
       {
