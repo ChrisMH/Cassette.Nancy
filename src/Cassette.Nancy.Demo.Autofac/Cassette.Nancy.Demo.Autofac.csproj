@@ -51,25 +51,25 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Autofac.3.1.3\lib\net40\Autofac.dll</HintPath>
     </Reference>
-    <Reference Include="Cassette, Version=2.2.0.13183, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Cassette, Version=2.2.2.34609, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Cassette.2.2.0\lib\net40-client\Cassette.dll</HintPath>
+      <HintPath>..\packages\Cassette.2.2.2\lib\net40-client\Cassette.dll</HintPath>
     </Reference>
-    <Reference Include="Cassette.CoffeeScript, Version=2.2.0.13183, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Cassette.CoffeeScript, Version=2.2.2.34609, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Cassette.CoffeeScript.2.2.0\lib\net40-client\Cassette.CoffeeScript.dll</HintPath>
+      <HintPath>..\packages\Cassette.CoffeeScript.2.2.2\lib\net40-client\Cassette.CoffeeScript.dll</HintPath>
     </Reference>
-    <Reference Include="Cassette.Less, Version=2.2.0.13183, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Cassette.Less, Version=2.2.2.34609, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Cassette.Less.2.2.0\lib\net40-client\Cassette.Less.dll</HintPath>
+      <HintPath>..\packages\Cassette.Less.2.2.2\lib\net40-client\Cassette.Less.dll</HintPath>
     </Reference>
     <Reference Include="Cassette.Nancy, Version=2.0.0.25580, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Cassette.Nancy.2.0.0\lib\net40\Cassette.Nancy.dll</HintPath>
     </Reference>
-    <Reference Include="Cassette.Sass, Version=2.2.0.13183, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Cassette.Sass, Version=2.2.2.34609, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Cassette.Sass.2.2.0\lib\net40-client\Cassette.Sass.dll</HintPath>
+      <HintPath>..\packages\Cassette.Sass.2.2.2\lib\net40-client\Cassette.Sass.dll</HintPath>
     </Reference>
     <Reference Include="dotless.ClientOnly, Version=1.3.1.0, Culture=neutral, PublicKeyToken=96b446c9e63eae34, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
