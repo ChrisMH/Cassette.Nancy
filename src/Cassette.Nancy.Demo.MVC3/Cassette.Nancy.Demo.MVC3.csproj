@@ -49,9 +49,9 @@
     <Reference Include="AjaxMin">
       <HintPath>..\packages\AjaxMin.4.84.4790.14417\lib\net40\AjaxMin.dll</HintPath>
     </Reference>
-    <Reference Include="Cassette, Version=2.2.2.34609, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Cassette, Version=2.3.0.21958, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Cassette.2.2.2\lib\net40-client\Cassette.dll</HintPath>
+      <HintPath>..\packages\Cassette.2.3.0\lib\net40-client\Cassette.dll</HintPath>
     </Reference>
     <Reference Include="Cassette.Nancy">
       <HintPath>..\packages\Cassette.Nancy.2.0.0\lib\net40\Cassette.Nancy.dll</HintPath>

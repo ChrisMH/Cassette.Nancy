@@ -1,19 +1,21 @@
 <?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
-    <id>Cassette.CoffeeScript</id>
-    <version>2.2.2</version>
+    <id>Cassette.Sass</id>
+    <version>2.3.0</version>
     <authors>Andrew Davey</authors>
     <owners>Andrew Davey</owners>
     <licenseUrl>http://getcassette.net/licensing</licenseUrl>
     <projectUrl>http://getcassette.net/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>CoffeeScript compiler support for Cassette</description>
+    <description>Sass CSS compiler support for Cassette.</description>
     <copyright>© 2011 Andrew Davey</copyright>
     <tags>web javascript coffeescript css html templates asp.net</tags>
     <dependencies>
-      <dependency id="Cassette" version="2.2.2" />
-      <dependency id="Jurassic" version="2.1" />
+      <dependency id="Cassette" version="2.3.0" />
+      <dependency id="IronRuby" version="1.1" />
+      <dependency id="SassAndCoffee.Core" version="2.0" />
+      <dependency id="SassAndCoffee.Ruby" version="2.0" />
     </dependencies>
   </metadata>
 </package>
