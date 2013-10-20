@@ -177,6 +177,27 @@
             <param name="fileSearch">The <see cref="T:Cassette.IFileSearch"/> used to find files. If null the application default file search for the bundle type is used.</param>
             <param name="customizeBundle">An optional action delegate called for each bundle.</param>
         </member>
+        <member name="M:Cassette.BundleCollection.AddEmbeddedResources``1(System.String,System.Reflection.Assembly,System.String,System.String[])">
+            <summary>
+            Adds a new bundle with an explicit list of assets retrieved from embedded resources
+            </summary>
+            <typeparam name="T">The type of bundle to add.</typeparam>
+            <param name="applicationRelativePath">The application relative path of the bundle. This does not have to be a real directory path.</param>
+            <param name="assembly">Assembly to retrieve assets from</param>
+            <param name="resourceNamespace">Base namespace to retrieve assets from</param>
+            <param name="resourceFilenames">The filenames of resources to add to the bundle. The order given here will be preserved. Filenames are bundle directory relative, if the bundle path exists, otherwise they are application relative.</param>
+        </member>
+        <member name="M:Cassette.BundleCollection.AddEmbeddedResources``1(System.String,System.Reflection.Assembly,System.String,System.Collections.Generic.IEnumerable{System.String},System.Action{``0})">
+            <summary>
+            Adds a new bundle with an explicit list of assets retrieved from embedded resources
+            </summary>
+            <typeparam name="T">The type of bundle to add.</typeparam>
+            <param name="applicationRelativePath">The application relative path of the bundle. This does not have to be a real directory path.</param>
+            <param name="assembly">Assembly to retrieve assets from</param>
+            <param name="resourceNamespace">Base namespace to retrieve assets from</param>
+            <param name="resourceFilenames">The filenames of resources to add to the bundle. The order given here will be preserved. Filenames are bundle directory relative, if the bundle path exists, otherwise they are application relative.</param>
+            <param name="customizeBundle">An action delegate used to customize the created bundle.</param>
+        </member>
         <member name="M:Cassette.BundleCollection.Get``1(System.String)">
             <summary>
             Gets a strongly-typed <see cref="T:Cassette.Bundle"/> from the collection, by path.
