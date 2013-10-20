@@ -16,12 +16,6 @@ namespace Cassette.Nancy
     public CassetteNancyStartup(IRootPathProvider rootPathProvider)
     {
       this.rootPathProvider = rootPathProvider;
-      AppDomainAssemblyTypeScanner.LoadAssemblies("Cassette.CoffeeScript.dll");
-      AppDomainAssemblyTypeScanner.LoadAssemblies("Cassette.Hogan.dll");
-      AppDomainAssemblyTypeScanner.LoadAssemblies("Cassette.JQueryTmpl.dll");
-      AppDomainAssemblyTypeScanner.LoadAssemblies("Cassette.KnockoutJQueryTmpl.dll");
-      AppDomainAssemblyTypeScanner.LoadAssemblies("Cassette.Less.dll");
-      AppDomainAssemblyTypeScanner.LoadAssemblies("Cassette.Sass.dll");
     }
     
     public void Initialize(IPipelines pipelines)

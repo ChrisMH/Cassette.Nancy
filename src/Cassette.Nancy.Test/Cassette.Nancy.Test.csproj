@@ -76,6 +76,7 @@
     <Compile Include="RazorViewTest.cs" />
     <Compile Include="NonOptimizingBootstrapper.cs" />
     <Compile Include="TestCassetteBundleConfiguration.cs" />
+    <Compile Include="TestCassetteRootPathProvider.cs" />
     <Compile Include="TestNancyModule.cs" />
     <Compile Include="TestRazorConfiguration.cs" />
   </ItemGroup>

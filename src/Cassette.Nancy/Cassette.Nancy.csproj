@@ -58,6 +58,7 @@
     <Compile Include="BundleRequestHandler.cs" />
     <Compile Include="Bundles.cs" />
     <Compile Include="BundlesHelper.cs" />
+    <Compile Include="CassetteNancyPluginRegistrations.cs" />
     <Compile Include="DiagnosticBundleConfiguration.cs" />
     <Compile Include="DiagnosticRequestHandler.cs" />
     <Compile Include="IBundlesHelper.cs" />
