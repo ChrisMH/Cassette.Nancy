@@ -3,4 +3,4 @@
 	url = https://github.com/GiscardBiamby/cassette
 [submodule "dependencies/Nancy"]
 	path = dependencies/Nancy
-	url = https://github.com/GiscardBiamby/Nancy
+	url = https://github.com/NancyFx/Nancy.git
