@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using Cassette.Diagnostics;
 using Cassette.IO;
+using Cassette.Diagnostics;
 using Cassette.Utilities;
 using Nancy.ViewEngines.Razor;
 

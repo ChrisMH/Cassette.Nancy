@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using Cassette.IO;
 using Cassette.TinyIoC;
+using Cassette.IO;
 using Nancy;
 using Nancy.Bootstrapper;
 
