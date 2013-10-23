@@ -1,0 +1,2905 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Cassette</name>
+    </assembly>
+    <members>
+        <member name="P:Cassette.BundleCollectionChangedEventArgs.Bundles">
+            <summary>
+            Gets a readonly copy of the updated bundle collection.
+            </summary>
+        </member>
+        <member name="T:Cassette.BundleProcessing.ExternalBundleGenerator">
+            <summary>
+            Modifies a <see cref="T:Cassette.BundleCollection"/> by adding external bundles for any URL references made by existing bundles,
+            which are not already represented by external bundles.
+            </summary>
+        </member>
+        <member name="T:Cassette.IBundleVisitor">
+            <summary>
+            A visitor that traverses a bundle and its assets.
+            </summary>
+        </member>
+        <member name="P:Cassette.Caching.Manifest.IsStatic">
+            <summary>
+            A static manifest never needs validating or rebuilding. For example, a manifest built at compile time is static.
+            </summary>
+        </member>
+        <member name="T:Cassette.ConfigurationOrderAttribute">
+            <summary>
+            Defines a value used to order the execution of configurations.
+            </summary>
+        </member>
+        <member name="T:Cassette.HostBase">
+            <summary>
+            A host initializes Cassette for an application.
+            </summary>
+        </member>
+        <member name="M:Cassette.HostBase.LoadAssemblies">
+            <summary>
+            Loads and returns all the assemblies used by the application. These will be scanned for Cassette types.
+            </summary>
+        </member>
+        <member name="M:Cassette.HostBase.GetConfigurationTypes(System.Collections.Generic.IEnumerable{System.Type})">
+            <summary>
+            Returns all types that implement <see cref="T:Cassette.IConfiguration`1"/>.
+            </summary>
+        </member>
+        <member name="M:Cassette.HostBase.FileSearchComponentName(System.Type)">
+            <summary>
+            A separate <see cref="T:Cassette.IFileSearch"/> is stored in the container for each type of bundle.
+            This method returns a name that identifies the FileSearch for a particular bundle type.
+            </summary>
+        </member>
+        <member name="M:Cassette.BundleCollection.Add(Cassette.Bundle)">
+            <summary>
+            Adds a <see cref="T:Cassette.Bundle"/> to the collection.
+            </summary>
+            <param name="bundle">The bundle to add.</param>
+        </member>
+        <member name="M:Cassette.BundleCollection.Add``1(System.String)">
+            <summary>
+            Adds a bundle of type <typeparamref name="T"/> using asset files found in the given path.
+            </summary>
+            <typeparam name="T">The type of bundle to create.</typeparam>
+            <param name="applicationRelativePath">The application relative path to the bundle's asset files.</param>
+        </member>
+        <member name="M:Cassette.BundleCollection.Add``1(System.String,Cassette.IFileSearch)">
+            <summary>
+            Adds a bundle of type <typeparamref name="T"/> using asset files found in the given path.
+            </summary>
+            <typeparam name="T">The type of bundle to create.</typeparam>
+            <param name="applicationRelativePath">The application relative path to the bundle's asset files.</param>
+            <param name="fileSearch">The file search used to find asset files to include in the bundle.</param>
+        </member>
+        <member name="M:Cassette.BundleCollection.Add``1(System.String,System.Action{``0})">
+            <summary>
+            Adds a bundle of type <typeparamref name="T"/> using asset files found in the given path.
+            </summary>
+            <typeparam name="T">The type of bundle to create.</typeparam>
+            <param name="applicationRelativePath">The application relative path to the bundle's asset files.</param>
+            <param name="customizeBundle">The delegate used to customize the created bundle before adding it to the collection.</param>
+        </member>
+        <member name="M:Cassette.BundleCollection.Add``1(System.String,Cassette.IFileSearch,System.Action{``0})">
+            <summary>
+            Adds a bundle of type <typeparamref name="T"/> using asset files found in the given path.
+            </summary>
+            <typeparam name="T">The type of bundle to create.</typeparam>
+            <param name="applicationRelativePath">The application relative path to the bundle's asset files.</param>
+            <param name="fileSearch">The file search used to find asset files to include in the bundle.</param>
+            <param name="customizeBundle">The delegate used to customize the created bundle before adding it to the collection.</param>
+        </member>
+        <member name="M:Cassette.BundleCollection.Add``1(System.String,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Adds a new bundle with an explicit list of assets.
+            </summary>
+            <typeparam name="T">The type of bundle to add.</typeparam>
+            <param name="applicationRelativePath">The application relative path of the bundle. This does not have to be a real directory path.</param>
+            <param name="assetFilenames">The filenames of assets to add to the bundle. The order given here will be preserved. Filenames are bundle directory relative, if the bundle path exists, otherwise they are application relative.</param>
+        </member>
+        <member name="M:Cassette.BundleCollection.Add``1(System.String,System.String[])">
+            <summary>
+            Adds a new bundle with an explicit list of assets.
+            </summary>
+            <typeparam name="T">The type of bundle to add.</typeparam>
+            <param name="applicationRelativePath">The application relative path of the bundle. This does not have to be a real directory path.</param>
+            <param name="assetFilenames">The filenames of assets to add to the bundle. The order given here will be preserved. Filenames are bundle directory relative, if the bundle path exists, otherwise they are application relative.</param>
+        </member>
+        <member name="M:Cassette.BundleCollection.Add``1(System.String,System.Collections.Generic.IEnumerable{System.String},System.Action{``0})">
+            <summary>
+            Adds a new bundle with an explicit list of assets.
+            </summary>
+            <typeparam name="T">The type of bundle to add.</typeparam>
+            <param name="applicationRelativePath">The application relative path of the bundle. This does not have to be a real directory path.</param>
+            <param name="assetFilenames">The filenames of assets to add to the bundle. The order given here will be preserved. Filenames are bundle directory relative, if the bundle path exists, otherwise they are application relative.</param>
+            <param name="customizeBundle">An action delegate used to customize the created bundle.</param>
+        </member>
+        <member name="M:Cassette.BundleCollection.AddPerSubDirectory``1(System.String,System.Boolean)">
+            <summary>
+            Adds a bundle for each sub-directory of the given path.
+            </summary>
+            <typeparam name="T">The type of bundles to create.</typeparam>
+            <param name="applicationRelativePath">The path to the directory containing sub-directories.</param>
+            <param name="excludeTopLevel">Prevents the creation of an extra bundle from the top-level files of the path, if any.</param>
+        </member>
+        <member name="M:Cassette.BundleCollection.AddPerSubDirectory``1(System.String,Cassette.IFileSearch,System.Boolean)">
+            <summary>
+            Adds a bundle for each sub-directory of the given path.
+            </summary>
+            <typeparam name="T">The type of bundles to create.</typeparam>
+            <param name="applicationRelativePath">The path to the directory containing sub-directories.</param>
+            <param name="fileSearch">A file source that gets the files to include from a directory.</param>
+            <param name="excludeTopLevel">Prevents the creation of an extra bundle from the top-level files of the directory, if any.</param>
+        </member>
+        <member name="M:Cassette.BundleCollection.AddPerSubDirectory``1(System.String,System.Action{``0},System.Boolean)">
+            <summary>
+            Adds a bundle for each sub-directory of the given path.
+            </summary>
+            <typeparam name="T">The type of bundles to create.</typeparam>
+            <param name="applicationRelativePath">The path to the directory containing sub-directories.</param>
+            <param name="customizeBundle">A delegate that is called for each created bundle to allow customization.</param>
+            <param name="excludeTopLevel">Prevents the creation of an extra bundle from the top-level files of the path, if any.</param>
+        </member>
+        <member name="M:Cassette.BundleCollection.AddPerSubDirectory``1(System.String,Cassette.IFileSearch,System.Action{``0},System.Boolean)">
+            <summary>
+            Adds a bundle for each sub-directory of the given path.
+            </summary>
+            <typeparam name="T">The type of bundles to create.</typeparam>
+            <param name="applicationRelativePath">The path to the directory containing sub-directories.</param>
+            <param name="fileSearch">A file source that gets the files to include from a directory.</param>
+            <param name="customizeBundle">A delegate that is called for each created bundle to allow customization.</param>
+            <param name="excludeTopLevel">Prevents the creation of an extra bundle from the top-level files of the path, if any.</param>
+        </member>
+        <member name="M:Cassette.BundleCollection.AddUrl``1(System.String,System.Action{Cassette.Bundle})">
+            <summary>
+            Adds a bundle that references a URL instead of local asset files.
+            </summary>
+            <typeparam name="T">The type of bundle to create.</typeparam>
+            <param name="url">The URL to reference.</param>
+            <param name="customizeBundle">A delegate that is called for each created bundle to allow customization.</param>
+            <returns>A object used to further configure the bundle.</returns>
+        </member>
+        <member name="M:Cassette.BundleCollection.AddUrl(System.String,System.Action{Cassette.Bundle})">
+            <summary>
+            Adds a bundle that references a URL instead of local asset files. The type of bundle created is determined by the URL's file extension.
+            </summary>
+            <param name="url">The URL to reference.</param>
+            <param name="customizeBundle">A delegate that is called for each created bundle to allow customization.</param>
+            <returns>A object used to further configure the bundle.</returns>
+        </member>
+        <member name="M:Cassette.BundleCollection.AddPerIndividualFile``1(System.String,Cassette.IFileSearch,System.Action{``0})">
+            <summary>
+            Adds a bundle for each individual file found using the file search. If no file search is provided the application
+            default file search for the bundle type is used.
+            </summary>
+            <typeparam name="T">The type of bundle to create.</typeparam>
+            <param name="directoryPath">The path to the directory to search. If null or empty the application source directory is used.</param>
+            <param name="fileSearch">The <see cref="T:Cassette.IFileSearch"/> used to find files. If null the application default file search for the bundle type is used.</param>
+            <param name="customizeBundle">An optional action delegate called for each bundle.</param>
+        </member>
+        <member name="M:Cassette.BundleCollection.AddEmbeddedResources``1(System.String,System.Reflection.Assembly,System.String,System.String[])">
+            <summary>
+            Adds a new bundle with an explicit list of assets retrieved from embedded resources
+            </summary>
+            <typeparam name="T">The type of bundle to add.</typeparam>
+            <param name="applicationRelativePath">The application relative path of the bundle. This does not have to be a real directory path.</param>
+            <param name="assembly">Assembly to retrieve assets from</param>
+            <param name="resourceNamespace">Base namespace to retrieve assets from</param>
+            <param name="resourceFilenames">The filenames of resources to add to the bundle. The order given here will be preserved. Filenames are bundle directory relative, if the bundle path exists, otherwise they are application relative.</param>
+        </member>
+        <member name="M:Cassette.BundleCollection.AddEmbeddedResources``1(System.String,System.Reflection.Assembly,System.String,System.Collections.Generic.IEnumerable{System.String},System.Action{``0})">
+            <summary>
+            Adds a new bundle with an explicit list of assets retrieved from embedded resources
+            </summary>
+            <typeparam name="T">The type of bundle to add.</typeparam>
+            <param name="applicationRelativePath">The application relative path of the bundle. This does not have to be a real directory path.</param>
+            <param name="assembly">Assembly to retrieve assets from</param>
+            <param name="resourceNamespace">Base namespace to retrieve assets from</param>
+            <param name="resourceFilenames">The filenames of resources to add to the bundle. The order given here will be preserved. Filenames are bundle directory relative, if the bundle path exists, otherwise they are application relative.</param>
+            <param name="customizeBundle">An action delegate used to customize the created bundle.</param>
+        </member>
+        <member name="M:Cassette.BundleCollection.Get``1(System.String)">
+            <summary>
+            Gets a strongly-typed <see cref="T:Cassette.Bundle"/> from the collection, by path.
+            </summary>
+            <typeparam name="T">The type of bundle.</typeparam>
+            <param name="path">The bundle path to find.</param>
+            <returns>A strongly-typed bundle</returns>
+            <exception cref="T:System.ArgumentException">Thrown when bundle is not found.</exception>
+        </member>
+        <member name="M:Cassette.BundleCollection.Get(System.String)">
+            <summary>
+            Gets a <see cref="T:Cassette.Bundle"/> from the collection, by path.
+            </summary>
+            <param name="path">The bundle path to find.</param>
+            <returns>A bundle.</returns>
+            <exception cref="T:System.ArgumentException">Thrown when bundle is not found.</exception>
+        </member>
+        <member name="P:Cassette.BundleCollection.InitializationException">
+            <summary>
+            An exception occuring during bundle collection initialization can be stored here.
+            Then during GetReadLock it is thrown.
+            </summary>
+        </member>
+        <member name="P:Cassette.BundleCollection.Item(System.String)">
+            <summary>
+            Gets a <see cref="T:Cassette.Bundle"/> from the collection, by path.
+            </summary>
+            <returns>A bundle.</returns>
+            <exception cref="T:System.ArgumentException">Thrown when bundle is not found.</exception>
+        </member>
+        <member name="T:Cassette.IAssetTransformer">
+            <summary>
+            Transforms asset content.
+            </summary>
+        </member>
+        <member name="M:Cassette.IAssetTransformer.Transform(System.Func{System.IO.Stream},Cassette.IAsset)">
+            <summary>
+            Returns a function that will transform an asset's content stream.
+            </summary>
+            <param name="openSourceStream">A function that opens a stream to the asset's content.</param>
+            <param name="asset">The asset being transformed.</param>
+            <returns>A function that returns the transformed content stream.</returns>
+        </member>
+        <member name="T:Cassette.DeserializedAsset">
+            <summary>
+            DeserializedAsset implements enough of <see cref="T:Cassette.IAsset"/> to work with reference path resolution.
+            It only supports Path, AssetCacheValidatorType, References and Accept.
+            </summary>
+        </member>
+        <member name="M:Cassette.IAsset.OpenStream">
+            <summary>
+            Opens a new stream to read the transformed contents of the asset.
+            </summary>
+            <returns>A readable <see cref="T:System.IO.Stream"/>.</returns>
+        </member>
+        <member name="P:Cassette.IAsset.AssetCacheValidatorType">
+            <summary>
+            Gets a type of <see cref="T:Cassette.Caching.IAssetCacheValidator"/> used to validate if a cache.
+            </summary>
+        </member>
+        <member name="P:Cassette.IAsset.Hash">
+            <summary>
+            Gets the hash of the transformed asset content.
+            </summary>
+        </member>
+        <member name="P:Cassette.IAsset.Path">
+            <summary>
+            Gets the application relative path of the asset.
+            </summary>
+        </member>
+        <member name="P:Cassette.IAsset.References">
+            <summary>
+            Gets the references made by this asset.
+            </summary>
+        </member>
+        <member name="T:Cassette.ResourceAsset">
+            <summary>
+            Partial implementation of IAsset that reads from an assembly resource stream.
+            </summary>
+        </member>
+        <member name="P:Cassette.CompileContext.SourceFilePath">
+            <summary>
+            The application relative path of the file being compiled.
+            </summary>
+        </member>
+        <member name="P:Cassette.CompileContext.RootDirectory">
+            <summary>
+            The root directory of the application.
+            </summary>
+        </member>
+        <member name="P:Cassette.CompileResult.Output">
+            <summary>
+            The compiled output.
+            </summary>
+        </member>
+        <member name="P:Cassette.CompileResult.ImportedFilePaths">
+            <summary>
+            The application relative paths of files imported by the compiled source.
+            </summary>
+        </member>
+        <member name="T:Cassette.ConditionalRenderer">
+            <summary>
+            Renders conditional comments as described by http://www.quirksmode.org/css/condcom.html,
+            except for a slight change in the "!IE" case for IE9 compatibility.
+            </summary>
+        </member>
+        <member name="M:Cassette.ConditionalRenderer.ConditionContainsNotIE(System.String)">
+            <summary>
+            Check if the condition contains '!IE". Ignores any brackets or spaces.
+            </summary>
+        </member>
+        <member name="T:Cassette.FileSystemWatchingBundleRebuilder">
+            <summary>
+            Watches the source directory for file system changes. Rebuilds the <see cref="T:Cassette.BundleCollection"/>.
+            </summary>
+        </member>
+        <member name="T:Cassette.IStartUpTask">
+            <summary>
+            A task to run once at application start up.
+            </summary>
+        </member>
+        <member name="F:Cassette.FileSystemWatchingBundleRebuilder.readOnlyBundlesLock">
+            <summary>
+            This lock protects the readOnlyBundles field.
+            </summary>
+        </member>
+        <member name="M:Cassette.FileSystemWatchingBundleRebuilder.Start">
+            <summary>
+            Starts watching the file system for changes.
+            </summary>
+        </member>
+        <member name="M:Cassette.FileSystemWatchingBundleRebuilder.Dispose">
+            <summary>
+            Stops watching the file system for changes.
+            </summary>
+        </member>
+        <member name="T:Cassette.LocalAssetSettings">
+            <summary>
+            The local assets settings for an external bundle.
+            </summary>
+        </member>
+        <member name="P:Cassette.LocalAssetSettings.Path">
+            <summary>
+            Gets or sets the application relative path to the local assets.
+            </summary>
+        </member>
+        <member name="P:Cassette.LocalAssetSettings.FileSearch">
+            <summary>
+            Gets or sets the <see cref="T:Cassette.IFileSearch"/> used to find asset files. If null the bundle type's application default <see cref="T:Cassette.IFileSearch"/> will be used.
+            </summary>
+        </member>
+        <member name="P:Cassette.LocalAssetSettings.FallbackCondition">
+            <summary>
+            Gets or sets a JavaScript fallback condition. Used to load the local assets when the remote asset has failed to load.
+            </summary>
+        </member>
+        <member name="M:Cassette.FileSearch.FindFiles(Cassette.IO.IDirectory)">
+            <summary>
+            Searches the given directory for files matching the search parameters of this object.
+            </summary>
+            <param name="directory">The directory to search.</param>
+            <returns>A collection of files.</returns>
+        </member>
+        <member name="P:Cassette.FileSearch.Pattern">
+            <summary>
+            The file search pattern. For example, "*.js;*.coffee".
+            </summary>
+        </member>
+        <member name="P:Cassette.FileSearch.Exclude">
+            <summary>
+            Files with full paths matching this regular expression will be excluded.
+            </summary>
+        </member>
+        <member name="P:Cassette.FileSearch.SearchOption">
+            <summary>
+            Specifies if all sub-directories are searched recursively, or only the top-level directory is searched.
+            </summary>
+        </member>
+        <member name="T:Cassette.CassetteSettings">
+            <summary>
+            Settings that control Cassette's behavior.
+            </summary>
+        </member>
+        <member name="P:Cassette.CassetteSettings.IsDebuggingEnabled">
+            <summary>
+            When this property is true, Cassette will output debug-friendly assets. When false, combined, minified bundles are used instead.
+            </summary>
+        </member>
+        <member name="P:Cassette.CassetteSettings.IsHtmlRewritingEnabled">
+            <summary>
+            When true (the default), Cassette will buffer page output and rewrite to allow bundle references to be inserted into &lt;head&gt;
+            after it has already been rendered. Disable this when &lt;system.webServer&gt;/&lt;urlCompression dynamicCompressionBeforeCache="true"&gt;
+            is in Web.config.
+            </summary>
+        </member>
+        <member name="P:Cassette.CassetteSettings.SourceDirectory">
+            <summary>
+            The directory containing the original bundle asset files.
+            </summary>
+        </member>
+        <member name="P:Cassette.CassetteSettings.CacheDirectory">
+            <summary>
+            The directory used to cache combined, minified bundles.
+            </summary>
+        </member>
+        <member name="T:Cassette.HtmlAttributeDictionary">
+            <remarks>
+            Contains a collection of html attribute name/value pairs.
+            </remarks>
+        </member>
+        <member name="M:Cassette.HtmlAttributeDictionary.Add(System.Object)">
+            <summary>
+            Add an object to the <see cref="T:Cassette.HtmlAttributeDictionary"/> using the object property names as the attribute name
+            and the property values as the attribute Values.
+            
+            Underscores in the object property name will be converted to dashes.
+            </summary>
+            <example>
+            <code>
+            var attributes = new HtmlAttributeDictionary().Add( new { data_val_required = "contrived example", @class = "cssx" } );
+            </code>
+            </example>
+            <param name="values">An object that contains the HTML attributes.
+            The attributes are retrieved through reflection by examining the properties of the object.
+            The object is typically created by using object initializer syntax.</param>
+            <returns>This dictionary.</returns>
+        </member>
+        <member name="M:Cassette.HtmlAttributeDictionary.Add(System.String)">
+            <summary>
+            Add an attribute to the <see cref="T:Cassette.HtmlAttributeDictionary"/> that has a blank value.
+            </summary>
+            <param name="name">The attribute name to add.</param>
+            <returns>This dictionary.</returns>
+            <exception cref="T:System.ArgumentException">Thrown if name is invalid.</exception>
+        </member>
+        <member name="M:Cassette.HtmlAttributeDictionary.Add(System.String,System.Object)">
+            <summary>
+            Add an attribute name and value to the <see cref="T:Cassette.HtmlAttributeDictionary"/>.
+            </summary>
+            <param name="name">The attribute name to add.</param>
+            <param name="value">The attribute value to add.</param>
+            <returns>This dictionary.</returns>
+            <exception cref="T:System.ArgumentException">Thrown if name is invalid.</exception>
+        </member>
+        <member name="M:Cassette.HtmlAttributeDictionary.ContainsAttribute(System.String)">
+            <summary>
+            Determines whether the <see cref="T:Cassette.HtmlAttributeDictionary"/> containes the specified attribute name.
+            </summary>
+            <param name="name">The attribute name.</param>
+            <returns>True if found.</returns>
+            <exception cref="T:System.ArgumentException">Thrown if name is invalid.</exception>
+        </member>
+        <member name="M:Cassette.HtmlAttributeDictionary.Remove(System.String)">
+            <summary>
+            Removes the attribute with the specified name from the <see cref="T:Cassette.HtmlAttributeDictionary"/>.
+            </summary>
+            <param name="name">The attribute name.</param>
+            <returns>True if an attribute was removed.</returns>
+            <exception cref="T:System.ArgumentException">Thrown if name is invalid.</exception>
+        </member>
+        <member name="M:Cassette.HtmlAttributeDictionary.GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through the <see cref="T:Cassette.HtmlAttributeDictionary"/>.
+            </summary>
+            <returns>The enumerator.</returns>
+        </member>
+        <member name="M:Cassette.HtmlAttributeDictionary.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through the <see cref="T:Cassette.HtmlAttributeDictionary"/>.
+            </summary>
+            <returns>The enumerator.</returns>
+        </member>
+        <member name="P:Cassette.HtmlAttributeDictionary.Count">
+            <summary>
+            Gets the number of attribute name/value pairs in the <see cref="T:Cassette.HtmlAttributeDictionary"/>.
+            </summary>
+        </member>
+        <member name="P:Cassette.HtmlAttributeDictionary.CombinedAttributes">
+            <summary>
+            Generates an Html attributes string (with a leading space).
+            The attribute name will be the dictionary key and the attribute value will be the dictionary value.
+            </summary>
+        </member>
+        <member name="T:Cassette.IBundleHtmlRenderer`1">
+            <summary>
+            Creates the HTML required to reference a bundle in a page.
+            </summary>
+            <typeparam name="T">The type of <see cref="T:Cassette.Bundle"/>.</typeparam>
+        </member>
+        <member name="M:Cassette.IBundleHtmlRenderer`1.Render(`0)">
+            <summary>
+            Returns the HTML elements that will include the bundle in a page.
+            </summary>
+            <param name="bundle">The bundle to render.</param>
+            <returns>The HTML elements that will include the bundle in a page.</returns>
+        </member>
+        <member name="M:Cassette.Interop.ActiveScriptException.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Cassette.Interop.ActiveScriptException"/> class.
+            </summary>
+            <param name="message">The message.</param>
+        </member>
+        <member name="P:Cassette.Interop.ActiveScriptException.SourceContext">
+            <summary>
+            Gets or sets the application specific source context.
+            </summary>
+        </member>
+        <member name="P:Cassette.Interop.ActiveScriptException.LineNumber">
+            <summary>
+            Gets or sets the line number on which the error occurred.
+            </summary>
+        </member>
+        <member name="P:Cassette.Interop.ActiveScriptException.Column">
+            <summary>
+            Gets or sets the column on which the error occurred..
+            </summary>
+        </member>
+        <member name="P:Cassette.Interop.ActiveScriptException.LineContent">
+            <summary>
+            Gets or sets the content of the line on which the error occurred..
+            </summary>
+        </member>
+        <member name="T:Cassette.Interop.IActiveScriptParseWrapper">
+            <summary>
+            If the Windows Script engine allows raw text code scriptlets to be added to the script
+            or allows expression text to be evaluated at run time, it implements the
+            IActiveScriptParse interface. For interpreted scripting languages that have no
+            independent authoring environment, such as VBScript, this provides an alternate
+            mechanism (other than IPersist*) to get script code into the scripting engine, and
+            to attach script fragments to various object events.
+            </summary>
+            <remarks>
+            Before the scripting engine can be used, one of the following methods must be called
+            : IPersist*::Load, IPersist*::InitNew, or IActiveScriptParse::InitNew. The semantics
+            of this method are identical to IPersistStreamInit::InitNew, in that this method tells
+            the scripting engine to initialize itself. Note that it is not valid to call both
+            IPersist*::InitNew or IActiveScriptParse::InitNew and IPersist*::Load, nor is it valid
+            to call IPersist*::InitNew, IActiveScriptParse::InitNew, or IPersist*::Load more
+            than once.
+            </remarks>
+        </member>
+        <member name="M:Cassette.Interop.IActiveScriptParseWrapper.InitNew">
+            <summary>
+            Initializes the scripting engine.
+            </summary>
+        </member>
+        <member name="M:Cassette.Interop.IActiveScriptParseWrapper.AddScriptlet(System.String,System.String,System.String,System.String,System.String,System.String,System.IntPtr,System.UInt32,Cassette.Interop.ScriptTextFlags)">
+            <summary>
+            Adds a code scriptlet to the script. This method is used in environments where the
+            persistent state of the script is intertwined with the host document and the host
+            is responsible for restoring the script, rather than through an IPersist* interface.
+            The primary examples are HTML scripting languages that allow scriptlets of code
+            embedded in the HTML document to be attached to intrinsic events (for instance,
+            ONCLICK="button1.text='Exit'").
+            </summary>
+            <param name="defaultName">The default name to associate with the scriptlet. If the
+            scriptlet does not contain naming information (as in the ONCLICK example above),
+            this name will be used to identify the scriptlet. If this parameter is NULL, the
+            scripting engine manufactures a unique name, if necessary.</param>
+            <param name="code">The scriptlet text to add. The interpretation of this string
+            depends on the scripting language.</param>
+            <param name="itemName">The item name associated with this scriptlet. This parameter,
+            in addition to pstrSubItemName, identifies the object for which the scriptlet is
+            an event handler.</param>
+            <param name="subItemName">The name of a subobject of the named item with which this
+            scriptlet is associated; this name must be found in the named item's type
+            information. This parameter is NULL if the scriptlet is to be associated with the
+            named item instead of a subitem. This parameter, in addition to pstrItemName,
+            identifies the specific object for which the scriptlet is an event handler.</param>
+            <param name="eventName">The name of the event for which the scriptlet is an event
+            handler.</param>
+            <param name="delimiter">The end-of-scriptlet delimiter. When the pstrCode parameter
+            is parsed from a stream of text, the host typically uses a delimiter, such as two
+            single quotation marks (''), to detect the end of the scriptlet. This parameter
+            specifies the delimiter that the host used, allowing the scripting engine to
+            provide some conditional primitive preprocessing (for example, replacing a single
+            quotation mark ['] with two single quotation marks for use as a delimiter).
+            Exactly how (and if) the scripting engine makes use of this information depends
+            on the scripting engine. Set this parameter to NULL if the host did not use a
+            delimiter to mark the end of the scriptlet.</param>
+            <param name="sourceContextCookie">Application-defined value that is used for
+            debugging purposes.</param>
+            <param name="startingLineNumber">Zero-based value that specifies which line the
+            parsing will begin at.</param>
+            <param name="flags">Flags associated with the scriptlet.</param>
+            <returns>Actual name used to identify the scriptlet. This is to be in
+            order of preference: a name explicitly specified in the scriptlet text, the
+            default name provided in pstrDefaultName, or a unique name synthesized by the
+            scripting engine.</returns>
+        </member>
+        <member name="M:Cassette.Interop.IActiveScriptParseWrapper.ParseScriptText(System.String,System.String,System.Object,System.String,System.IntPtr,System.UInt32,Cassette.Interop.ScriptTextFlags)">
+            <summary>
+            Parses the given code scriptlet, adding declarations into the namespace and
+            evaluating code as appropriate.
+            </summary>
+            <param name="code">The scriptlet text to evaluate. The interpretation of this
+            string depends on the scripting language.</param>
+            <param name="itemName">The item name that gives the context in which the
+            scriptlet is to be evaluated. If this parameter is NULL, the code is evaluated
+            in the scripting engine's global context.</param>
+            <param name="context">The context object. This object is reserved for use in a
+            debugging environment, where such a context may be provided by the debugger to
+            represent an active run-time context. If this parameter is NULL, the engine
+            uses pstrItemName to identify the context.</param>
+            <param name="delimiter">The end-of-scriptlet delimiter. When pstrCode is parsed
+            from a stream of text, the host typically uses a delimiter, such as two single
+            quotation marks (''), to detect the end of the scriptlet. This parameter specifies
+            the delimiter that the host used, allowing the scripting engine to provide some
+            conditional primitive preprocessing (for example, replacing a single quotation
+            mark ['] with two single quotation marks for use as a delimiter). Exactly how
+            (and if) the scripting engine makes use of this information depends on the
+            scripting engine. Set this parameter to NULL if the host did not use a delimiter
+            to mark the end of the scriptlet.</param>
+            <param name="sourceContextCookie">Application-defined value that is used for
+            debugging purposes.</param>
+            <param name="startingLineNumber">Zero-based value that specifies which line the
+            parsing will begin at.</param>
+            <param name="flags">Flags associated with the scriptlet.</param>
+            <returns>The results of scriptlet processing, or NULL if the caller
+            expects no result (that is, the SCRIPTTEXT_ISEXPRESSION value is not set).</returns>
+        </member>
+        <member name="M:Cassette.Interop.ActiveScriptParseWrapper.#ctor(System.Object)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Cassette.Interop.ActiveScriptParseWrapper"/> class.
+            </summary>
+            <param name="parser">The parser.  Must implement IActiveScriptParse32 or IActiveScriptParse64.</param>
+        </member>
+        <member name="M:Cassette.Interop.ActiveScriptParseWrapper.InitNew">
+            <summary>
+            Initializes the scripting engine.
+            </summary>
+        </member>
+        <member name="M:Cassette.Interop.ActiveScriptParseWrapper.AddScriptlet(System.String,System.String,System.String,System.String,System.String,System.String,System.IntPtr,System.UInt32,Cassette.Interop.ScriptTextFlags)">
+            <summary>
+            Adds a code scriptlet to the script. This method is used in environments where the
+            persistent state of the script is intertwined with the host document and the host
+            is responsible for restoring the script, rather than through an IPersist* interface.
+            The primary examples are HTML scripting languages that allow scriptlets of code
+            embedded in the HTML document to be attached to intrinsic events (for instance,
+            ONCLICK="button1.text='Exit'").
+            </summary>
+            <param name="defaultName">The default name to associate with the scriptlet. If the
+            scriptlet does not contain naming information (as in the ONCLICK example above),
+            this name will be used to identify the scriptlet. If this parameter is NULL, the
+            scripting engine manufactures a unique name, if necessary.</param>
+            <param name="code">The scriptlet text to add. The interpretation of this string
+            depends on the scripting language.</param>
+            <param name="itemName">The item name associated with this scriptlet. This parameter,
+            in addition to pstrSubItemName, identifies the object for which the scriptlet is
+            an event handler.</param>
+            <param name="subItemName">The name of a subobject of the named item with which this
+            scriptlet is associated; this name must be found in the named item's type
+            information. This parameter is NULL if the scriptlet is to be associated with the
+            named item instead of a subitem. This parameter, in addition to pstrItemName,
+            identifies the specific object for which the scriptlet is an event handler.</param>
+            <param name="eventName">The name of the event for which the scriptlet is an event
+            handler.</param>
+            <param name="delimiter">The end-of-scriptlet delimiter. When the pstrCode parameter
+            is parsed from a stream of text, the host typically uses a delimiter, such as two
+            single quotation marks (''), to detect the end of the scriptlet. This parameter
+            specifies the delimiter that the host used, allowing the scripting engine to
+            provide some conditional primitive preprocessing (for example, replacing a single
+            quotation mark ['] with two single quotation marks for use as a delimiter).
+            Exactly how (and if) the scripting engine makes use of this information depends
+            on the scripting engine. Set this parameter to NULL if the host did not use a
+            delimiter to mark the end of the scriptlet.</param>
+            <param name="sourceContextCookie">Application-defined value that is used for
+            debugging purposes.</param>
+            <param name="startingLineNumber">Zero-based value that specifies which line the
+            parsing will begin at.</param>
+            <param name="flags">Flags associated with the scriptlet.</param>
+            <returns>
+            Actual name used to identify the scriptlet. This is to be in
+            order of preference: a name explicitly specified in the scriptlet text, the
+            default name provided in pstrDefaultName, or a unique name synthesized by the
+            scripting engine.
+            </returns>
+        </member>
+        <member name="M:Cassette.Interop.ActiveScriptParseWrapper.ParseScriptText(System.String,System.String,System.Object,System.String,System.IntPtr,System.UInt32,Cassette.Interop.ScriptTextFlags)">
+            <summary>
+            Parses the given code scriptlet, adding declarations into the namespace and
+            evaluating code as appropriate.
+            </summary>
+            <param name="code">The scriptlet text to evaluate. The interpretation of this
+            string depends on the scripting language.</param>
+            <param name="itemName">The item name that gives the context in which the
+            scriptlet is to be evaluated. If this parameter is NULL, the code is evaluated
+            in the scripting engine's global context.</param>
+            <param name="context">The context object. This object is reserved for use in a
+            debugging environment, where such a context may be provided by the debugger to
+            represent an active run-time context. If this parameter is NULL, the engine
+            uses pstrItemName to identify the context.</param>
+            <param name="delimiter">The end-of-scriptlet delimiter. When pstrCode is parsed
+            from a stream of text, the host typically uses a delimiter, such as two single
+            quotation marks (''), to detect the end of the scriptlet. This parameter specifies
+            the delimiter that the host used, allowing the scripting engine to provide some
+            conditional primitive preprocessing (for example, replacing a single quotation
+            mark ['] with two single quotation marks for use as a delimiter). Exactly how
+            (and if) the scripting engine makes use of this information depends on the
+            scripting engine. Set this parameter to NULL if the host did not use a delimiter
+            to mark the end of the scriptlet.</param>
+            <param name="sourceContextCookie">Application-defined value that is used for
+            debugging purposes.</param>
+            <param name="startingLineNumber">Zero-based value that specifies which line the
+            parsing will begin at.</param>
+            <param name="flags">Flags associated with the scriptlet.</param>
+            <returns>
+            The results of scriptlet processing, or NULL if the caller
+            expects no result (that is, the SCRIPTTEXT_ISEXPRESSION value is not set).
+            </returns>
+        </member>
+        <member name="P:Cassette.Interop.ActiveScriptParseWrapper.LastException">
+            <summary>
+            Gets the last COM exception.
+            </summary>
+        </member>
+        <member name="T:Cassette.Interop.IActiveScript">
+            <summary>
+            Provides the methods necessary to initialize the scripting engine. The scripting engine must
+            implement the IActiveScript interface.
+            </summary>
+        </member>
+        <member name="M:Cassette.Interop.IActiveScript.SetScriptSite(Cassette.Interop.IActiveScriptSite)">
+            <summary>
+            Informs the scripting engine of the IActiveScriptSite interface site provided by the host.
+            Call this method before any other IActiveScript interface methods is used.
+            </summary>
+            <param name="scriptSite">The host-supplied script site to be associated with this instance
+            of the scripting engine. The site must be uniquely assigned to this scripting engine
+            instance; it cannot be shared with other scripting engines.</param>
+        </member>
+        <member name="M:Cassette.Interop.IActiveScript.GetScriptSite(System.Guid,Cassette.Interop.IActiveScriptSite@)">
+            <summary>
+            Retrieves the site object associated with the Windows Script engine.
+            </summary>
+            <param name="iid">Identifier of the requested interface.</param>
+            <param name="siteObject">The host's site object.</param>
+        </member>
+        <member name="M:Cassette.Interop.IActiveScript.SetScriptState(Cassette.Interop.ScriptState)">
+            <summary>
+            Puts the scripting engine into the given state. This method can be called from non-base
+            threads without resulting in a non-base callout to host objects or to the IActiveScriptSite
+            interface.
+            </summary>
+            <param name="scriptState">Sets the scripting engine to the given state.</param>
+        </member>
+        <member name="M:Cassette.Interop.IActiveScript.GetScriptState(Cassette.Interop.ScriptState@)">
+            <summary>
+            Retrieves the current state of the scripting engine. This method can be called from
+            non-base threads without resulting in a non-base callout to host objects or to the
+            IActiveScriptSite interface.
+            </summary>
+            <param name="scriptState">The value indicates the current state of the scripting engine
+            associated with the calling thread.</param>
+        </member>
+        <member name="M:Cassette.Interop.IActiveScript.Close">
+            <summary>
+            Causes the scripting engine to abandon any currently loaded script, lose its state, and
+            release any interface pointers it has to other objects, thus entering a closed state.
+            Event sinks, immediately executed script text, and macro invocations that are already in
+            progress are completed before the state changes (use IActiveScript::InterruptScriptThread to
+            cancel a running script thread). This method must be called by the creating host before the
+            interface is released to prevent circular reference problems.
+            </summary>
+        </member>
+        <member name="M:Cassette.Interop.IActiveScript.AddNamedItem(System.String,Cassette.Interop.ScriptItemFlags)">
+            <summary>
+            Adds the name of a root-level item to the scripting engine's name space. A root-level item
+            is an object with properties and methods, an event source, or all three.
+            </summary>
+            <param name="name">The name of the item as viewed from the script. The name must be unique
+            and persistable.</param>
+            <param name="itemFlags">Flags associated with an item.</param>
+        </member>
+        <member name="M:Cassette.Interop.IActiveScript.AddTypeLib(System.Guid,System.UInt32,System.UInt32,Cassette.Interop.ScriptTypeLibFlags)">
+            <summary>
+            Adds a type library to the name space for the script. This is similar to the #include
+            directive in C/C++. It allows a set of predefined items such as class definitions, typedefs,
+            and named constants to be added to the run-time environment available to the script.
+            </summary>
+            <param name="clsId">CLSID of the type library to add.</param>
+            <param name="majorVersion">Major version number.</param>
+            <param name="minorVersion">Minor version number.</param>
+            <param name="typeLibFlags">Option flags.</param>
+        </member>
+        <member name="M:Cassette.Interop.IActiveScript.GetScriptDispatch(System.String,System.Object@)">
+            <summary>
+            Retrieves the IDispatch interface for the methods and properties associated with the
+            currently running script.
+            </summary>
+            <param name="itemName">The name of the item for which the caller needs the associated
+            dispatch object. If this parameter is NULL, the dispatch object contains as its members
+            all of the global methods and properties defined by the script. Through the IDispatch
+            interface and the associated ITypeInfo interface, the host can invoke script methods
+            or view and modify script variables.</param>
+            <param name="dispatch">The object associated with the script's global methods and
+            properties. If the scripting engine does not support such an object, NULL is returned.</param>
+        </member>
+        <member name="M:Cassette.Interop.IActiveScript.GetCurrentScriptThreadID(System.UInt32@)">
+            <summary>
+            Retrieves a scripting-engine-defined identifier for the currently executing thread.
+            The identifier can be used in subsequent calls to script thread execution-control
+            methods such as the IActiveScript.InterruptScriptThread method.
+            </summary>
+            <param name="threadId">The script thread identifier associated with the current thread.
+            The interpretation of this identifier is left to the scripting engine, but it can be
+            just a copy of the Windows thread identifier. If the Win32 thread terminates, this
+            identifier becomes unassigned and can subsequently be assigned to another thread.</param>
+        </member>
+        <member name="M:Cassette.Interop.IActiveScript.GetScriptThreadID(System.UInt32,System.UInt32@)">
+            <summary>
+            Retrieves a scripting-engine-defined identifier for the thread associated with the
+            given Win32 thread.
+            </summary>
+            <param name="win32ThreadId">Thread identifier of a running Win32 thread in the
+            current process. Use the IActiveScript::GetCurrentScriptThreadID function to
+            retrieve the thread identifier of the currently executing thread.</param>
+            <param name="scriptThreadId">The script thread identifier associated with the given
+            Win32 thread. The interpretation of this identifier is left to the scripting engine,
+            but it can be just a copy of the Windows thread identifier. Note that if the Win32
+            thread terminates, this identifier becomes unassigned and may subsequently be
+            assigned to another thread.</param>
+        </member>
+        <member name="M:Cassette.Interop.IActiveScript.GetScriptThreadState(System.UInt32,Cassette.Interop.ScriptThreadState@)">
+            <summary>
+            Retrieves the current state of a script thread.
+            </summary>
+            <param name="scriptThreadId">Identifier of the thread for which the state is desired.</param>
+            <param name="threadState"></param>
+        </member>
+        <member name="M:Cassette.Interop.IActiveScript.InterruptScriptThread(System.UInt32,System.Runtime.InteropServices.ComTypes.EXCEPINFO,Cassette.Interop.ScriptInterruptFlags)">
+            <summary>
+            Interrupts the execution of a running script thread (an event sink, an immediate
+            execution, or a macro invocation). This method can be used to terminate a script that
+            is stuck (for example, in an infinite loop). It can be called from non-base threads
+            without resulting in a non-base callout to host objects or to the IActiveScriptSite method.
+            </summary>
+            <param name="scriptThreadId">Identifier of the thread to interrupt, or one of the
+            special thread identifier values.</param>
+            <param name="exceptionInfo">The error information that should be reported to the aborted script.</param>
+            <param name="interruptFlags">Option flags associated with the interruption.</param>
+        </member>
+        <member name="M:Cassette.Interop.IActiveScript.Clone(Cassette.Interop.IActiveScript@)">
+            <summary>
+            Clones the current scripting engine (minus any current execution state), returning
+            a loaded scripting engine that has no site in the current thread. The properties of
+            this new scripting engine will be identical to the properties the original scripting
+            engine would be in if it were transitioned back to the initialized state.
+            </summary>
+            <param name="script">The cloned scripting engine. The host must create a site and
+            call the IActiveScript.SetScriptSite method on the new scripting engine before it
+            will be in the initialized state and, therefore, usable.</param>
+        </member>
+        <member name="T:Cassette.Interop.IActiveScriptError">
+            <summary>
+            An object implementing this interface is passed to the IActiveScriptSite.OnScriptError method
+            whenever the scripting engine encounters an unhandled error. The host then calls methods on
+            this object to obtain information about the error that occurred.
+            </summary>
+        </member>
+        <member name="M:Cassette.Interop.IActiveScriptError.GetExceptionInfo(System.Runtime.InteropServices.ComTypes.EXCEPINFO@)">
+            <summary>
+            Retrieves information about an error that occurred while the scripting engine was running
+            a script.
+            </summary>
+            <param name="exceptionInfo">An EXCEPINFO structure that receives error information.</param>
+        </member>
+        <member name="M:Cassette.Interop.IActiveScriptError.GetSourcePosition(System.UInt32@,System.UInt32@,System.Int32@)">
+            <summary>
+            Retrieves the location in the source code where an error occurred while the scripting engine
+            was running a script.
+            </summary>
+            <param name="sourceContext">A cookie that identifies the context. The interpretation of
+            this parameter depends on the host application.</param>
+            <param name="lineNumber">The line number in the source file where the error occurred.</param>
+            <param name="characterPosition">The character position in the line where the error occurred.</param>
+        </member>
+        <member name="M:Cassette.Interop.IActiveScriptError.GetSourceLineText(System.String@)">
+            <summary>
+            Retrieves the line in the source file where an error occurred while a scripting engine
+            was running a script.
+            </summary>
+            <param name="sourceLine">The line of source code in which the error occurred.</param>
+        </member>
+        <member name="T:Cassette.Interop.IActiveScriptParse32">
+            <summary>
+            If the Windows Script engine allows raw text code scriptlets to be added to the script
+            or allows expression text to be evaluated at run time, it implements the
+            IActiveScriptParse interface. For interpreted scripting languages that have no
+            independent authoring environment, such as VBScript, this provides an alternate
+            mechanism (other than IPersist*) to get script code into the scripting engine, and
+            to attach script fragments to various object events.
+            </summary>
+            <remarks>
+            Before the scripting engine can be used, one of the following methods must be called
+            : IPersist*::Load, IPersist*::InitNew, or IActiveScriptParse::InitNew. The semantics
+            of this method are identical to IPersistStreamInit::InitNew, in that this method tells
+            the scripting engine to initialize itself. Note that it is not valid to call both
+            IPersist*::InitNew or IActiveScriptParse::InitNew and IPersist*::Load, nor is it valid
+            to call IPersist*::InitNew, IActiveScriptParse::InitNew, or IPersist*::Load more
+            than once.
+            </remarks>
+        </member>
+        <member name="M:Cassette.Interop.IActiveScriptParse32.InitNew">
+            <summary>
+            Initializes the scripting engine.
+            </summary>
+        </member>
+        <member name="M:Cassette.Interop.IActiveScriptParse32.AddScriptlet(System.String,System.String,System.String,System.String,System.String,System.String,System.IntPtr,System.UInt32,Cassette.Interop.ScriptTextFlags,System.String@,System.Runtime.InteropServices.ComTypes.EXCEPINFO@)">
+            <summary>
+            Adds a code scriptlet to the script. This method is used in environments where the
+            persistent state of the script is intertwined with the host document and the host
+            is responsible for restoring the script, rather than through an IPersist* interface.
+            The primary examples are HTML scripting languages that allow scriptlets of code
+            embedded in the HTML document to be attached to intrinsic events (for instance,
+            ONCLICK="button1.text='Exit'").
+            </summary>
+            <param name="defaultName">The default name to associate with the scriptlet. If the
+            scriptlet does not contain naming information (as in the ONCLICK example above),
+            this name will be used to identify the scriptlet. If this parameter is NULL, the
+            scripting engine manufactures a unique name, if necessary.</param>
+            <param name="code">The scriptlet text to add. The interpretation of this string
+            depends on the scripting language.</param>
+            <param name="itemName">The item name associated with this scriptlet. This parameter,
+            in addition to pstrSubItemName, identifies the object for which the scriptlet is
+            an event handler.</param>
+            <param name="subItemName">The name of a subobject of the named item with which this
+            scriptlet is associated; this name must be found in the named item's type
+            information. This parameter is NULL if the scriptlet is to be associated with the
+            named item instead of a subitem. This parameter, in addition to pstrItemName,
+            identifies the specific object for which the scriptlet is an event handler.</param>
+            <param name="eventName">The name of the event for which the scriptlet is an event
+            handler.</param>
+            <param name="delimiter">The end-of-scriptlet delimiter. When the pstrCode parameter
+            is parsed from a stream of text, the host typically uses a delimiter, such as two
+            single quotation marks (''), to detect the end of the scriptlet. This parameter
+            specifies the delimiter that the host used, allowing the scripting engine to
+            provide some conditional primitive preprocessing (for example, replacing a single
+            quotation mark ['] with two single quotation marks for use as a delimiter).
+            Exactly how (and if) the scripting engine makes use of this information depends
+            on the scripting engine. Set this parameter to NULL if the host did not use a
+            delimiter to mark the end of the scriptlet.</param>
+            <param name="sourceContextCookie">Application-defined value that is used for
+            debugging purposes.</param>
+            <param name="startingLineNumber">Zero-based value that specifies which line the
+            parsing will begin at.</param>
+            <param name="flags">Flags associated with the scriptlet.</param>
+            <param name="name">Actual name used to identify the scriptlet. This is to be in
+            order of preference: a name explicitly specified in the scriptlet text, the
+            default name provided in pstrDefaultName, or a unique name synthesized by the
+            scripting engine.</param>
+            <param name="exceptionInfo">Exception information. This structure should be
+            filled in if DISP_E_EXCEPTION is returned.</param>
+        </member>
+        <member name="M:Cassette.Interop.IActiveScriptParse32.ParseScriptText(System.String,System.String,System.Object,System.String,System.IntPtr,System.UInt32,Cassette.Interop.ScriptTextFlags,System.Object@,System.Runtime.InteropServices.ComTypes.EXCEPINFO@)">
+            <summary>
+            Parses the given code scriptlet, adding declarations into the namespace and
+            evaluating code as appropriate.
+            </summary>
+            <param name="code">The scriptlet text to evaluate. The interpretation of this
+            string depends on the scripting language.</param>
+            <param name="itemName">The item name that gives the context in which the
+            scriptlet is to be evaluated. If this parameter is NULL, the code is evaluated
+            in the scripting engine's global context.</param>
+            <param name="context">The context object. This object is reserved for use in a
+            debugging environment, where such a context may be provided by the debugger to
+            represent an active run-time context. If this parameter is NULL, the engine
+            uses pstrItemName to identify the context.</param>
+            <param name="delimiter">The end-of-scriptlet delimiter. When pstrCode is parsed
+            from a stream of text, the host typically uses a delimiter, such as two single
+            quotation marks (''), to detect the end of the scriptlet. This parameter specifies
+            the delimiter that the host used, allowing the scripting engine to provide some 
+            conditional primitive preprocessing (for example, replacing a single quotation
+            mark ['] with two single quotation marks for use as a delimiter). Exactly how
+            (and if) the scripting engine makes use of this information depends on the
+            scripting engine. Set this parameter to NULL if the host did not use a delimiter
+            to mark the end of the scriptlet.</param>
+            <param name="sourceContextCookie">Application-defined value that is used for
+            debugging purposes.</param>
+            <param name="startingLineNumber">Zero-based value that specifies which line the
+            parsing will begin at.</param>
+            <param name="flags">Flags associated with the scriptlet.</param>
+            <param name="result">The results of scriptlet processing, or NULL if the caller
+            expects no result (that is, the SCRIPTTEXT_ISEXPRESSION value is not set).</param>
+            <param name="exceptionInfo">The exception information. This structure is filled
+            if IActiveScriptParse::ParseScriptText returns DISP_E_EXCEPTION.</param>
+        </member>
+        <member name="T:Cassette.Interop.IActiveScriptParse64">
+            <summary>
+            If the Windows Script engine allows raw text code scriptlets to be added to the script
+            or allows expression text to be evaluated at run time, it implements the
+            IActiveScriptParse interface. For interpreted scripting languages that have no
+            independent authoring environment, such as VBScript, this provides an alternate
+            mechanism (other than IPersist*) to get script code into the scripting engine, and
+            to attach script fragments to various object events.
+            </summary>
+            <remarks>
+            Before the scripting engine can be used, one of the following methods must be called
+            : IPersist*::Load, IPersist*::InitNew, or IActiveScriptParse::InitNew. The semantics
+            of this method are identical to IPersistStreamInit::InitNew, in that this method tells
+            the scripting engine to initialize itself. Note that it is not valid to call both
+            IPersist*::InitNew or IActiveScriptParse::InitNew and IPersist*::Load, nor is it valid
+            to call IPersist*::InitNew, IActiveScriptParse::InitNew, or IPersist*::Load more
+            than once.
+            </remarks>
+        </member>
+        <member name="M:Cassette.Interop.IActiveScriptParse64.InitNew">
+            <summary>
+            Initializes the scripting engine.
+            </summary>
+        </member>
+        <member name="M:Cassette.Interop.IActiveScriptParse64.AddScriptlet(System.String,System.String,System.String,System.String,System.String,System.String,System.IntPtr,System.UInt32,Cassette.Interop.ScriptTextFlags,System.String@,System.Runtime.InteropServices.ComTypes.EXCEPINFO@)">
+            <summary>
+            Adds a code scriptlet to the script. This method is used in environments where the
+            persistent state of the script is intertwined with the host document and the host
+            is responsible for restoring the script, rather than through an IPersist* interface.
+            The primary examples are HTML scripting languages that allow scriptlets of code
+            embedded in the HTML document to be attached to intrinsic events (for instance,
+            ONCLICK="button1.text='Exit'").
+            </summary>
+            <param name="defaultName">The default name to associate with the scriptlet. If the
+            scriptlet does not contain naming information (as in the ONCLICK example above),
+            this name will be used to identify the scriptlet. If this parameter is NULL, the
+            scripting engine manufactures a unique name, if necessary.</param>
+            <param name="code">The scriptlet text to add. The interpretation of this string
+            depends on the scripting language.</param>
+            <param name="itemName">The item name associated with this scriptlet. This parameter,
+            in addition to pstrSubItemName, identifies the object for which the scriptlet is
+            an event handler.</param>
+            <param name="subItemName">The name of a subobject of the named item with which this
+            scriptlet is associated; this name must be found in the named item's type
+            information. This parameter is NULL if the scriptlet is to be associated with the
+            named item instead of a subitem. This parameter, in addition to pstrItemName,
+            identifies the specific object for which the scriptlet is an event handler.</param>
+            <param name="eventName">The name of the event for which the scriptlet is an event
+            handler.</param>
+            <param name="delimiter">The end-of-scriptlet delimiter. When the pstrCode parameter
+            is parsed from a stream of text, the host typically uses a delimiter, such as two
+            single quotation marks (''), to detect the end of the scriptlet. This parameter
+            specifies the delimiter that the host used, allowing the scripting engine to
+            provide some conditional primitive preprocessing (for example, replacing a single
+            quotation mark ['] with two single quotation marks for use as a delimiter).
+            Exactly how (and if) the scripting engine makes use of this information depends
+            on the scripting engine. Set this parameter to NULL if the host did not use a
+            delimiter to mark the end of the scriptlet.</param>
+            <param name="sourceContextCookie">Application-defined value that is used for
+            debugging purposes.</param>
+            <param name="startingLineNumber">Zero-based value that specifies which line the
+            parsing will begin at.</param>
+            <param name="flags">Flags associated with the scriptlet.</param>
+            <param name="name">Actual name used to identify the scriptlet. This is to be in
+            order of preference: a name explicitly specified in the scriptlet text, the
+            default name provided in pstrDefaultName, or a unique name synthesized by the
+            scripting engine.</param>
+            <param name="exceptionInfo">Exception information. This structure should be
+            filled in if DISP_E_EXCEPTION is returned.</param>
+        </member>
+        <member name="M:Cassette.Interop.IActiveScriptParse64.ParseScriptText(System.String,System.String,System.Object,System.String,System.IntPtr,System.UInt32,Cassette.Interop.ScriptTextFlags,System.Object@,System.Runtime.InteropServices.ComTypes.EXCEPINFO@)">
+            <summary>
+            Parses the given code scriptlet, adding declarations into the namespace and
+            evaluating code as appropriate.
+            </summary>
+            <param name="code">The scriptlet text to evaluate. The interpretation of this
+            string depends on the scripting language.</param>
+            <param name="itemName">The item name that gives the context in which the
+            scriptlet is to be evaluated. If this parameter is NULL, the code is evaluated
+            in the scripting engine's global context.</param>
+            <param name="context">The context object. This object is reserved for use in a
+            debugging environment, where such a context may be provided by the debugger to
+            represent an active run-time context. If this parameter is NULL, the engine
+            uses pstrItemName to identify the context.</param>
+            <param name="delimiter">The end-of-scriptlet delimiter. When pstrCode is parsed
+            from a stream of text, the host typically uses a delimiter, such as two single
+            quotation marks (''), to detect the end of the scriptlet. This parameter specifies
+            the delimiter that the host used, allowing the scripting engine to provide some 
+            conditional primitive preprocessing (for example, replacing a single quotation
+            mark ['] with two single quotation marks for use as a delimiter). Exactly how
+            (and if) the scripting engine makes use of this information depends on the
+            scripting engine. Set this parameter to NULL if the host did not use a delimiter
+            to mark the end of the scriptlet.</param>
+            <param name="sourceContextCookie">Application-defined value that is used for
+            debugging purposes.</param>
+            <param name="startingLineNumber">Zero-based value that specifies which line the
+            parsing will begin at.</param>
+            <param name="flags">Flags associated with the scriptlet.</param>
+            <param name="result">The results of scriptlet processing, or NULL if the caller
+            expects no result (that is, the SCRIPTTEXT_ISEXPRESSION value is not set).</param>
+            <param name="exceptionInfo">The exception information. This structure is filled
+            if IActiveScriptParse::ParseScriptText returns DISP_E_EXCEPTION.</param>
+        </member>
+        <member name="T:Cassette.Interop.IActiveScriptSite">
+            <summary>
+            Implemented by the host to create a site for the Windows Script engine. Usually, this site
+            will be associated with the container of all the objects that are visible to the script
+            (for example, the ActiveX Controls). Typically, this container will correspond to the document
+            or page being viewed. Microsoft Internet Explorer, for example, would create such a container
+            for each HTML page being displayed. Each ActiveX control (or other automation object) on the
+            page, and the scripting engine itself, would be enumerable within this container.
+            </summary>
+        </member>
+        <member name="M:Cassette.Interop.IActiveScriptSite.GetLCID(System.Int32@)">
+            <summary>
+            Retrieves the locale identifier associated with the host's user interface. The scripting
+            engine uses the identifier to ensure that error strings and other user-interface elements
+            generated by the engine appear in the appropriate language.
+            </summary>
+            <param name="lcid">A variable that receives the locale identifier for user-interface
+            elements displayed by the scripting engine.</param>
+        </member>
+        <member name="M:Cassette.Interop.IActiveScriptSite.GetItemInfo(System.String,Cassette.Interop.ScriptInfoFlags,System.Object@,System.IntPtr)">
+            <summary>
+            Allows the scripting engine to obtain information about an item added with the
+            IActiveScript.AddNamedItem method.
+            </summary>
+            <param name="name">The name associated with the item, as specified in the
+            IActiveScript.AddNamedItem method.</param>
+            <param name="returnMask">A bit mask specifying what information about the item should be
+            returned. The scripting engine should request the minimum amount of information possible
+            because some of the return parameters (for example, ITypeInfo) can take considerable
+            time to load or generate.</param>
+            <param name="item">A variable that receives a pointer to the IUnknown interface associated
+            with the given item. The scripting engine can use the IUnknown.QueryInterface method to
+            obtain the IDispatch interface for the item. This parameter receives null if returnMask
+            does not include the ScriptInfo.IUnknown value. Also, it receives null if there is no
+            object associated with the item name; this mechanism is used to create a simple class when
+            the named item was added with the ScriptItem.CodeOnly flag set in the
+            IActiveScript.AddNamedItem method.</param>
+            <param name="typeInfo">A variable that receives a pointer to the ITypeInfo interface
+            associated with the item. This parameter receives null if returnMask does not include the
+            ScriptInfo.ITypeInfo value, or if type information is not available for this item. If type
+            information is not available, the object cannot source events, and name binding must be
+            realized with the IDispatch.GetIDsOfNames method. Note that the ITypeInfo interface
+            retrieved describes the item's coclass (TKIND_COCLASS) because the object may support
+            multiple interfaces and event interfaces. If the item supports the IProvideMultipleTypeInfo
+            interface, the ITypeInfo interface retrieved is the same as the index zero ITypeInfo that
+            would be obtained using the IProvideMultipleTypeInfo.GetInfoOfIndex method.</param>
+        </member>
+        <member name="M:Cassette.Interop.IActiveScriptSite.GetDocVersionString(System.String@)">
+            <summary>
+            Retrieves a host-defined string that uniquely identifies the current document version. If
+            the related document has changed outside the scope of Windows Script (as in the case of an
+            HTML page being edited with Notepad), the scripting engine can save this along with its
+            persisted state, forcing a recompile the next time the script is loaded.
+            </summary>
+            <param name="versionString">The host-defined document version string.</param>
+        </member>
+        <member name="M:Cassette.Interop.IActiveScriptSite.OnScriptTerminate(System.Object,System.Runtime.InteropServices.ComTypes.EXCEPINFO)">
+            <summary>
+            Informs the host that the script has completed execution.
+            </summary>
+            <param name="result">A variable that contains the script result, or null if the script
+            produced no result.</param>
+            <param name="exceptionInfo">Contains exception information generated when the script
+            terminated, or null if no exception was generated.</param>
+        </member>
+        <member name="M:Cassette.Interop.IActiveScriptSite.OnStateChange(Cassette.Interop.ScriptState)">
+            <summary>
+            Informs the host that the scripting engine has changed states.
+            </summary>
+            <param name="scriptState">Indicates the new script state.</param>
+        </member>
+        <member name="M:Cassette.Interop.IActiveScriptSite.OnScriptError(Cassette.Interop.IActiveScriptError)">
+            <summary>
+            Informs the host that an execution error occurred while the engine was running the script.
+            </summary>
+            <param name="scriptError">A host can use this interface to obtain information about the
+            execution error.</param>
+        </member>
+        <member name="M:Cassette.Interop.IActiveScriptSite.OnEnterScript">
+            <summary>
+            Informs the host that the scripting engine has begun executing the script code.
+            </summary>
+        </member>
+        <member name="M:Cassette.Interop.IActiveScriptSite.OnLeaveScript">
+            <summary>
+            Informs the host that the scripting engine has returned from executing script code.
+            </summary>
+        </member>
+        <member name="F:Cassette.Interop.ScriptInfoFlags.None">
+            <summary>
+            Not a valid option.
+            </summary>
+        </member>
+        <member name="F:Cassette.Interop.ScriptInfoFlags.IUnknown">
+            <summary>
+            Returns the IUnknown interface for this item.
+            </summary>
+        </member>
+        <member name="F:Cassette.Interop.ScriptInfoFlags.ITypeInfo">
+            <summary>
+            Returns the ITypeInfo interface for this item.
+            </summary>
+        </member>
+        <member name="T:Cassette.Interop.ScriptInterruptFlags">
+            <summary>
+            Thread interruption options.
+            </summary>
+        </member>
+        <member name="F:Cassette.Interop.ScriptInterruptFlags.None">
+            <summary>
+            No flags.
+            </summary>
+        </member>
+        <member name="F:Cassette.Interop.ScriptInterruptFlags.Debug">
+            <summary>
+            If supported, enter the scripting engine's debugger at the current script execution point.
+            </summary>
+        </member>
+        <member name="F:Cassette.Interop.ScriptInterruptFlags.RaiseException">
+            <summary>
+            If supported by the scripting engine's language, let the script handle the exception.
+            Otherwise, the script method is aborted and the error code is returned to the caller; that
+            is, the event source or macro invoker.
+            </summary>
+        </member>
+        <member name="F:Cassette.Interop.ScriptItemFlags.None">
+            <summary>
+            No flags.
+            </summary>
+        </member>
+        <member name="F:Cassette.Interop.ScriptItemFlags.IsVisible">
+            <summary>
+            Indicates that the item's name is available in the name space of the script, allowing
+            access to the properties, methods, and events of the item. By convention the properties
+            of the item include the item's children; therefore, all child object properties and
+            methods (and their children, recursively) will be accessible.
+            </summary>
+        </member>
+        <member name="F:Cassette.Interop.ScriptItemFlags.IsSource">
+            <summary>
+            Indicates that the item sources events that the script can sink. Child objects
+            (properties of the object that are in themselves objects) can also source events to the
+            script. This is not recursive, but it provides a convenient mechanism for the common
+            case, for example, of creating a container and all of its member controls.
+            </summary>
+        </member>
+        <member name="F:Cassette.Interop.ScriptItemFlags.GlobalMembers">
+            <summary>
+            Indicates that the item is a collection of global properties and methods associated
+            with the script. Normally, a scripting engine would ignore the object name (other than
+            for the purpose of using it as a cookie for the IActiveScriptSite.GetItemInfo method,
+            or for resolving explicit scoping) and expose its members as global variables and
+            methods. This allows the host to extend the library (run-time functions and so on)
+            available to the script. It is left to the scripting engine to deal with name conflicts
+            (for example, when two ScriptItemFlags.GlobalMembers items have methods of the same
+            name), although an error should not be returned because of this situation.
+            </summary>
+        </member>
+        <member name="F:Cassette.Interop.ScriptItemFlags.IsPersistent">
+            <summary>
+            Indicates that the item should be saved if the scripting engine is saved. Similarly,
+            setting this flag indicates that a transition back to the initialized state should
+            retain the item's name and type information (the scripting engine must, however, release
+            all pointers to interfaces on the actual object).
+            </summary>
+        </member>
+        <member name="F:Cassette.Interop.ScriptItemFlags.CodeOnly">
+            <summary>
+            Indicates that the named item represents a code-only object, and that the host has no
+            IUnknown to be associated with this code-only object. The host only has a name for this
+            object. In object-oriented languages such as C++, this flag would create a class.
+            Not all languages support this flag.
+            </summary>
+        </member>
+        <member name="F:Cassette.Interop.ScriptItemFlags.NoCode">
+            <summary>
+            Indicates that the item is simply a name being added to the script's name space, and
+            should not be treated as an item for which code should be associated. For example,
+            without this flag being set, VBScript will create a separate module for the named item,
+            and C++ might create a separate wrapper class for the named item.
+            </summary>
+        </member>
+        <member name="T:Cassette.Interop.ScriptState">
+            <summary>
+            Contains named constant values that specify the state of a scripting engine
+            </summary>
+        </member>
+        <member name="F:Cassette.Interop.ScriptState.Uninitialized">
+            <summary>
+            Script has just been created, but has not yet been initialized using an IPersist*
+            interface and IActiveScript.SetScriptSite.
+            </summary>
+        </member>
+        <member name="F:Cassette.Interop.ScriptState.Started">
+            <summary>
+            Script can execute code, but is not yet sinking the events of objects added by
+            the IActiveScript.AddNamedItem method.
+            </summary>
+        </member>
+        <member name="F:Cassette.Interop.ScriptState.Connected">
+            <summary>
+            Script is loaded and connected for sinking events.
+            </summary>
+        </member>
+        <member name="F:Cassette.Interop.ScriptState.Disconnected">
+            <summary>
+            Script is loaded and has a run-time execution state, but is temporarily
+            disconnected from sinking events.
+            </summary>
+        </member>
+        <member name="F:Cassette.Interop.ScriptState.Closed">
+            <summary>
+            Script has been closed. The scripting engine no longer works and returns errors
+            for most methods.
+            </summary>
+        </member>
+        <member name="F:Cassette.Interop.ScriptState.Initialized">
+            <summary>
+            Script has been initialized, but is not running (connecting to other objects or
+            sinking events) or executing any code. Code can be queried for execution by
+            calling the IActiveScriptParse.ParseScriptText method.
+            </summary>
+        </member>
+        <member name="F:Cassette.Interop.ScriptTextFlags.IsVisible">
+            <summary>
+            Indicates that the script text should be visible (and, therefore, callable by name) as a global
+            method in the name space of the script.
+            </summary>
+        </member>
+        <member name="F:Cassette.Interop.ScriptTextFlags.IsExpression">
+            <summary>
+            If the distinction between a computational expression and a statement is important but
+            syntactically ambiguous in the script language, this flag specifies that the scriptlet is to be
+            interpreted as an expression, rather than as a statement or list of statements. By default,
+            statements are assumed unless the correct choice can be determined from the syntax of the
+            scriptlet text.
+            </summary>
+        </member>
+        <member name="F:Cassette.Interop.ScriptTextFlags.IsPersistent">
+            <summary>
+            Indicates that the code added during this call should be saved if the scripting engine is saved
+            (for example, through a call to IPersist*::Save), or if the scripting engine is reset by way of
+            a transition back to the initialized state. For more information about this state, see Script
+            Engine States.
+            </summary>
+        </member>
+        <member name="T:Cassette.Interop.ScriptThreadState">
+            <summary>
+            Contains named constant values that specify the state of a thread in a scripting
+            engine. This enumeration is used by the IActiveScript::GetScriptThreadState method.
+            </summary>
+        </member>
+        <member name="F:Cassette.Interop.ScriptThreadState.NotInScriipt">
+            <summary>
+            Specified thread is not currently servicing a scripted event, processing
+            immediately executed script text, or running a script macro.
+            </summary>
+        </member>
+        <member name="F:Cassette.Interop.ScriptThreadState.Running">
+            <summary>
+            Specified thread is actively servicing a scripted event, processing
+            immediately executed script text, or running a script macro.
+            </summary>
+        </member>
+        <member name="F:Cassette.Interop.ScriptTypeLibFlags.None">
+            <summary>
+            No flags.
+            </summary>
+        </member>
+        <member name="F:Cassette.Interop.ScriptTypeLibFlags.IsControl">
+            <summary>
+            The type library describes an ActiveX control used by the host.
+            </summary>
+        </member>
+        <member name="F:Cassette.Interop.ScriptTypeLibFlags.IsPersistent">
+            <summary>
+            Not documented.
+            </summary>
+        </member>
+        <member name="M:Cassette.IO.FileSystemDirectory.TryGetAsSubDirectory(Cassette.IO.FileSystemDirectory)">
+            <remarks>
+            This method is a bit of a hack. An independently created FileSystemDirectory could be a sub-directory.
+            This method converts it to a proper sub-directory object if possible, otherwise returns null.
+            </remarks>
+        </member>
+        <member name="M:Cassette.IO.IFile.Open(System.IO.FileMode,System.IO.FileAccess,System.IO.FileShare)">
+            <summary>
+            Opens a stream to the file.
+            </summary>
+        </member>
+        <member name="M:Cassette.IO.IFile.Delete">
+            <summary>
+            Deletes the file.
+            </summary>
+        </member>
+        <member name="P:Cassette.IO.IFile.Directory">
+            <summary>
+            The directory containing the file.
+            </summary>
+        </member>
+        <member name="P:Cassette.IO.IFile.Exists">
+            <summary>
+            Gets if the file exists.
+            </summary>
+        </member>
+        <member name="P:Cassette.IO.IFile.LastWriteTimeUtc">
+            <summary>
+            Gets the last write time (UTC) of the file.
+            </summary>
+        </member>
+        <member name="P:Cassette.IO.IFile.FullPath">
+            <summary>
+            Gets the full application relative path of the file.
+            </summary>
+        </member>
+        <member name="T:Cassette.IO.IsolatedStorageDirectory">
+            <remarks>
+            This class only implements enough of IDirectory to support BundleCache.
+            Other methods simply throw NotSupportException for now.
+            </remarks>
+        </member>
+        <member name="M:Cassette.IReferenceBuilder.Reference(System.String,System.String)">
+            <summary>
+            Adds a reference to the asset bundle with the given path.
+            </summary>
+            <param name="path">The application relative path to the asset bundle.</param>
+            <param name="location">Optional page render location for the asset bundle.</param>
+        </member>
+        <member name="M:Cassette.IReferenceBuilder.Reference``1(System.String,System.String)">
+            <summary>
+            Adds a reference to the asset bundle with the given path.
+            </summary>
+            <param name="path">The application relative path to the asset bundle.</param>
+            <param name="location">Optional page render location for the asset bundle.</param>
+        </member>
+        <member name="M:Cassette.IReferenceBuilder.Reference(Cassette.Bundle,System.String)">
+            <summary>
+            Adds a reference to the asset bundle.
+            </summary>
+            <param name="bundle">The asset bundle.</param>
+            <param name="location">Optional render location for the asset bundle.</param>
+        </member>
+        <member name="M:Cassette.IReferenceBuilder.Render``1(System.String)">
+            <summary>
+            Returns the HTML elements that include into the page all the referenced bundles and their dependencies.
+            </summary>
+            <param name="location">Optional. The page location that is being rendered.</param>
+            <returns>The HTML elements that include into the page all the referenced bundles and their dependencies</returns>
+        </member>
+        <member name="M:Cassette.IUrlGenerator.CreateAbsolutePathUrl(System.String)">
+            <summary>
+            Converts an application relative path into an absolute URL path. For example "~/images/test.png" becomes "/virtual-directory/images/test.png".
+            </summary>
+        </member>
+        <member name="T:Cassette.IUrlModifier">
+            <summary>
+            Modifies the URLs generated by Cassette.
+            </summary>
+        </member>
+        <member name="M:Cassette.IUrlModifier.Modify(System.String)">
+            <summary>
+            Modifies a URL.
+            </summary>
+            <param name="url">The URL to modify.</param>
+            <returns>The modified URL.</returns>
+        </member>
+        <member name="T:Cassette.NullPlaceholderTracker">
+            <summary>
+            A do-nothing implementation of <see cref="T:Cassette.IPlaceholderTracker"/>.
+            </summary>
+        </member>
+        <member name="M:Cassette.Bundle.OpenStream">
+            <summary>
+            Opens a readable stream of the contained assets content.
+            </summary>
+            <returns>A readable stream.</returns>
+        </member>
+        <member name="M:Cassette.Bundle.AddReference(System.String)">
+            <summary>
+            Adds a reference to another bundle.
+            </summary>
+            <param name="bundlePathOrUrl">The application relative path of the bundle, or a external URL.</param>
+        </member>
+        <member name="P:Cassette.Bundle.Path">
+            <summary>
+            The application relative path of the bundle.
+            </summary>
+        </member>
+        <member name="P:Cassette.Bundle.ContentType">
+            <summary>
+            The value sent in the HTTP Content-Type header.
+            </summary>
+        </member>
+        <member name="P:Cassette.Bundle.PageLocation">
+            <summary>
+            Defines where to render this bundle in an HTML page.
+            </summary>
+        </member>
+        <member name="P:Cassette.Bundle.HtmlAttributes">
+            <summary>
+            Attributes to include with the rendered element.
+            </summary>
+        </member>
+        <member name="P:Cassette.Bundle.Assets">
+            <summary>
+            The assets contained in the bundle.
+            </summary>
+        </member>
+        <member name="P:Cassette.Bundle.Hash">
+            <summary>
+            Gets the hash of the combined assets.
+            </summary>
+        </member>
+        <member name="P:Cassette.Scripts.ScriptBundle.Condition">
+            <summary>
+            The Internet Explorer specific condition used control if the script should be loaded using an HTML conditional comment.
+            For example, <example>"lt IE 9"</example>.
+            </summary>
+        </member>
+        <member name="M:Cassette.Scripts.InlineScriptBundle.GetScriptContent">
+            <summary>
+            Handle cases of the content already wrapped in a &lt;script&gt; tag.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Cassette.ServicesConfiguration">
+            <summary>
+            Convenience base class for overriding Cassette's default services e.g. <see cref="T:Cassette.IUrlModifier"/>
+            </summary>
+        </member>
+        <member name="P:Cassette.ServicesConfiguration.UrlModifierType">
+            <summary>
+            The type that implements <see cref="T:Cassette.IUrlModifier"/>.
+            </summary>
+        </member>
+        <member name="P:Cassette.ServicesConfiguration.JavaScriptMinifierType">
+            <summary>
+            The type that implements <see cref="T:Cassette.Scripts.IJavaScriptMinifier"/>.
+            </summary>
+        </member>
+        <member name="P:Cassette.ServicesConfiguration.StylesheetMinifierType">
+            <summary>
+            The type that implements <see cref="T:Cassette.Stylesheets.IStylesheetMinifier"/>.
+            </summary>
+        </member>
+        <member name="T:Cassette.JsonArray">
+            <summary>
+            Represents the json array.
+            </summary>
+        </member>
+        <member name="M:Cassette.JsonArray.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Cassette.JsonArray"/> class. 
+            </summary>
+        </member>
+        <member name="M:Cassette.JsonArray.#ctor(System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Cassette.JsonArray"/> class. 
+            </summary>
+            <param name="capacity">The capacity of the json array.</param>
+        </member>
+        <member name="M:Cassette.JsonArray.ToString">
+            <summary>
+            The json representation of the array.
+            </summary>
+            <returns>The json representation of the array.</returns>
+        </member>
+        <member name="T:Cassette.JsonObject">
+            <summary>
+            Represents the json object.
+            </summary>
+        </member>
+        <member name="F:Cassette.JsonObject._members">
+            <summary>
+            The internal member dictionary.
+            </summary>
+        </member>
+        <member name="M:Cassette.JsonObject.Add(System.String,System.Object)">
+            <summary>
+            Adds the specified key.
+            </summary>
+            <param name="key">The key.</param>
+            <param name="value">The value.</param>
+        </member>
+        <member name="M:Cassette.JsonObject.ContainsKey(System.String)">
+            <summary>
+            Determines whether the specified key contains key.
+            </summary>
+            <param name="key">The key.</param>
+            <returns>
+            	<c>true</c> if the specified key contains key; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Cassette.JsonObject.Remove(System.String)">
+            <summary>
+            Removes the specified key.
+            </summary>
+            <param name="key">The key.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Cassette.JsonObject.TryGetValue(System.String,System.Object@)">
+            <summary>
+            Tries the get value.
+            </summary>
+            <param name="key">The key.</param>
+            <param name="value">The value.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Cassette.JsonObject.Add(System.Collections.Generic.KeyValuePair{System.String,System.Object})">
+            <summary>
+            Adds the specified item.
+            </summary>
+            <param name="item">The item.</param>
+        </member>
+        <member name="M:Cassette.JsonObject.Clear">
+            <summary>
+            Clears this instance.
+            </summary>
+        </member>
+        <member name="M:Cassette.JsonObject.Contains(System.Collections.Generic.KeyValuePair{System.String,System.Object})">
+            <summary>
+            Determines whether [contains] [the specified item].
+            </summary>
+            <param name="item">The item.</param>
+            <returns>
+            	<c>true</c> if [contains] [the specified item]; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Cassette.JsonObject.CopyTo(System.Collections.Generic.KeyValuePair{System.String,System.Object}[],System.Int32)">
+            <summary>
+            Copies to.
+            </summary>
+            <param name="array">The array.</param>
+            <param name="arrayIndex">Index of the array.</param>
+        </member>
+        <member name="M:Cassette.JsonObject.Remove(System.Collections.Generic.KeyValuePair{System.String,System.Object})">
+            <summary>
+            Removes the specified item.
+            </summary>
+            <param name="item">The item.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Cassette.JsonObject.GetEnumerator">
+            <summary>
+            Gets the enumerator.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Cassette.JsonObject.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through a collection.
+            </summary>
+            <returns>
+            An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
+            </returns>
+        </member>
+        <member name="M:Cassette.JsonObject.ToString">
+            <summary>
+            Returns a json <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            A json <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </returns>
+        </member>
+        <member name="P:Cassette.JsonObject.Item(System.Int32)">
+            <summary>
+            Gets the <see cref="T:System.Object"/> at the specified index.
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Cassette.JsonObject.Keys">
+            <summary>
+            Gets the keys.
+            </summary>
+            <value>The keys.</value>
+        </member>
+        <member name="P:Cassette.JsonObject.Values">
+            <summary>
+            Gets the values.
+            </summary>
+            <value>The values.</value>
+        </member>
+        <member name="P:Cassette.JsonObject.Item(System.String)">
+            <summary>
+            Gets or sets the <see cref="T:System.Object"/> with the specified key.
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Cassette.JsonObject.Count">
+            <summary>
+            Gets the count.
+            </summary>
+            <value>The count.</value>
+        </member>
+        <member name="P:Cassette.JsonObject.IsReadOnly">
+            <summary>
+            Gets a value indicating whether this instance is read only.
+            </summary>
+            <value>
+            	<c>true</c> if this instance is read only; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="T:Cassette.SimpleJson">
+            <summary>
+            This class encodes and decodes JSON strings.
+            Spec. details, see http://www.json.org/
+            
+            JSON uses Arrays and Objects. These correspond here to the datatypes JsonArray(IList&lt;object>) and JsonObject(IDictionary&lt;string,object>).
+            All numbers are parsed to doubles.
+            </summary>
+        </member>
+        <member name="M:Cassette.SimpleJson.DeserializeObject(System.String)">
+            <summary>
+            Parses the string json into a value
+            </summary>
+            <param name="json">A JSON string.</param>
+            <returns>An IList&lt;object>, a IDictionary&lt;string,object>, a double, a string, null, true, or false</returns>
+        </member>
+        <member name="M:Cassette.SimpleJson.TryDeserializeObject(System.String,System.Object@)">
+            <summary>
+            Try parsing the json string into a value.
+            </summary>
+            <param name="json">
+            A JSON string.
+            </param>
+            <param name="object">
+            The object.
+            </param>
+            <returns>
+            Returns true if successfull otherwise false.
+            </returns>
+        </member>
+        <member name="M:Cassette.SimpleJson.SerializeObject(System.Object,Cassette.IJsonSerializerStrategy)">
+            <summary>
+            Converts a IDictionary&lt;string,object> / IList&lt;object> object into a JSON string
+            </summary>
+            <param name="json">A IDictionary&lt;string,object> / IList&lt;object></param>
+            <param name="jsonSerializerStrategy">Serializer strategy to use</param>
+            <returns>A JSON encoded string, or null if object 'json' is not serializable</returns>
+        </member>
+        <member name="M:Cassette.SimpleJson.IsNumeric(System.Object)">
+            <summary>
+            Determines if a given object is numeric in any way
+            (can be integer, double, null, etc).
+            </summary>
+        </member>
+        <member name="P:Cassette.Stylesheets.StylesheetBundle.Media">
+            <summary>
+            The value of the media attribute for this stylesheet's link element. For example, <example>print</example>.
+            </summary>
+        </member>
+        <member name="P:Cassette.Stylesheets.StylesheetBundle.Condition">
+            <summary>
+            The Internet Explorer specific condition used control if the stylesheet should be loaded using an HTML conditional comment.
+            For example, <example>"lt IE 9"</example>.
+            </summary>
+        </member>
+        <member name="M:Cassette.Stylesheets.ExpandCssUrlsAssetTransformer.UrlMatchesInReverse(System.String)">
+            <remarks>
+            Matches need to be in reverse because we'll be modifying the string.
+            Working backwards means we won't disturb the match index values.
+            </remarks>
+        </member>
+        <member name="M:Cassette.TinyIoC.TypeExtensions.GetGenericMethod(System.Type,System.Reflection.BindingFlags,System.String,System.Type[],System.Type[])">
+            <summary>
+            Gets a generic method from a type given the method name, binding flags, generic types and parameter types
+            </summary>
+            <param name="sourceType">Source type</param>
+            <param name="bindingFlags">Binding flags</param>
+            <param name="methodName">Name of the method</param>
+            <param name="genericTypes">Generic types to use to make the method generic</param>
+            <param name="parameterTypes">Method parameters</param>
+            <returns>MethodInfo or null if no matches found</returns>
+            <exception cref="T:System.Reflection.AmbiguousMatchException"/>
+            <exception cref="T:System.ArgumentException"/>
+        </member>
+        <member name="T:Cassette.TinyIoC.NamedParameterOverloads">
+            <summary>
+            Name/Value pairs for specifying "user" parameters when resolving
+            </summary>
+        </member>
+        <member name="F:Cassette.TinyIoC.UnregisteredResolutionActions.AttemptResolve">
+            <summary>
+            Attempt to resolve type, even if the type isn't registered.
+            
+            Registered types/options will always take precedence.
+            </summary>
+        </member>
+        <member name="F:Cassette.TinyIoC.UnregisteredResolutionActions.Fail">
+            <summary>
+            Fail resolution if type not explicitly registered
+            </summary>
+        </member>
+        <member name="F:Cassette.TinyIoC.UnregisteredResolutionActions.GenericsOnly">
+            <summary>
+            Attempt to resolve unregistered type if requested type is generic
+            and no registration exists for the specific generic parameters used.
+            
+            Registered types/options will always take precedence.
+            </summary>
+        </member>
+        <member name="T:Cassette.TinyIoC.ResolveOptions">
+            <summary>
+            Resolution settings
+            </summary>
+        </member>
+        <member name="P:Cassette.TinyIoC.ResolveOptions.Default">
+            <summary>
+            Gets the default options (attempt resolution of unregistered types, fail on named resolution if name not found)
+            </summary>
+        </member>
+        <member name="P:Cassette.TinyIoC.ResolveOptions.FailNameNotFoundOnly">
+            <summary>
+            Preconfigured option for attempting resolution of unregistered types and failing on named resolution if name not found
+            </summary>
+        </member>
+        <member name="P:Cassette.TinyIoC.ResolveOptions.FailUnregisteredAndNameNotFound">
+            <summary>
+            Preconfigured option for failing on resolving unregistered types and on named resolution if name not found
+            </summary>
+        </member>
+        <member name="P:Cassette.TinyIoC.ResolveOptions.FailUnregisteredOnly">
+            <summary>
+            Preconfigured option for failing on resolving unregistered types, but attempting unnamed resolution if name not found
+            </summary>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.AutoRegister">
+            <summary>
+            Attempt to automatically register all non-generic classes and interfaces in the current app domain.
+            
+            If more than one class implements an interface then only one implementation will be registered
+            although no error will be thrown.
+            </summary>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.AutoRegister(System.Func{System.Type,System.Boolean})">
+            <summary>
+            Attempt to automatically register all non-generic classes and interfaces in the current app domain.
+            Types will only be registered if they pass the supplied registration predicate.
+            
+            If more than one class implements an interface then only one implementation will be registered
+            although no error will be thrown.
+            </summary>
+            <param name="registrationPredicate">Predicate to determine if a particular type should be registered</param>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.AutoRegister(System.Boolean)">
+            <summary>
+            Attempt to automatically register all non-generic classes and interfaces in the current app domain.
+            </summary>
+            <param name="ignoreDuplicateImplementations">Whether to ignore duplicate implementations of an interface/base class. False=throw an exception</param>
+            <exception cref="T:Cassette.TinyIoC.TinyIoCAutoRegistrationException"/>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.AutoRegister(System.Boolean,System.Func{System.Type,System.Boolean})">
+            <summary>
+            Attempt to automatically register all non-generic classes and interfaces in the current app domain.
+            Types will only be registered if they pass the supplied registration predicate.
+            </summary>
+            <param name="ignoreDuplicateImplementations">Whether to ignore duplicate implementations of an interface/base class. False=throw an exception</param>
+            <param name="registrationPredicate">Predicate to determine if a particular type should be registered</param>
+            <exception cref="T:Cassette.TinyIoC.TinyIoCAutoRegistrationException"/>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.AutoRegister(System.Collections.Generic.IEnumerable{System.Reflection.Assembly})">
+            <summary>
+            Attempt to automatically register all non-generic classes and interfaces in the specified assemblies
+            
+            If more than one class implements an interface then only one implementation will be registered
+            although no error will be thrown.
+            </summary>
+            <param name="assemblies">Assemblies to process</param>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.AutoRegister(System.Collections.Generic.IEnumerable{System.Reflection.Assembly},System.Func{System.Type,System.Boolean})">
+            <summary>
+            Attempt to automatically register all non-generic classes and interfaces in the specified assemblies
+            Types will only be registered if they pass the supplied registration predicate.
+            
+            If more than one class implements an interface then only one implementation will be registered
+            although no error will be thrown.
+            </summary>
+            <param name="assemblies">Assemblies to process</param>
+            <param name="registrationPredicate">Predicate to determine if a particular type should be registered</param>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.AutoRegister(System.Collections.Generic.IEnumerable{System.Reflection.Assembly},System.Boolean)">
+            <summary>
+            Attempt to automatically register all non-generic classes and interfaces in the specified assemblies
+            </summary>
+            <param name="assemblies">Assemblies to process</param>
+            <param name="ignoreDuplicateImplementations">Whether to ignore duplicate implementations of an interface/base class. False=throw an exception</param>
+            <exception cref="T:Cassette.TinyIoC.TinyIoCAutoRegistrationException"/>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.AutoRegister(System.Collections.Generic.IEnumerable{System.Reflection.Assembly},System.Boolean,System.Func{System.Type,System.Boolean})">
+            <summary>
+            Attempt to automatically register all non-generic classes and interfaces in the specified assemblies
+            Types will only be registered if they pass the supplied registration predicate.
+            </summary>
+            <param name="assemblies">Assemblies to process</param>
+            <param name="ignoreDuplicateImplementations">Whether to ignore duplicate implementations of an interface/base class. False=throw an exception</param>
+            <param name="registrationPredicate">Predicate to determine if a particular type should be registered</param>
+            <exception cref="T:Cassette.TinyIoC.TinyIoCAutoRegistrationException"/>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.Register(System.Type)">
+            <summary>
+            Creates/replaces a container class registration with default options.
+            </summary>
+            <param name="registerType">Type to register</param>
+            <returns>RegisterOptions for fluent API</returns>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.Register(System.Type,System.String)">
+            <summary>
+            Creates/replaces a named container class registration with default options.
+            </summary>
+            <param name="registerType">Type to register</param>
+            <param name="name">Name of registration</param>
+            <returns>RegisterOptions for fluent API</returns>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.Register(System.Type,System.Type)">
+            <summary>
+            Creates/replaces a container class registration with a given implementation and default options.
+            </summary>
+            <param name="registerType">Type to register</param>
+            <param name="registerImplementation">Type to instantiate that implements RegisterType</param>
+            <returns>RegisterOptions for fluent API</returns>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.Register(System.Type,System.Type,System.String)">
+            <summary>
+            Creates/replaces a named container class registration with a given implementation and default options.
+            </summary>
+            <param name="registerType">Type to register</param>
+            <param name="registerImplementation">Type to instantiate that implements RegisterType</param>
+            <param name="name">Name of registration</param>
+            <returns>RegisterOptions for fluent API</returns>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.Register(System.Type,System.Object)">
+            <summary>
+            Creates/replaces a container class registration with a specific, strong referenced, instance.
+            </summary>
+            <param name="registerType">Type to register</param>
+            <param name="instance">Instance of RegisterType to register</param>
+            <returns>RegisterOptions for fluent API</returns>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.Register(System.Type,System.Object,System.String)">
+            <summary>
+            Creates/replaces a named container class registration with a specific, strong referenced, instance.
+            </summary>
+            <param name="registerType">Type to register</param>
+            <param name="instance">Instance of RegisterType to register</param>
+            <param name="name">Name of registration</param>
+            <returns>RegisterOptions for fluent API</returns>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.Register(System.Type,System.Type,System.Object)">
+            <summary>
+            Creates/replaces a container class registration with a specific, strong referenced, instance.
+            </summary>
+            <param name="registerType">Type to register</param>
+            <param name="registerImplementation">Type of instance to register that implements RegisterType</param>
+            <param name="instance">Instance of RegisterImplementation to register</param>
+            <returns>RegisterOptions for fluent API</returns>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.Register(System.Type,System.Type,System.Object,System.String)">
+            <summary>
+            Creates/replaces a named container class registration with a specific, strong referenced, instance.
+            </summary>
+            <param name="registerType">Type to register</param>
+            <param name="registerImplementation">Type of instance to register that implements RegisterType</param>
+            <param name="instance">Instance of RegisterImplementation to register</param>
+            <param name="name">Name of registration</param>
+            <returns>RegisterOptions for fluent API</returns>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.Register(System.Type,System.Func{Cassette.TinyIoC.TinyIoCContainer,Cassette.TinyIoC.NamedParameterOverloads,System.Object})">
+            <summary>
+            Creates/replaces a container class registration with a user specified factory
+            </summary>
+            <param name="registerType">Type to register</param>
+            <param name="factory">Factory/lambda that returns an instance of RegisterType</param>
+            <returns>RegisterOptions for fluent API</returns>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.Register(System.Type,System.Func{Cassette.TinyIoC.TinyIoCContainer,Cassette.TinyIoC.NamedParameterOverloads,System.Object},System.String)">
+            <summary>
+            Creates/replaces a container class registration with a user specified factory
+            </summary>
+            <param name="registerType">Type to register</param>
+            <param name="factory">Factory/lambda that returns an instance of RegisterType</param>
+            <param name="name">Name of registation</param>
+            <returns>RegisterOptions for fluent API</returns>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.Register``1">
+            <summary>
+            Creates/replaces a container class registration with default options.
+            </summary>
+            <typeparam name="RegisterType">Type to register</typeparam>
+            <returns>RegisterOptions for fluent API</returns>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.Register``1(System.String)">
+            <summary>
+            Creates/replaces a named container class registration with default options.
+            </summary>
+            <typeparam name="RegisterType">Type to register</typeparam>
+            <param name="name">Name of registration</param>
+            <returns>RegisterOptions for fluent API</returns>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.Register``2">
+            <summary>
+            Creates/replaces a container class registration with a given implementation and default options.
+            </summary>
+            <typeparam name="RegisterType">Type to register</typeparam>
+            <typeparam name="RegisterImplementation">Type to instantiate that implements RegisterType</typeparam>
+            <returns>RegisterOptions for fluent API</returns>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.Register``2(System.String)">
+            <summary>
+            Creates/replaces a named container class registration with a given implementation and default options.
+            </summary>
+            <typeparam name="RegisterType">Type to register</typeparam>
+            <typeparam name="RegisterImplementation">Type to instantiate that implements RegisterType</typeparam>
+            <param name="name">Name of registration</param>
+            <returns>RegisterOptions for fluent API</returns>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.Register``1(``0)">
+            <summary>
+            Creates/replaces a container class registration with a specific, strong referenced, instance.
+            </summary>
+            <typeparam name="RegisterType">Type to register</typeparam>
+            <param name="instance">Instance of RegisterType to register</param>
+            <returns>RegisterOptions for fluent API</returns>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.Register``1(``0,System.String)">
+            <summary>
+            Creates/replaces a named container class registration with a specific, strong referenced, instance.
+            </summary>
+            <typeparam name="RegisterType">Type to register</typeparam>
+            <param name="instance">Instance of RegisterType to register</param>
+            <param name="name">Name of registration</param>
+            <returns>RegisterOptions for fluent API</returns>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.Register``2(``1)">
+            <summary>
+            Creates/replaces a container class registration with a specific, strong referenced, instance.
+            </summary>
+            <typeparam name="RegisterType">Type to register</typeparam>
+            <typeparam name="RegisterImplementation">Type of instance to register that implements RegisterType</typeparam>
+            <param name="instance">Instance of RegisterImplementation to register</param>
+            <returns>RegisterOptions for fluent API</returns>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.Register``2(``1,System.String)">
+            <summary>
+            Creates/replaces a named container class registration with a specific, strong referenced, instance.
+            </summary>
+            <typeparam name="RegisterType">Type to register</typeparam>
+            <typeparam name="RegisterImplementation">Type of instance to register that implements RegisterType</typeparam>
+            <param name="instance">Instance of RegisterImplementation to register</param>
+            <param name="name">Name of registration</param>
+            <returns>RegisterOptions for fluent API</returns>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.Register``1(System.Func{Cassette.TinyIoC.TinyIoCContainer,Cassette.TinyIoC.NamedParameterOverloads,``0})">
+            <summary>
+            Creates/replaces a container class registration with a user specified factory
+            </summary>
+            <typeparam name="RegisterType">Type to register</typeparam>
+            <param name="factory">Factory/lambda that returns an instance of RegisterType</param>
+            <returns>RegisterOptions for fluent API</returns>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.Register``1(System.Func{Cassette.TinyIoC.TinyIoCContainer,Cassette.TinyIoC.NamedParameterOverloads,``0},System.String)">
+            <summary>
+            Creates/replaces a named container class registration with a user specified factory
+            </summary>
+            <typeparam name="RegisterType">Type to register</typeparam>
+            <param name="factory">Factory/lambda that returns an instance of RegisterType</param>
+            <param name="name">Name of registation</param>
+            <returns>RegisterOptions for fluent API</returns>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.RegisterMultiple``1(System.Collections.Generic.IEnumerable{System.Type})">
+            <summary>
+            Register multiple implementations of a type.
+            
+            Internally this registers each implementation using the full name of the class as its registration name.
+            </summary>
+            <typeparam name="RegisterType">Type that each implementation implements</typeparam>
+            <param name="implementationTypes">Types that implement RegisterType</param>
+            <returns>MultiRegisterOptions for the fluent API</returns>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.RegisterMultiple(System.Type,System.Collections.Generic.IEnumerable{System.Type})">
+            <summary>
+            Register multiple implementations of a type.
+            
+            Internally this registers each implementation using the full name of the class as its registration name.
+            </summary>
+            <param name="registrationType">Type that each implementation implements</param>
+            <param name="implementationTypes">Types that implement RegisterType</param>
+            <returns>MultiRegisterOptions for the fluent API</returns>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.Resolve(System.Type)">
+            <summary>
+            Attempts to resolve a type using default options.
+            </summary>
+            <param name="resolveType">Type to resolve</param>
+            <returns>Instance of type</returns>
+            <exception cref="T:Cassette.TinyIoC.TinyIoCResolutionException">Unable to resolve the type.</exception>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.Resolve(System.Type,Cassette.TinyIoC.ResolveOptions)">
+            <summary>
+            Attempts to resolve a type using specified options.
+            </summary>
+            <param name="resolveType">Type to resolve</param>
+            <param name="options">Resolution options</param>
+            <returns>Instance of type</returns>
+            <exception cref="T:Cassette.TinyIoC.TinyIoCResolutionException">Unable to resolve the type.</exception>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.Resolve(System.Type,System.String)">
+             <summary>
+             Attempts to resolve a type using default options and the supplied name.
+            
+             Parameters are used in conjunction with normal container resolution to find the most suitable constructor (if one exists).
+             All user supplied parameters must exist in at least one resolvable constructor of RegisterType or resolution will fail.
+             </summary>
+             <param name="resolveType">Type to resolve</param>
+             <param name="name">Name of registration</param>
+             <returns>Instance of type</returns>
+             <exception cref="T:Cassette.TinyIoC.TinyIoCResolutionException">Unable to resolve the type.</exception>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.Resolve(System.Type,System.String,Cassette.TinyIoC.ResolveOptions)">
+             <summary>
+             Attempts to resolve a type using supplied options and  name.
+            
+             Parameters are used in conjunction with normal container resolution to find the most suitable constructor (if one exists).
+             All user supplied parameters must exist in at least one resolvable constructor of RegisterType or resolution will fail.
+             </summary>
+             <param name="resolveType">Type to resolve</param>
+             <param name="name">Name of registration</param>
+             <param name="options">Resolution options</param>
+             <returns>Instance of type</returns>
+             <exception cref="T:Cassette.TinyIoC.TinyIoCResolutionException">Unable to resolve the type.</exception>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.Resolve(System.Type,Cassette.TinyIoC.NamedParameterOverloads)">
+             <summary>
+             Attempts to resolve a type using default options and the supplied constructor parameters.
+            
+             Parameters are used in conjunction with normal container resolution to find the most suitable constructor (if one exists).
+             All user supplied parameters must exist in at least one resolvable constructor of RegisterType or resolution will fail.
+             </summary>
+             <param name="resolveType">Type to resolve</param>
+             <param name="parameters">User specified constructor parameters</param>
+             <returns>Instance of type</returns>
+             <exception cref="T:Cassette.TinyIoC.TinyIoCResolutionException">Unable to resolve the type.</exception>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.Resolve(System.Type,Cassette.TinyIoC.NamedParameterOverloads,Cassette.TinyIoC.ResolveOptions)">
+             <summary>
+             Attempts to resolve a type using specified options and the supplied constructor parameters.
+            
+             Parameters are used in conjunction with normal container resolution to find the most suitable constructor (if one exists).
+             All user supplied parameters must exist in at least one resolvable constructor of RegisterType or resolution will fail.
+             </summary>
+             <param name="resolveType">Type to resolve</param>
+             <param name="parameters">User specified constructor parameters</param>
+             <param name="options">Resolution options</param>
+             <returns>Instance of type</returns>
+             <exception cref="T:Cassette.TinyIoC.TinyIoCResolutionException">Unable to resolve the type.</exception>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.Resolve(System.Type,System.String,Cassette.TinyIoC.NamedParameterOverloads)">
+             <summary>
+             Attempts to resolve a type using default options and the supplied constructor parameters and name.
+            
+             Parameters are used in conjunction with normal container resolution to find the most suitable constructor (if one exists).
+             All user supplied parameters must exist in at least one resolvable constructor of RegisterType or resolution will fail.
+             </summary>
+             <param name="resolveType">Type to resolve</param>
+             <param name="parameters">User specified constructor parameters</param>
+             <param name="name">Name of registration</param>
+             <returns>Instance of type</returns>
+             <exception cref="T:Cassette.TinyIoC.TinyIoCResolutionException">Unable to resolve the type.</exception>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.Resolve(System.Type,System.String,Cassette.TinyIoC.NamedParameterOverloads,Cassette.TinyIoC.ResolveOptions)">
+             <summary>
+             Attempts to resolve a named type using specified options and the supplied constructor parameters.
+            
+             Parameters are used in conjunction with normal container resolution to find the most suitable constructor (if one exists).
+             All user supplied parameters must exist in at least one resolvable constructor of RegisterType or resolution will fail.
+             </summary>
+             <param name="resolveType">Type to resolve</param>
+             <param name="name">Name of registration</param>
+             <param name="parameters">User specified constructor parameters</param>
+             <param name="options">Resolution options</param>
+             <returns>Instance of type</returns>
+             <exception cref="T:Cassette.TinyIoC.TinyIoCResolutionException">Unable to resolve the type.</exception>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.Resolve``1">
+            <summary>
+            Attempts to resolve a type using default options.
+            </summary>
+            <typeparam name="ResolveType">Type to resolve</typeparam>
+            <returns>Instance of type</returns>
+            <exception cref="T:Cassette.TinyIoC.TinyIoCResolutionException">Unable to resolve the type.</exception>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.Resolve``1(Cassette.TinyIoC.ResolveOptions)">
+            <summary>
+            Attempts to resolve a type using specified options.
+            </summary>
+            <typeparam name="ResolveType">Type to resolve</typeparam>
+            <param name="options">Resolution options</param>
+            <returns>Instance of type</returns>
+            <exception cref="T:Cassette.TinyIoC.TinyIoCResolutionException">Unable to resolve the type.</exception>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.Resolve``1(System.String)">
+             <summary>
+             Attempts to resolve a type using default options and the supplied name.
+            
+             Parameters are used in conjunction with normal container resolution to find the most suitable constructor (if one exists).
+             All user supplied parameters must exist in at least one resolvable constructor of RegisterType or resolution will fail.
+             </summary>
+             <typeparam name="ResolveType">Type to resolve</typeparam>
+             <param name="name">Name of registration</param>
+             <returns>Instance of type</returns>
+             <exception cref="T:Cassette.TinyIoC.TinyIoCResolutionException">Unable to resolve the type.</exception>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.Resolve``1(System.String,Cassette.TinyIoC.ResolveOptions)">
+             <summary>
+             Attempts to resolve a type using supplied options and  name.
+            
+             Parameters are used in conjunction with normal container resolution to find the most suitable constructor (if one exists).
+             All user supplied parameters must exist in at least one resolvable constructor of RegisterType or resolution will fail.
+             </summary>
+             <typeparam name="ResolveType">Type to resolve</typeparam>
+             <param name="name">Name of registration</param>
+             <param name="options">Resolution options</param>
+             <returns>Instance of type</returns>
+             <exception cref="T:Cassette.TinyIoC.TinyIoCResolutionException">Unable to resolve the type.</exception>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.Resolve``1(Cassette.TinyIoC.NamedParameterOverloads)">
+             <summary>
+             Attempts to resolve a type using default options and the supplied constructor parameters.
+            
+             Parameters are used in conjunction with normal container resolution to find the most suitable constructor (if one exists).
+             All user supplied parameters must exist in at least one resolvable constructor of RegisterType or resolution will fail.
+             </summary>
+             <typeparam name="ResolveType">Type to resolve</typeparam>
+             <param name="parameters">User specified constructor parameters</param>
+             <returns>Instance of type</returns>
+             <exception cref="T:Cassette.TinyIoC.TinyIoCResolutionException">Unable to resolve the type.</exception>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.Resolve``1(Cassette.TinyIoC.NamedParameterOverloads,Cassette.TinyIoC.ResolveOptions)">
+             <summary>
+             Attempts to resolve a type using specified options and the supplied constructor parameters.
+            
+             Parameters are used in conjunction with normal container resolution to find the most suitable constructor (if one exists).
+             All user supplied parameters must exist in at least one resolvable constructor of RegisterType or resolution will fail.
+             </summary>
+             <typeparam name="ResolveType">Type to resolve</typeparam>
+             <param name="parameters">User specified constructor parameters</param>
+             <param name="options">Resolution options</param>
+             <returns>Instance of type</returns>
+             <exception cref="T:Cassette.TinyIoC.TinyIoCResolutionException">Unable to resolve the type.</exception>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.Resolve``1(System.String,Cassette.TinyIoC.NamedParameterOverloads)">
+             <summary>
+             Attempts to resolve a type using default options and the supplied constructor parameters and name.
+            
+             Parameters are used in conjunction with normal container resolution to find the most suitable constructor (if one exists).
+             All user supplied parameters must exist in at least one resolvable constructor of RegisterType or resolution will fail.
+             </summary>
+             <typeparam name="ResolveType">Type to resolve</typeparam>
+             <param name="parameters">User specified constructor parameters</param>
+             <param name="name">Name of registration</param>
+             <returns>Instance of type</returns>
+             <exception cref="T:Cassette.TinyIoC.TinyIoCResolutionException">Unable to resolve the type.</exception>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.Resolve``1(System.String,Cassette.TinyIoC.NamedParameterOverloads,Cassette.TinyIoC.ResolveOptions)">
+             <summary>
+             Attempts to resolve a named type using specified options and the supplied constructor parameters.
+            
+             Parameters are used in conjunction with normal container resolution to find the most suitable constructor (if one exists).
+             All user supplied parameters must exist in at least one resolvable constructor of RegisterType or resolution will fail.
+             </summary>
+             <typeparam name="ResolveType">Type to resolve</typeparam>
+             <param name="name">Name of registration</param>
+             <param name="parameters">User specified constructor parameters</param>
+             <param name="options">Resolution options</param>
+             <returns>Instance of type</returns>
+             <exception cref="T:Cassette.TinyIoC.TinyIoCResolutionException">Unable to resolve the type.</exception>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.CanResolve(System.Type)">
+             <summary>
+             Attempts to predict whether a given type can be resolved with default options.
+            
+             Note: Resolution may still fail if user defined factory registrations fail to construct objects when called.
+             </summary>
+             <param name="resolveType">Type to resolve</param>
+             <returns>Boolean indicating whether the type can be resolved</returns>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.CanResolve(System.Type,System.String)">
+             <summary>
+             Attempts to predict whether a given named type can be resolved with default options.
+            
+             Note: Resolution may still fail if user defined factory registrations fail to construct objects when called.
+             </summary>
+             <param name="resolveType">Type to resolve</param>
+             <param name="name">Name of registration</param>
+             <returns>Boolean indicating whether the type can be resolved</returns>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.CanResolve(System.Type,Cassette.TinyIoC.ResolveOptions)">
+             <summary>
+             Attempts to predict whether a given type can be resolved with the specified options.
+            
+             Note: Resolution may still fail if user defined factory registrations fail to construct objects when called.
+             </summary>
+             <param name="resolveType">Type to resolve</param>
+             <param name="options">Resolution options</param>
+             <returns>Boolean indicating whether the type can be resolved</returns>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.CanResolve(System.Type,System.String,Cassette.TinyIoC.ResolveOptions)">
+             <summary>
+             Attempts to predict whether a given named type can be resolved with the specified options.
+            
+             Note: Resolution may still fail if user defined factory registrations fail to construct objects when called.
+             </summary>
+             <param name="resolveType">Type to resolve</param>
+             <param name="name">Name of registration</param>
+             <param name="options">Resolution options</param>
+             <returns>Boolean indicating whether the type can be resolved</returns>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.CanResolve(System.Type,Cassette.TinyIoC.NamedParameterOverloads)">
+             <summary>
+             Attempts to predict whether a given type can be resolved with the supplied constructor parameters and default options.
+            
+             Parameters are used in conjunction with normal container resolution to find the most suitable constructor (if one exists).
+             All user supplied parameters must exist in at least one resolvable constructor of RegisterType or resolution will fail.
+             
+             Note: Resolution may still fail if user defined factory registrations fail to construct objects when called.
+             </summary>
+             <param name="resolveType">Type to resolve</param>
+             <param name="parameters">User supplied named parameter overloads</param>
+             <returns>Boolean indicating whether the type can be resolved</returns>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.CanResolve(System.Type,System.String,Cassette.TinyIoC.NamedParameterOverloads)">
+             <summary>
+             Attempts to predict whether a given named type can be resolved with the supplied constructor parameters and default options.
+            
+             Parameters are used in conjunction with normal container resolution to find the most suitable constructor (if one exists).
+             All user supplied parameters must exist in at least one resolvable constructor of RegisterType or resolution will fail.
+             
+             Note: Resolution may still fail if user defined factory registrations fail to construct objects when called.
+             </summary>
+             <param name="resolveType">Type to resolve</param>
+             <param name="name">Name of registration</param>
+             <param name="parameters">User supplied named parameter overloads</param>
+             <returns>Boolean indicating whether the type can be resolved</returns>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.CanResolve(System.Type,Cassette.TinyIoC.NamedParameterOverloads,Cassette.TinyIoC.ResolveOptions)">
+             <summary>
+             Attempts to predict whether a given type can be resolved with the supplied constructor parameters options.
+            
+             Parameters are used in conjunction with normal container resolution to find the most suitable constructor (if one exists).
+             All user supplied parameters must exist in at least one resolvable constructor of RegisterType or resolution will fail.
+             
+             Note: Resolution may still fail if user defined factory registrations fail to construct objects when called.
+             </summary>
+             <param name="resolveType">Type to resolve</param>
+             <param name="parameters">User supplied named parameter overloads</param>
+             <param name="options">Resolution options</param>
+             <returns>Boolean indicating whether the type can be resolved</returns>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.CanResolve(System.Type,System.String,Cassette.TinyIoC.NamedParameterOverloads,Cassette.TinyIoC.ResolveOptions)">
+             <summary>
+             Attempts to predict whether a given named type can be resolved with the supplied constructor parameters options.
+            
+             Parameters are used in conjunction with normal container resolution to find the most suitable constructor (if one exists).
+             All user supplied parameters must exist in at least one resolvable constructor of RegisterType or resolution will fail.
+             
+             Note: Resolution may still fail if user defined factory registrations fail to construct objects when called.
+             </summary>
+             <param name="resolveType">Type to resolve</param>
+             <param name="name">Name of registration</param>
+             <param name="parameters">User supplied named parameter overloads</param>
+             <param name="options">Resolution options</param>
+             <returns>Boolean indicating whether the type can be resolved</returns>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.CanResolve``1">
+             <summary>
+             Attempts to predict whether a given type can be resolved with default options.
+            
+             Note: Resolution may still fail if user defined factory registrations fail to construct objects when called.
+             </summary>
+             <typeparam name="ResolveType">Type to resolve</typeparam>
+             <returns>Boolean indicating whether the type can be resolved</returns>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.CanResolve``1(System.String)">
+             <summary>
+             Attempts to predict whether a given named type can be resolved with default options.
+            
+             Note: Resolution may still fail if user defined factory registrations fail to construct objects when called.
+             </summary>
+             <typeparam name="ResolveType">Type to resolve</typeparam>
+             <returns>Boolean indicating whether the type can be resolved</returns>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.CanResolve``1(Cassette.TinyIoC.ResolveOptions)">
+             <summary>
+             Attempts to predict whether a given type can be resolved with the specified options.
+            
+             Note: Resolution may still fail if user defined factory registrations fail to construct objects when called.
+             </summary>
+             <typeparam name="ResolveType">Type to resolve</typeparam>
+             <param name="options">Resolution options</param>
+             <returns>Boolean indicating whether the type can be resolved</returns>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.CanResolve``1(System.String,Cassette.TinyIoC.ResolveOptions)">
+             <summary>
+             Attempts to predict whether a given named type can be resolved with the specified options.
+            
+             Note: Resolution may still fail if user defined factory registrations fail to construct objects when called.
+             </summary>
+             <typeparam name="ResolveType">Type to resolve</typeparam>
+             <param name="name">Name of registration</param>
+             <param name="options">Resolution options</param>
+             <returns>Boolean indicating whether the type can be resolved</returns>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.CanResolve``1(Cassette.TinyIoC.NamedParameterOverloads)">
+             <summary>
+             Attempts to predict whether a given type can be resolved with the supplied constructor parameters and default options.
+            
+             Parameters are used in conjunction with normal container resolution to find the most suitable constructor (if one exists).
+             All user supplied parameters must exist in at least one resolvable constructor of RegisterType or resolution will fail.
+             
+             Note: Resolution may still fail if user defined factory registrations fail to construct objects when called.
+             </summary>
+             <typeparam name="ResolveType">Type to resolve</typeparam>
+             <param name="parameters">User supplied named parameter overloads</param>
+             <returns>Boolean indicating whether the type can be resolved</returns>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.CanResolve``1(System.String,Cassette.TinyIoC.NamedParameterOverloads)">
+             <summary>
+             Attempts to predict whether a given named type can be resolved with the supplied constructor parameters and default options.
+            
+             Parameters are used in conjunction with normal container resolution to find the most suitable constructor (if one exists).
+             All user supplied parameters must exist in at least one resolvable constructor of RegisterType or resolution will fail.
+             
+             Note: Resolution may still fail if user defined factory registrations fail to construct objects when called.
+             </summary>
+             <typeparam name="ResolveType">Type to resolve</typeparam>
+             <param name="name">Name of registration</param>
+             <param name="parameters">User supplied named parameter overloads</param>
+             <returns>Boolean indicating whether the type can be resolved</returns>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.CanResolve``1(Cassette.TinyIoC.NamedParameterOverloads,Cassette.TinyIoC.ResolveOptions)">
+             <summary>
+             Attempts to predict whether a given type can be resolved with the supplied constructor parameters options.
+            
+             Parameters are used in conjunction with normal container resolution to find the most suitable constructor (if one exists).
+             All user supplied parameters must exist in at least one resolvable constructor of RegisterType or resolution will fail.
+             
+             Note: Resolution may still fail if user defined factory registrations fail to construct objects when called.
+             </summary>
+             <typeparam name="ResolveType">Type to resolve</typeparam>
+             <param name="parameters">User supplied named parameter overloads</param>
+             <param name="options">Resolution options</param>
+             <returns>Boolean indicating whether the type can be resolved</returns>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.CanResolve``1(System.String,Cassette.TinyIoC.NamedParameterOverloads,Cassette.TinyIoC.ResolveOptions)">
+             <summary>
+             Attempts to predict whether a given named type can be resolved with the supplied constructor parameters options.
+            
+             Parameters are used in conjunction with normal container resolution to find the most suitable constructor (if one exists).
+             All user supplied parameters must exist in at least one resolvable constructor of RegisterType or resolution will fail.
+             
+             Note: Resolution may still fail if user defined factory registrations fail to construct objects when called.
+             </summary>
+             <typeparam name="ResolveType">Type to resolve</typeparam>
+             <param name="name">Name of registration</param>
+             <param name="parameters">User supplied named parameter overloads</param>
+             <param name="options">Resolution options</param>
+             <returns>Boolean indicating whether the type can be resolved</returns>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.TryResolve(System.Type,System.Object@)">
+            <summary>
+            Attemps to resolve a type using the default options
+            </summary>
+            <param name="resolveType">Type to resolve</param>
+            <param name="resolvedType">Resolved type or default if resolve fails</param>
+            <returns>True if resolved sucessfully, false otherwise</returns>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.TryResolve(System.Type,Cassette.TinyIoC.ResolveOptions,System.Object@)">
+            <summary>
+            Attemps to resolve a type using the given options
+            </summary>
+            <param name="resolveType">Type to resolve</param>
+            <param name="options">Resolution options</param>
+            <param name="resolvedType">Resolved type or default if resolve fails</param>
+            <returns>True if resolved sucessfully, false otherwise</returns>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.TryResolve(System.Type,System.String,System.Object@)">
+            <summary>
+            Attemps to resolve a type using the default options and given name
+            </summary>
+            <param name="resolveType">Type to resolve</param>
+            <param name="name">Name of registration</param>
+            <param name="resolvedType">Resolved type or default if resolve fails</param>
+            <returns>True if resolved sucessfully, false otherwise</returns>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.TryResolve(System.Type,System.String,Cassette.TinyIoC.ResolveOptions,System.Object@)">
+            <summary>
+            Attemps to resolve a type using the given options and name
+            </summary>
+            <param name="resolveType">Type to resolve</param>
+            <param name="name">Name of registration</param>
+            <param name="options">Resolution options</param>
+            <param name="resolvedType">Resolved type or default if resolve fails</param>
+            <returns>True if resolved sucessfully, false otherwise</returns>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.TryResolve(System.Type,Cassette.TinyIoC.NamedParameterOverloads,System.Object@)">
+            <summary>
+            Attemps to resolve a type using the default options and supplied constructor parameters
+            </summary>
+            <param name="resolveType">Type to resolve</param>
+            <param name="parameters">User specified constructor parameters</param>
+            <param name="resolvedType">Resolved type or default if resolve fails</param>
+            <returns>True if resolved sucessfully, false otherwise</returns>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.TryResolve(System.Type,System.String,Cassette.TinyIoC.NamedParameterOverloads,System.Object@)">
+            <summary>
+            Attemps to resolve a type using the default options and supplied name and constructor parameters
+            </summary>
+            <param name="resolveType">Type to resolve</param>
+            <param name="name">Name of registration</param>
+            <param name="parameters">User specified constructor parameters</param>
+            <param name="resolvedType">Resolved type or default if resolve fails</param>
+            <returns>True if resolved sucessfully, false otherwise</returns>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.TryResolve(System.Type,Cassette.TinyIoC.NamedParameterOverloads,Cassette.TinyIoC.ResolveOptions,System.Object@)">
+            <summary>
+            Attemps to resolve a type using the supplied options and constructor parameters
+            </summary>
+            <param name="resolveType">Type to resolve</param>
+            <param name="parameters">User specified constructor parameters</param>
+            <param name="options">Resolution options</param>
+            <param name="resolvedType">Resolved type or default if resolve fails</param>
+            <returns>True if resolved sucessfully, false otherwise</returns>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.TryResolve(System.Type,System.String,Cassette.TinyIoC.NamedParameterOverloads,Cassette.TinyIoC.ResolveOptions,System.Object@)">
+            <summary>
+            Attemps to resolve a type using the supplied name, options and constructor parameters
+            </summary>
+            <param name="resolveType">Type to resolve</param>
+            <param name="name">Name of registration</param>
+            <param name="parameters">User specified constructor parameters</param>
+            <param name="options">Resolution options</param>
+            <param name="resolvedType">Resolved type or default if resolve fails</param>
+            <returns>True if resolved sucessfully, false otherwise</returns>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.TryResolve``1(``0@)">
+            <summary>
+            Attemps to resolve a type using the default options
+            </summary>
+            <typeparam name="ResolveType">Type to resolve</typeparam>
+            <param name="resolvedType">Resolved type or default if resolve fails</param>
+            <returns>True if resolved sucessfully, false otherwise</returns>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.TryResolve``1(Cassette.TinyIoC.ResolveOptions,``0@)">
+            <summary>
+            Attemps to resolve a type using the given options
+            </summary>
+            <typeparam name="ResolveType">Type to resolve</typeparam>
+            <param name="options">Resolution options</param>
+            <param name="resolvedType">Resolved type or default if resolve fails</param>
+            <returns>True if resolved sucessfully, false otherwise</returns>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.TryResolve``1(System.String,``0@)">
+            <summary>
+            Attemps to resolve a type using the default options and given name
+            </summary>
+            <typeparam name="ResolveType">Type to resolve</typeparam>
+            <param name="name">Name of registration</param>
+            <param name="resolvedType">Resolved type or default if resolve fails</param>
+            <returns>True if resolved sucessfully, false otherwise</returns>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.TryResolve``1(System.String,Cassette.TinyIoC.ResolveOptions,``0@)">
+            <summary>
+            Attemps to resolve a type using the given options and name
+            </summary>
+            <typeparam name="ResolveType">Type to resolve</typeparam>
+            <param name="name">Name of registration</param>
+            <param name="options">Resolution options</param>
+            <param name="resolvedType">Resolved type or default if resolve fails</param>
+            <returns>True if resolved sucessfully, false otherwise</returns>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.TryResolve``1(Cassette.TinyIoC.NamedParameterOverloads,``0@)">
+            <summary>
+            Attemps to resolve a type using the default options and supplied constructor parameters
+            </summary>
+            <typeparam name="ResolveType">Type to resolve</typeparam>
+            <param name="parameters">User specified constructor parameters</param>
+            <param name="resolvedType">Resolved type or default if resolve fails</param>
+            <returns>True if resolved sucessfully, false otherwise</returns>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.TryResolve``1(System.String,Cassette.TinyIoC.NamedParameterOverloads,``0@)">
+            <summary>
+            Attemps to resolve a type using the default options and supplied name and constructor parameters
+            </summary>
+            <typeparam name="ResolveType">Type to resolve</typeparam>
+            <param name="name">Name of registration</param>
+            <param name="parameters">User specified constructor parameters</param>
+            <param name="resolvedType">Resolved type or default if resolve fails</param>
+            <returns>True if resolved sucessfully, false otherwise</returns>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.TryResolve``1(Cassette.TinyIoC.NamedParameterOverloads,Cassette.TinyIoC.ResolveOptions,``0@)">
+            <summary>
+            Attemps to resolve a type using the supplied options and constructor parameters
+            </summary>
+            <typeparam name="ResolveType">Type to resolve</typeparam>
+            <param name="parameters">User specified constructor parameters</param>
+            <param name="options">Resolution options</param>
+            <param name="resolvedType">Resolved type or default if resolve fails</param>
+            <returns>True if resolved sucessfully, false otherwise</returns>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.TryResolve``1(System.String,Cassette.TinyIoC.NamedParameterOverloads,Cassette.TinyIoC.ResolveOptions,``0@)">
+            <summary>
+            Attemps to resolve a type using the supplied name, options and constructor parameters
+            </summary>
+            <typeparam name="ResolveType">Type to resolve</typeparam>
+            <param name="name">Name of registration</param>
+            <param name="parameters">User specified constructor parameters</param>
+            <param name="options">Resolution options</param>
+            <param name="resolvedType">Resolved type or default if resolve fails</param>
+            <returns>True if resolved sucessfully, false otherwise</returns>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.ResolveAll(System.Type,System.Boolean)">
+            <summary>
+            Returns all registrations of a type
+            </summary>
+            <param name="resolveType">Type to resolveAll</param>
+            <param name="includeUnnamed">Whether to include un-named (default) registrations</param>
+            <returns>IEnumerable</returns>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.ResolveAll(System.Type)">
+            <summary>
+            Returns all registrations of a type, both named and unnamed
+            </summary>
+            <param name="resolveType">Type to resolveAll</param>
+            <returns>IEnumerable</returns>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.ResolveAll``1(System.Boolean)">
+            <summary>
+            Returns all registrations of a type
+            </summary>
+            <typeparam name="ResolveType">Type to resolveAll</typeparam>
+            <param name="includeUnnamed">Whether to include un-named (default) registrations</param>
+            <returns>IEnumerable</returns>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.ResolveAll``1">
+            <summary>
+            Returns all registrations of a type, both named and unnamed
+            </summary>
+            <typeparam name="ResolveType">Type to resolveAll</typeparam>
+            <returns>IEnumerable</returns>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.BuildUp(System.Object)">
+            <summary>
+            Attempts to resolve all public property dependencies on the given object.
+            </summary>
+            <param name="input">Object to "build up"</param>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.BuildUp(System.Object,Cassette.TinyIoC.ResolveOptions)">
+            <summary>
+            Attempts to resolve all public property dependencies on the given object using the given resolve options.
+            </summary>
+            <param name="input">Object to "build up"</param>
+            <param name="resolveOptions">Resolve options to use</param>
+        </member>
+        <member name="P:Cassette.TinyIoC.TinyIoCContainer.Current">
+            <summary>
+            Lazy created Singleton instance of the container for simple scenarios
+            </summary>
+        </member>
+        <member name="T:Cassette.TinyIoC.TinyIoCContainer.RegisterOptions">
+            <summary>
+            Registration options for "fluent" API
+            </summary>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.RegisterOptions.AsSingleton">
+            <summary>
+            Make registration a singleton (single instance) if possible
+            </summary>
+            <returns>RegisterOptions</returns>
+            <exception cref="T:Cassette.TinyIoC.TinyIoCRegistrationException"></exception>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.RegisterOptions.AsMultiInstance">
+            <summary>
+            Make registration multi-instance if possible
+            </summary>
+            <returns>RegisterOptions</returns>
+            <exception cref="T:Cassette.TinyIoC.TinyIoCRegistrationException"></exception>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.RegisterOptions.WithWeakReference">
+            <summary>
+            Make registration hold a weak reference if possible
+            </summary>
+            <returns>RegisterOptions</returns>
+            <exception cref="T:Cassette.TinyIoC.TinyIoCRegistrationException"></exception>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.RegisterOptions.WithStrongReference">
+            <summary>
+            Make registration hold a strong reference if possible
+            </summary>
+            <returns>RegisterOptions</returns>
+            <exception cref="T:Cassette.TinyIoC.TinyIoCRegistrationException"></exception>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.RegisterOptions.ToCustomLifetimeManager(Cassette.TinyIoC.TinyIoCContainer.RegisterOptions,Cassette.TinyIoC.TinyIoCContainer.ITinyIoCObjectLifetimeProvider,System.String)">
+            <summary>
+            Switches to a custom lifetime manager factory if possible.
+            
+            Usually used for RegisterOptions "To*" extension methods such as the ASP.Net per-request one.
+            </summary>
+            <param name="instance">RegisterOptions instance</param>
+            <param name="lifetimeProvider">Custom lifetime manager</param>
+            <param name="errorString">Error string to display if switch fails</param>
+            <returns>RegisterOptions</returns>
+        </member>
+        <member name="T:Cassette.TinyIoC.TinyIoCContainer.MultiRegisterOptions">
+            <summary>
+            Registration options for "fluent" API when registering multiple implementations
+            </summary>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.MultiRegisterOptions.#ctor(System.Collections.Generic.IEnumerable{Cassette.TinyIoC.TinyIoCContainer.RegisterOptions})">
+            <summary>
+            Initializes a new instance of the MultiRegisterOptions class.
+            </summary>
+            <param name="registerOptions">Registration options</param>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.MultiRegisterOptions.AsSingleton">
+            <summary>
+            Make registration a singleton (single instance) if possible
+            </summary>
+            <returns>RegisterOptions</returns>
+            <exception cref="T:Cassette.TinyIoC.TinyIoCRegistrationException"></exception>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.MultiRegisterOptions.AsMultiInstance">
+            <summary>
+            Make registration multi-instance if possible
+            </summary>
+            <returns>MultiRegisterOptions</returns>
+            <exception cref="T:Cassette.TinyIoC.TinyIoCRegistrationException"></exception>
+        </member>
+        <member name="T:Cassette.TinyIoC.TinyIoCContainer.ITinyIoCObjectLifetimeProvider">
+            <summary>
+            Provides custom lifetime management for ASP.Net per-request lifetimes etc.
+            </summary>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.ITinyIoCObjectLifetimeProvider.GetObject">
+            <summary>
+            Gets the stored object if it exists, or null if not
+            </summary>
+            <returns>Object instance or null</returns>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.ITinyIoCObjectLifetimeProvider.SetObject(System.Object)">
+            <summary>
+            Store the object
+            </summary>
+            <param name="value">Object to store</param>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.ITinyIoCObjectLifetimeProvider.ReleaseObject">
+            <summary>
+            Release the object
+            </summary>
+        </member>
+        <member name="M:Cassette.TinyIoC.TinyIoCContainer.ObjectFactoryBase.GetObject(System.Type,Cassette.TinyIoC.TinyIoCContainer,Cassette.TinyIoC.NamedParameterOverloads,Cassette.TinyIoC.ResolveOptions)">
+            <summary>
+            Create the type
+            </summary>
+            <param name="requestedType">Type user requested to be resolved</param>
+            <param name="container">Container that requested the creation</param>
+            <param name="parameters">Any user parameters passed</param>
+            <param name="options"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Cassette.TinyIoC.TinyIoCContainer.ObjectFactoryBase.AssumeConstruction">
+            <summary>
+            Whether to assume this factory sucessfully constructs its objects
+            
+            Generally set to true for delegate style factories as CanResolve cannot delve
+            into the delegates they contain.
+            </summary>
+        </member>
+        <member name="P:Cassette.TinyIoC.TinyIoCContainer.ObjectFactoryBase.CreatesType">
+            <summary>
+            The type the factory instantiates
+            </summary>
+        </member>
+        <member name="P:Cassette.TinyIoC.TinyIoCContainer.ObjectFactoryBase.Constructor">
+            <summary>
+            Constructor to use, if specified
+            </summary>
+        </member>
+        <member name="T:Cassette.TinyIoC.TinyIoCContainer.MultiInstanceFactory">
+            <summary>
+            IObjectFactory that creates new instances of types for each resolution
+            </summary>
+        </member>
+        <member name="T:Cassette.TinyIoC.TinyIoCContainer.DelegateFactory">
+            <summary>
+            IObjectFactory that invokes a specified delegate to construct the object
+            </summary>
+        </member>
+        <member name="T:Cassette.TinyIoC.TinyIoCContainer.WeakDelegateFactory">
+            <summary>
+            IObjectFactory that invokes a specified delegate to construct the object
+            Holds the delegate using a weak reference
+            </summary>
+        </member>
+        <member name="T:Cassette.TinyIoC.TinyIoCContainer.InstanceFactory">
+            <summary>
+            Stores an particular instance to return for a type
+            </summary>
+        </member>
+        <member name="T:Cassette.TinyIoC.TinyIoCContainer.WeakInstanceFactory">
+            <summary>
+            Stores an particular instance to return for a type
+            
+            Stores the instance with a weak reference
+            </summary>
+        </member>
+        <member name="T:Cassette.TinyIoC.TinyIoCContainer.SingletonFactory">
+            <summary>
+            A factory that lazy instantiates a type and always returns the same instance
+            </summary>
+        </member>
+        <member name="T:Cassette.TinyIoC.TinyIoCContainer.CustomObjectLifetimeFactory">
+            <summary>
+            A factory that offloads lifetime to an external lifetime provider
+            </summary>
+        </member>
+        <member name="M:Cassette.BundleContainsPathPredicate.IsPartialAssetPathMatch(System.String)">
+            <summary>
+            Looking for "~/bundle/sub" can match "~/bundle/sub/asset.js"
+            </summary>
+        </member>
+        <member name="P:Cassette.AssetReference.FromAssetPath">
+            <summary>
+            The path of the asset that made this reference.
+            </summary>
+        </member>
+        <member name="P:Cassette.AssetReference.ToPath">
+            <summary>
+            Path to an asset, bundle or a URL.
+            </summary>
+        </member>
+        <member name="P:Cassette.AssetReference.Type">
+            <summary>
+            The type of reference.
+            </summary>
+        </member>
+        <member name="P:Cassette.AssetReference.SourceLineNumber">
+            <summary>
+            The line number in the asset file that made this reference.
+            </summary>
+        </member>
+        <member name="F:Cassette.AssetReferenceType.SameBundle">
+            <summary>
+            A reference to an asset in the same bundle as the referencing asset.
+            </summary>
+        </member>
+        <member name="F:Cassette.AssetReferenceType.DifferentBundle">
+            <summary>
+            A reference to an asset in another bundle, or to an entire other bundle itself.
+            </summary>
+        </member>
+        <member name="F:Cassette.AssetReferenceType.RawFilename">
+            <summary>
+            For example, a reference to an image from a CSS file.
+            </summary>
+        </member>
+        <member name="F:Cassette.AssetReferenceType.Url">
+            <summary>
+            A direct reference to a URL.
+            </summary>
+        </member>
+        <member name="M:Cassette.UrlGenerator.UriEscapePathSegments(System.String)">
+            <summary>
+            Escape each part of the URL between the slashes.
+            </summary>
+        </member>
+        <member name="T:Cassette.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:Cassette.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:Cassette.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="T:Cassette.Utilities.StringExtensions">
+            <summary>
+            Utility methods for strings.
+            </summary>
+        </member>
+        <member name="M:Cassette.Utilities.StringExtensions.AsStream(System.String)">
+            <summary>
+            Returns a new stream containing the contents of the string, using UTF-8 encoding.
+            The stream's Position property is set to zero.
+            </summary>
+            <param name="s">The string to convert into a stream.</param>
+            <returns>A new stream.</returns>
+        </member>
+        <member name="T:Cassette.VirtualDirectoryPrepender">
+            <summary>
+            Prepends the virtual directory to the beginning of application relative URL paths.
+            </summary>
+        </member>
+        <member name="M:Cassette.VirtualDirectoryPrepender.Modify(System.String)">
+            <summary>
+            Prepends the virtual directory to the beginning of the application relative URL path.
+            </summary>
+        </member>
+    </members>
+</doc>

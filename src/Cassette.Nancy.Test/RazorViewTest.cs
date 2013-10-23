@@ -39,7 +39,7 @@ namespace Cassette.Nancy.Test
 
       Assert.Equal(HttpStatusCode.OK, result.StatusCode);
       Console.Write(result.Body.AsString());
-      result.Body["head link[href^='/_cassette/stylesheet/xxx=/Styles']"].ShouldExistOnce();
+      result.Body["head link[href^='/_cassette/stylesheet/'][href*='/Styles']"].ShouldExistOnce();
     }
 
     [Fact]
@@ -50,8 +50,8 @@ namespace Cassette.Nancy.Test
 
       Assert.Equal(HttpStatusCode.OK, result.StatusCode);
       Console.Write(result.Body.AsString());
-      result.Body["body script[src^='/_cassette/script/xxx=/Scripts/lib']"].ShouldExistOnce();
-      result.Body["body script[src^='/_cassette/script/xxx=/Scripts/app']"].ShouldExistOnce();
+      result.Body["body script[src^='/_cassette/script/'][src*='/Scripts/lib']"].ShouldExistOnce();
+      result.Body["body script[src^='/_cassette/script/'][src*='/Scripts/app']"].ShouldExistOnce();
     }
 
   }

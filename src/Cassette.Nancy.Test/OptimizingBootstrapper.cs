@@ -13,7 +13,7 @@ namespace Cassette.Nancy.Test
       CassetteNancyStartup.OptimizeOutput = true;
     }
 
-    protected override void ConfigureApplicationContainer(global::TinyIoC.TinyIoCContainer container)
+    protected override void ConfigureApplicationContainer(global::Nancy.TinyIoc.TinyIoCContainer container)
     {
       base.ConfigureApplicationContainer(container);
       FakeRootPathProvider.RootPath = Utility.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..\\..");

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Cassette.IO;
 using Cassette.TinyIoC;
 using Cassette.IO;
 using Nancy;
