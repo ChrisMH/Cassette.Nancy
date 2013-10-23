@@ -2,13 +2,13 @@
 using CsQuery;
 using Nancy;
 using Nancy.Testing;
-using Xunit;
+using NUnit.Framework;
 
 namespace Cassette.Nancy.Test
 {
   public class AssetRequestHandlerTest
   {
-    [Fact]
+    [Test]
     public void CssFileIsReturned()
     {
       var browser = new Browser(new NonOptimizingBootstrapper());
@@ -20,11 +20,11 @@ namespace Cassette.Nancy.Test
 
       response = browser.Get(url[0], with => with.HttpRequest());
       Console.Write(response.Body.AsString());
-      Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+      Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
 
     }
 
-    [Fact]
+    [Test]
     public void LessFileIsReturned()
     {
       var browser = new Browser(new NonOptimizingBootstrapper());
@@ -36,10 +36,10 @@ namespace Cassette.Nancy.Test
 
       response = browser.Get(url[0], with => with.HttpRequest());
       Console.Write(response.Body.AsString());
-      Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+      Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
     }
 
-    [Fact]
+    [Test]
     public void ScssFileIsReturned()
     {
       var browser = new Browser(new NonOptimizingBootstrapper());
@@ -51,10 +51,10 @@ namespace Cassette.Nancy.Test
 
       response = browser.Get(url[0], with => with.HttpRequest());
       Console.Write(response.Body.AsString());
-      Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+      Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
     }
 
-    [Fact]
+    [Test]
     public void SassFileIsReturned()
     {
       var browser = new Browser(new NonOptimizingBootstrapper());
@@ -66,11 +66,11 @@ namespace Cassette.Nancy.Test
 
       response = browser.Get(url[0], with => with.HttpRequest());
       Console.Write(response.Body.AsString());
-      Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+      Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
     } 
 
 
-    [Fact]
+    [Test]
     public void JsFileIsReturned()
     {
       var browser = new Browser(new NonOptimizingBootstrapper());
@@ -82,10 +82,10 @@ namespace Cassette.Nancy.Test
 
       response = browser.Get(url[0], with => with.HttpRequest());
       Console.Write(response.Body.AsString());
-      Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+      Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
     }
 
-    [Fact]
+    [Test]
     public void CoffeeFileIsReturned()
     {
       var browser = new Browser(new NonOptimizingBootstrapper());
@@ -97,7 +97,7 @@ namespace Cassette.Nancy.Test
 
       response = browser.Get(url[0], with => with.HttpRequest());
       Console.Write(response.Body.AsString());
-      Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+      Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
     } 
 
   }
