@@ -15,8 +15,8 @@ namespace Cassette.Nancy
     public void Configure(CassetteSettings configurable)
     {
       configurable.IsDebuggingEnabled = !CassetteNancyStartup.OptimizeOutput;
-      configurable.IsHtmlRewritingEnabled = true;
-      configurable.IsFileSystemWatchingEnabled = true;
+      configurable.IsHtmlRewritingEnabled = CassetteNancyStartup.RewriteHtml;
+      configurable.IsFileSystemWatchingEnabled = CassetteNancyStartup.WatchFiles;
       configurable.AllowRemoteDiagnostics = true;
       configurable.SourceDirectory = new FileSystemDirectory(rootPathProvider.GetRootPath());
       configurable.CacheDirectory = new IsolatedStorageDirectory(() => IsolatedStorageContainer.IsolatedStorageFile);
