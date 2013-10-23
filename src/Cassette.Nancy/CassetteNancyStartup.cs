@@ -16,6 +16,8 @@ namespace Cassette.Nancy
     public CassetteNancyStartup(IRootPathProvider rootPathProvider)
     {
       this.rootPathProvider = rootPathProvider;
+      RewriteHtml = true;
+      WatchFiles = true;
     }
     
     public void Initialize(IPipelines pipelines)
@@ -26,6 +28,8 @@ namespace Cassette.Nancy
     }
 
     public static bool OptimizeOutput { get; set; }
+    public static bool RewriteHtml { get; set; }
+    public static bool WatchFiles { get; set; }
 
     private Response RunCassetteRequestHandler(NancyContext context)
     {
