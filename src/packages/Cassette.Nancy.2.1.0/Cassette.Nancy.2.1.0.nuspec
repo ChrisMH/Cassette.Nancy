@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Cassette.Nancy</id>
+    <version>2.1.0</version>
+    <title>Cassette.Nancy</title>
+    <authors>Chris Hogan</authors>
+    <owners>Chris Hogan</owners>
+    <licenseUrl>http://www.opensource.org/licenses/mit-license.php</licenseUrl>
+    <projectUrl>https://github.com/ChrisMH/Nancy.Cassette</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Cassette integration into the Nancy web framework</description>
+    <copyright>Copyright 2011</copyright>
+    <tags>Cassette Nancy</tags>
+    <dependencies>
+      <dependency id="Cassette" />
+      <dependency id="Nancy" />
+      <dependency id="Nancy.ViewEngines.Razor" />
+      <dependency id="NLog" />
+    </dependencies>
+  </metadata>
+</package>
