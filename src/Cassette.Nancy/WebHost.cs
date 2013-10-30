@@ -22,6 +22,7 @@ namespace Cassette.Nancy
       this.rootPathProvider = rootPathProvider;
       this.getContext = getContext;
       this.logger = NLog.LogManager.GetCurrentClassLogger();
+      logger.Debug("WebHost.ctor: constructed!");
     }
 
     public Response RunCassetteRequestHandler(NancyContext context)
