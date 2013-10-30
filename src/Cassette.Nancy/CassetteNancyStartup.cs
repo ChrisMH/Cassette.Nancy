@@ -10,12 +10,14 @@ namespace Cassette.Nancy
   {
     private readonly IRootPathProvider rootPathProvider;
     private readonly ThreadLocal<NancyContext> currentContext = new ThreadLocal<NancyContext>(() => null);
-
+    private readonly object webHostLocker = new object();
+    private readonly NLog.Logger logger;
     private WebHost webHost;
     
     public CassetteNancyStartup(IRootPathProvider rootPathProvider)
     {
       this.rootPathProvider = rootPathProvider;
+      this.logger = NLog.LogManager.GetCurrentClassLogger();
     }
     
     public void Initialize(IPipelines pipelines)
@@ -26,19 +28,31 @@ namespace Cassette.Nancy
     }
 
     public static bool OptimizeOutput { get; set; }
-
+    
     private Response RunCassetteRequestHandler(NancyContext context)
     {
+      logger.Debug("RunCassetteRequestHandler starting");
       currentContext.Value = context;
 
       // Some parts of WebHost initialization require a valid NancyContext, so defer
       // creation of the WebHost until the first request hits the pipeline.
       if(webHost == null)
       {
-        webHost = new WebHost(rootPathProvider, () => currentContext.Value);
-        webHost.Initialize();
+          logger.Debug("WebHost is null, acquiring lock...");
+
+          lock (webHostLocker) {
+              logger.Debug("I have the lock...");
+
+              if (webHost == null) {
+                  logger.Debug("I have the lock and webHost is still null. Creating/initing it...");
+                  webHost = new WebHost(rootPathProvider, () => currentContext.Value);
+                  webHost.Initialize();
+                  logger.Debug("...finished creating/initing webHost.");
+              }
+          }
       }
 
+      logger.Debug("RunCassetteRequestHandler - running request handler.");
       return webHost.RunCassetteRequestHandler(context);
     }
 
