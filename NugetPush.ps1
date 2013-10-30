@@ -1,6 +1,6 @@
 $srcRoot = '.\src'                     # relative to script directory
 $versionFile = 'SharedAssemblyInfo.cs' # relative to $srcRoot
-$outputPath = "$home\Dropbox\Packages"
+$outputPath = "D:\Dropbox\Packages"
 
 Import-Module NugetUtilities
 
