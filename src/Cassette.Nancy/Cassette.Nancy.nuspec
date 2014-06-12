@@ -14,8 +14,8 @@
     <tags>Cassette Nancy</tags>
     <dependencies>
       <dependency id="Cassette"/>
-      <dependency id="Nancy"/>
-      <dependency id="Nancy.ViewEngines.Razor"/>
+      <dependency id="Nancy" version="0.23.0"/>
+      <dependency id="Nancy.ViewEngines.Razor" version="0.23.0"/>
       <dependency id="NLog"/>
     </dependencies>
   </metadata>

@@ -6,7 +6,7 @@ using Nancy;
 using Nancy.Bootstrapper;
 
 namespace Cassette.Nancy {
-    public class CassetteNancyPluginRegistrations : ApplicationRegistrations {
+    public class CassetteNancyPluginRegistrations : Registrations {
         public CassetteNancyPluginRegistrations() {
             AppDomainAssemblyTypeScanner.AddAssembliesToScan(new string[] { 
                   "Cassette.CoffeeScript.dll"
